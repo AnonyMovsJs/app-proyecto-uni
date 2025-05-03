@@ -5,12 +5,12 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'user'
+    redirectTo: 'login'
   },
 
   {
     path: 'user',
-    loadComponent: () => import('./business/user/user.component')
+    loadComponent: () => import('./business/user/user.component'),
   },
   {
     path: 'login',
