@@ -47,7 +47,7 @@ export class AuthComponent {
 
           this.authService.token = token;
           this.authService.user = login;
-          this.router.navigate(['/user']);
+          this.router.navigate(['']);
         },
 
         error: (error) => {

@@ -4,16 +4,27 @@ import { AuthComponent } from './auth/auth.component';
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'login'
+    loadComponent: () => import('./shared/components/layout/layout.component'),
+    children: [
+      {
+        path: 'user',
+        loadComponent: () => import('./business/profile/profile.component'),
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./business/users/users.component'),
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'login',
+      },
+    ],
   },
 
   {
-    path: 'user',
-    loadComponent: () => import('./business/user/user.component'),
-  },
-  {
     path: 'login',
-    component: AuthComponent
-  }
+    component: AuthComponent,
+  },
 ];
+

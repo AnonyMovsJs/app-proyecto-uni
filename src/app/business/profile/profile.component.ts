@@ -4,10 +4,10 @@ import { UserService } from '../../shared/user.service';
 @Component({
   selector: 'app-user',
   imports: [],
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.css'
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.css'
 })
-export default class UserComponent implements OnInit{
+export default class ProfileComponent implements OnInit{
 
   userProfile!: any;
 
@@ -26,3 +26,4 @@ export default class UserComponent implements OnInit{
   }
 
 }
+
