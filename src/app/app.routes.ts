@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
+import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -13,6 +15,7 @@ export const routes: Routes = [
       {
         path: 'users',
         loadComponent: () => import('./business/users/users.component'),
+        canActivate: [authGuard],
       },
       {
         path: '',
@@ -25,6 +28,11 @@ export const routes: Routes = [
   {
     path: 'login',
     component: AuthComponent,
+  },
+
+  {
+    path: 'forbidden',
+    component: ForbiddenComponent,
   },
 ];
 

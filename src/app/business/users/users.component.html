@@ -1,5 +1,5 @@
 <div class="container">
-  <table class="table">
+  <table class="table table-striped table-hover table-responsive">
 
     <thead>
       <tr>
@@ -14,9 +14,19 @@
     </thead>
 
     <tbody>
-      <tr>
-        <td></td>
-      </tr>
+      @for (user of users; track $index) {
+
+        <tr>
+          <td> {{user.id}} </td>
+          <td> {{user.name}} </td>
+          <td> {{user.lastname}} </td>
+          <td> {{user.dni}} </td>
+          <td> {{user.email}} </td>
+          <td> {{user.phone}} </td>
+          <td> {{user.address}} </td>
+        </tr>
+      }
+
     </tbody>
 
 

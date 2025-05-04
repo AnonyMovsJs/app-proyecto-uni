@@ -3,7 +3,7 @@ export class User  {
   name: string = '';
   lastname: string = '';
   dni: string = '';
-  telefono: string = '';
+  phone: string = '';
   address: string = '';
   email: string = '';
   password: string = '';
