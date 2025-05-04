@@ -29,7 +29,7 @@
       <td class="mx-3 text-center"> {{user.address}} </td>
       <td class="mx-3 text-center">
         <button class="btn btn-primary mx-1" [routerLink]="(['/user/edit', user.id])">Editar</button>
-        <button class="btn btn-danger mx-1">Eliminar</button>
+        <button class="btn btn-danger mx-1" (click)="deleteUser(user.id)">Eliminar</button>
       </td>
     </tr>
     }
