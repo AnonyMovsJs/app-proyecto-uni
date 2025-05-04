@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from '../../shared/model/user';
-import { UserService } from '../../shared/user.service';
+import { Component } from '@angular/core';
+import { UserTableComponent } from "./user-table/user-table.component";
 
 @Component({
   selector: 'app-users',
-  imports: [],
+  imports: [UserTableComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
-export default class UsersComponent implements OnInit{
-  users: User[] = [];
+export default class UsersComponent{
+
+
+  /*   users: User[] = [];
 
   constructor(private userService: UserService) { }
 
@@ -23,5 +24,5 @@ export default class UsersComponent implements OnInit{
       next : (data) => this.users = data,
       error : (error) => console.log(error.error),
     })
-  }
+  } */
 }

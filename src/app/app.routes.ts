@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
 import { authGuard } from './guards/auth.guard';
+import { UserFormComponent } from './business/users/user-form/user-form.component';
 
 export const routes: Routes = [
   {
@@ -11,6 +12,14 @@ export const routes: Routes = [
       {
         path: 'user',
         loadComponent: () => import('./business/profile/profile.component'),
+      },
+      {
+        path: 'user/edit/:id',
+        component: UserFormComponent,
+      },
+      {
+        path: 'user/create',
+        component: UserFormComponent,
       },
       {
         path: 'users',

@@ -1,0 +1,40 @@
+
+<button class="btn btn-primary my-3" routerLink="/user/create">Crear usuario</button>
+
+<table class="table table-striped table-hover table-responsive">
+
+  <thead>
+    <tr>
+      <th class="mx-3 text-center">Id</th>
+      <th class="mx-3 text-center">Nombre</th>
+      <th class="mx-3 text-center">Apellido</th>
+      <th class="mx-3 text-center">Dni</th>
+      <th class="mx-3 text-center">Email</th>
+      <th class="mx-3 text-center">Teléfono</th>
+      <th class="mx-3 text-center">Dirección</th>
+      <th class="mx-3 text-center">Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (user of users; track $index) {
+
+    <tr>
+      <td class="mx-3 text-center"> {{user.id}} </td>
+      <td class="mx-3 text-center"> {{user.name}} </td>
+      <td class="mx-3 text-center"> {{user.lastname}} </td>
+      <td class="mx-3 text-center"> {{user.dni}} </td>
+      <td class="mx-3 text-center"> {{user.email}} </td>
+      <td class="mx-3 text-center"> {{user.phone}} </td>
+      <td class="mx-3 text-center"> {{user.address}} </td>
+      <td class="mx-3 text-center">
+        <button class="btn btn-primary mx-1" [routerLink]="(['/user/edit', user.id])">Editar</button>
+        <button class="btn btn-danger mx-1">Eliminar</button>
+      </td>
+    </tr>
+    }
+
+  </tbody>
+
+
+</table>
