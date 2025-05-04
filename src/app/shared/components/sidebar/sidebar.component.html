@@ -45,14 +45,16 @@
           </ul>
         </li>
 
-          <a routerLink="/users" class="nav-link" routerLinkActive="bg-primary">
-            <i class="fa fa-users"></i>
-            <p>
-              Users
-              <i class="fas fa-angle-left right"></i>
-              <!-- <span class="badge badge-info right">6</span> -->
-            </p>
-          </a>
+          @if (admin) {
+            <a routerLink="/users" class="nav-link" routerLinkActive="bg-primary">
+              <i class="fa fa-users"></i>
+              <p>
+                Users
+                <i class="fas fa-angle-left right"></i>
+                <!-- <span class="badge badge-info right">6</span> -->
+              </p>
+            </a>
+          }
 
           <li class="nav-item">
             <a routerLink="/user" class="nav-link" routerLinkActive="bg-primary">
@@ -88,6 +90,14 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>Documentation</p>
+          </a>
+        </li>
+
+
+        <li class="nav-item">
+          <a routerLink="/user" class="nav-link" (click)="handlerLogout()">
+            <i class="fa fa-user"></i>
+            <p> Logout</p>
           </a>
         </li>
 
