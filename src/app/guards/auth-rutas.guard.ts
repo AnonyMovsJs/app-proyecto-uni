@@ -1,0 +1,31 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../shared/auth.service';
+
+export const authRutasGuard: CanActivateFn = (route, state) => {
+  const service = inject(AuthService);
+  const router = inject(Router);
+
+  if (service.isAuth()) {
+    if (isTokenExpired()) {
+      service.logout();
+      router.navigate(['login']);
+      return false;
+    }
+
+    // Solo verifica autenticación, no si es admin
+    return true;
+  }
+
+  router.navigate(['login']);
+  return false;
+};
+
+const isTokenExpired = () => {
+  const service = inject(AuthService);
+  const token = service.token;
+  const payload = service.getPayload(token);
+  const exp = payload.exp;
+  const now = new Date().getTime() / 1000;
+  return now > exp ? true : false;
+};

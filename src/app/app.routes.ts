@@ -3,6 +3,7 @@ import { AuthComponent } from './auth/auth.component';
 import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
 import { authGuard } from './guards/auth.guard';
 import { UserFormComponent } from './business/users/user-form/user-form.component';
+import { authRutasGuard } from './guards/auth-rutas.guard';
 
 export const routes: Routes = [
   {
@@ -12,14 +13,17 @@ export const routes: Routes = [
       {
         path: 'user',
         loadComponent: () => import('./business/profile/profile.component'),
+        canActivate: [authRutasGuard],
       },
       {
         path: 'user/edit/:id',
         component: UserFormComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'user/create',
         component: UserFormComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'users',
