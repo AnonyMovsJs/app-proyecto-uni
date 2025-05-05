@@ -12,6 +12,7 @@
       <th class="mx-3 text-center">Email</th>
       <th class="mx-3 text-center">Teléfono</th>
       <th class="mx-3 text-center">Dirección</th>
+      <th class="mx-3 text-center">Estado</th>
       <th class="mx-3 text-center">Acciones</th>
     </tr>
   </thead>
@@ -27,9 +28,10 @@
       <td class="mx-3 text-center"> {{user.email}} </td>
       <td class="mx-3 text-center"> {{user.phone}} </td>
       <td class="mx-3 text-center"> {{user.address}} </td>
+      <td class="mx-3 text-center"> <span class="badge {{ user.estado ? 'bg-success' : 'bg-danger' }}">{{ user.estado ? 'Activo' : 'Desactivado' }}</span> </td>
       <td class="mx-3 text-center">
         <button class="btn btn-primary mx-1" [routerLink]="(['/user/edit', user.id])">Editar</button>
-        <button class="btn btn-danger mx-1" (click)="deleteUser(user.id)">Eliminar</button>
+        <button class="{{ user.estado ? 'btn btn-danger mx-1' : 'btn btn-success mx-1' }}"  (click)="deleteUser(user.id)" style="min-width: 100px;">{{user.estado ? 'Desactivar' : 'Activar'}}</button>
       </td>
     </tr>
     }

@@ -7,5 +7,6 @@ export class User  {
   address: string = '';
   email: string = '';
   password: string = '';
+  estado: boolean = true;
   admin?: boolean;
 }
