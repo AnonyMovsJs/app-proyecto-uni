@@ -3,21 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private url: string = 'http://localhost:8080/login';
 
   private _token: string | undefined;
   private _user: any = {
     isAuth: false,
     isAdmin: false,
-    user: undefined
+    user: undefined,
   };
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) {}
 
   loginUser({ email, password }: any): Observable<any> {
     return this.http.post<any>(this.url, { email, password });
@@ -25,9 +23,8 @@ export class AuthService {
 
   set user(user: any) {
     this._user = user;
-    sessionStorage.setItem('login', JSON.stringify(user))
+    sessionStorage.setItem('login', JSON.stringify(user));
   }
-
 
   get user() {
     if (this._user.isAuth) {
@@ -40,6 +37,10 @@ export class AuthService {
     return this._user;
   }
 
+  getCurrentUser(): any {
+    return this.user.user; // Solo retorna la propiedad `user` del objeto completo
+  }
+
   set token(token: string) {
     this._token = token;
     sessionStorage.setItem('token', token);
@@ -48,23 +49,21 @@ export class AuthService {
   get token() {
     if (this._token != null) {
       return this._token;
-    } else if((sessionStorage.getItem('token') || '{}')) {
-      this._token = (sessionStorage.getItem('token') || '{}');
+    } else if (sessionStorage.getItem('token') || '{}') {
+      this._token = sessionStorage.getItem('token') || '{}';
       return this._token;
-  }
+    }
 
     return this._token!;
   }
 
-
   getPayload(token: string) {
     if (token != null) {
-      return JSON.parse(atob(token.split('.')[1]))
+      return JSON.parse(atob(token.split('.')[1]));
     }
 
     return null;
   }
-
 
   isAdmin() {
     return this.user.isAdmin;
@@ -79,7 +78,7 @@ export class AuthService {
     this._user = {
       isAuth: false,
       isAdmin: false,
-      user: undefined
+      user: undefined,
     };
 
     sessionStorage.removeItem('login');
@@ -88,7 +87,6 @@ export class AuthService {
 
   checkAdmin(isAdmin: boolean) {
     this._user.idAdmin = isAdmin;
-    sessionStorage.setItem('login', JSON.stringify(this._user))
+    sessionStorage.setItem('login', JSON.stringify(this._user));
   }
-
 }

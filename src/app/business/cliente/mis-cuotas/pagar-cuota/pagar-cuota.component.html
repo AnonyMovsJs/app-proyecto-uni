@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Pagar Cuota</h2>
+    <a routerLink="/cliente/mis-cuotas" class="btn btn-secondary">
+      <i class="fa fa-arrow-left"></i> Volver
+    </a>
+  </div>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <div *ngIf="!loading && !error && !success">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Información de la Cuota</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Venta:</strong> {{ venta.descripcion }}</p>
+            <p><strong>Cuota:</strong> {{ cuota.numeroCuota }} de {{ credito.numeroCuotas }}</p>
+            <p><strong>Monto a Pagar:</strong> S/. {{ cuota.monto | number:'1.2-2' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Fecha Vencimiento:</strong> {{ cuota.fechaVencimiento | date:'dd/MM/yyyy' }}</p>
+            <p>
+              <strong>Estado:</strong>
+              <span class="badge" [ngClass]="{
+                      'badge-warning': cuota.estado === 'PENDIENTE',
+                      'badge-danger': cuota.estado === 'VENCIDO'
+                    }">
+                {{ cuota.estado }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Realizar Pago</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="pagoForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="monto">Monto a Pagar:</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">S/.</span>
+              </div>
+              <input type="number" id="monto" formControlName="monto" class="form-control" step="0.01"
+                [ngClass]="{'is-invalid': pagoForm.get('monto')?.invalid && pagoForm.get('monto')?.touched}">
+              <div class="invalid-feedback" *ngIf="pagoForm.get('monto')?.invalid && pagoForm.get('monto')?.touched">
+                El monto es requerido y debe ser mayor a 0
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i>
+            Este es un pago simulado. En un sistema real, aquí se integraría con un método de pago como Yape, Plin, etc.
+          </div>
+
+          <div class="mt-3">
+            <button type="submit" class="btn btn-primary" [disabled]="pagoForm.invalid || submitting">
+              <span *ngIf="submitting" class="spinner-border spinner-border-sm mr-1"></span>
+              Confirmar Pago
+            </button>
+            <a routerLink="/cliente/mis-cuotas" class="btn btn-secondary ml-2">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

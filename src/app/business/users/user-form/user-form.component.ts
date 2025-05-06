@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../../shared/model/user';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../../shared/user.service';
+import { UserService } from '../../../shared/services/user.service';
 import { FormsModule, NgForm } from '@angular/forms';
-import { SharingDataService } from '../../../shared/sharing-data.service';
+import { SharingDataService } from '../../../shared/services/sharing-data.service';
 import Swal from 'sweetalert2';
 
 @Component({

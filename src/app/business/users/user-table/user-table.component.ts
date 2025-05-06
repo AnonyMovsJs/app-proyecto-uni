@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from '../../../shared/model/user';
-import { UserService } from '../../../shared/user.service';
+import { UserService } from '../../../shared/services/user.service';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 

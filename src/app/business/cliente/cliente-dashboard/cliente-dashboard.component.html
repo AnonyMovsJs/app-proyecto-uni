@@ -1,0 +1,178 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1>Bienvenido a tu Panel de Cliente</h1>
+    <p>Aquí puedes ver el resumen de tus compras y pagos pendientes.</p>
+  </div>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card bg-info text-white mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Total Compras</h5>
+            <h2 class="card-text">{{ ventas.length }}</h2>
+          </div>
+          <div class="card-footer d-flex align-items-center justify-content-between">
+            <a routerLink="/cliente/mis-compras" class="text-white">Ver Detalle</a>
+            <i class="fa fa-angle-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card bg-warning text-white mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Cuotas Pendientes</h5>
+            <h2 class="card-text">{{ cuotasPendientes.length }}</h2>
+          </div>
+          <div class="card-footer d-flex align-items-center justify-content-between">
+            <a routerLink="/cliente/mis-cuotas" class="text-white">Ver Detalle</a>
+            <i class="fa fa-angle-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card bg-danger text-white mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Cuotas Vencidas</h5>
+            <h2 class="card-text">{{ cuotasVencidas.length }}</h2>
+          </div>
+          <div class="card-footer d-flex align-items-center justify-content-between">
+            <a routerLink="/cliente/mis-cuotas" class="text-white">Ver Detalle</a>
+            <i class="fa fa-angle-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>Próximas Cuotas a Pagar</h5>
+          </div>
+          <div class="card-body">
+            <div *ngIf="obtenerProximasCuotas().length === 0" class="alert alert-success">
+              ¡No tienes cuotas pendientes!
+            </div>
+            <table *ngIf="obtenerProximasCuotas().length > 0" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Cuota</th>
+                  <th>Monto</th>
+                  <th>Vencimiento</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cuota of obtenerProximasCuotas()">
+                  <td>{{ cuota.numeroCuota }}</td>
+                  <td>S/. {{ cuota.monto | number:'1.2-2' }}</td>
+                  <td>{{ cuota.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-primary" [routerLink]="['/cliente/pagar-cuota', cuota.id]">
+                      Pagar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>Resumen de Deuda</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Total Deuda:</label>
+                  <h3>S/. {{ calcularTotalDeuda() | number:'1.2-2' }}</h3>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Cuotas Pendientes:</label>
+                  <h3>{{ cuotasPendientes.length + cuotasVencidas.length }}</h3>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="cuotasVencidas.length > 0" class="alert alert-danger mt-3">
+              <strong>¡Atención!</strong> Tienes {{ cuotasVencidas.length }} cuotas vencidas.
+              Por favor, regulariza tu situación lo antes posible.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5>Últimas Compras</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Descripción</th>
+                  <th>Monto</th>
+                  <th>Tipo</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let venta of ventas.slice(0, 5)">
+                  <td>{{ venta.fechaVenta | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ venta.descripcion }}</td>
+                  <td>S/. {{ venta.montoTotal | number:'1.2-2' }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="venta.tipoVenta === 'CONTADO' ? 'badge-success' : 'badge-primary'">
+                      {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                                    'badge-success': venta.estado === 'PAGADO',
+                                    'badge-warning': venta.estado === 'PENDIENTE',
+                                    'badge-danger': venta.estado === 'CANCELADO'
+                                  }">
+                      {{ venta.estado }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info" [routerLink]="['/cliente/detalle-compra', venta.id]">
+                      Ver Detalle
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center mt-3" *ngIf="ventas.length > 5">
+              <a routerLink="/cliente/mis-compras" class="btn btn-link">Ver todas las compras</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

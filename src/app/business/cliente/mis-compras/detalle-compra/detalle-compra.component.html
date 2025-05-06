@@ -1,0 +1,170 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Detalle de Compra</h2>
+    <a routerLink="/cliente/mis-compras" class="btn btn-secondary">
+      <i class="fa fa-arrow-left"></i> Volver
+    </a>
+  </div>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Información General</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Fecha:</strong> {{ venta.fechaVenta | date:'dd/MM/yyyy' }}</p>
+            <p><strong>Descripción:</strong> {{ venta.descripcion }}</p>
+            <p><strong>Monto Total:</strong> S/. {{ venta.montoTotal | number:'1.2-2' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p>
+              <strong>Tipo de Venta:</strong>
+              <span class="badge" [ngClass]="venta.tipoVenta === 'CONTADO' ? 'badge-success' : 'badge-primary'">
+                {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
+              </span>
+            </p>
+            <p>
+              <strong>Estado:</strong>
+              <span class="badge" [ngClass]="{
+                      'badge-success': venta.estado === 'PAGADO',
+                      'badge-warning': venta.estado === 'PENDIENTE',
+                      'badge-danger': venta.estado === 'CANCELADO'
+                    }">
+                {{ venta.estado }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Productos Comprados</h4>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detalle of detalles">
+              <td>{{ detalle.nombreProducto }}</td>
+              <td>{{ detalle.cantidad }}</td>
+              <td>S/. {{ detalle.precioUnitario | number:'1.2-2' }}</td>
+              <td>S/. {{ detalle.subtotal | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-right"><strong>Total:</strong></td>
+              <td><strong>S/. {{ venta.montoTotal | number:'1.2-2' }}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="venta.tipoVenta === 'CREDITO' && credito">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>Información del Crédito</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Monto Total con Interés:</strong> S/. {{ credito.montoTotal | number:'1.2-2' }}</p>
+              <p><strong>Interés Aplicado:</strong> {{ credito.interes }}%</p>
+              <p><strong>Número de Cuotas:</strong> {{ credito.numeroCuotas }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Fecha Inicio:</strong> {{ credito.fechaInicio | date:'dd/MM/yyyy' }}</p>
+              <p><strong>Fecha Fin:</strong> {{ credito.fechaFin | date:'dd/MM/yyyy' }}</p>
+              <p>
+                <strong>Estado:</strong>
+                <span class="badge" [ngClass]="{
+                        'badge-success': credito.estado === 'PAGADO',
+                        'badge-primary': credito.estado === 'ACTIVO',
+                        'badge-danger': credito.estado === 'CANCELADO'
+                      }">
+                  {{ credito.estado }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <h5>Progreso de Pago</h5>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" [style.width.%]="calcularProgresoCredito()"
+                [attr.aria-valuenow]="calcularProgresoCredito()" aria-valuemin="0" aria-valuemax="100">
+                {{ calcularProgresoCredito() | number:'1.0-0' }}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>Cuotas</h4>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>N°</th>
+                <th>Monto</th>
+                <th>Fecha Vencimiento</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cuota of cuotas">
+                <td>{{ cuota.numeroCuota }}</td>
+                <td>S/. {{ cuota.monto | number:'1.2-2' }}</td>
+                <td>{{ cuota.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="{
+                          'badge-success': cuota.estado === 'PAGADO',
+                          'badge-warning': cuota.estado === 'PENDIENTE',
+                          'badge-danger': cuota.estado === 'VENCIDO'
+                        }">
+                    {{ cuota.estado }}
+                  </span>
+                </td>
+                <td>
+                  <button *ngIf="cuota.estado !== 'PAGADO'" class="btn btn-sm btn-primary"
+                    [routerLink]="['/cliente/pagar-cuota', cuota.id]">
+                    Pagar
+                  </button>
+                  <span *ngIf="cuota.estado === 'PAGADO'" class="text-success">
+                    <i class="fa fa-check-circle"></i> Pagado
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

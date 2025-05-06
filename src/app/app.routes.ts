@@ -4,6 +4,12 @@ import { ForbiddenComponent } from './shared/components/forbidden/forbidden.comp
 import { authGuard } from './guards/auth.guard';
 import { UserFormComponent } from './business/users/user-form/user-form.component';
 import { authRutasGuard } from './guards/auth-rutas.guard';
+import { Component } from '@angular/core';
+import { NuevaVentaComponent } from './business/admin/nueva-venta/nueva-venta.component';
+import { PagarCuotaComponent } from './business/cliente/mis-cuotas/pagar-cuota/pagar-cuota.component';
+import { DetalleCompraComponent } from './business/cliente/mis-compras/detalle-compra/detalle-compra.component';
+import { ClienteDashboardComponent } from './business/cliente/cliente-dashboard/cliente-dashboard.component';
+import { ListaComprasComponent } from './business/cliente/mis-compras/lista-compras/lista-compras.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +35,30 @@ export const routes: Routes = [
         path: 'users',
         loadComponent: () => import('./business/users/users.component'),
         canActivate: [authGuard],
+      },
+      {
+        path: 'admin/ventas',
+        component: NuevaVentaComponent,
+      },
+      {
+        path: 'cliente/dashboard',
+        component: ClienteDashboardComponent,
+      },
+      {
+        path: 'cliente/pagar',
+        component: PagarCuotaComponent,
+      },
+      {
+        path: 'cliente/mis-compras',
+        component: ListaComprasComponent,
+      },
+      {
+        path: 'cliente/detalle-compra/:id',
+        component: DetalleCompraComponent,
+      },
+      {
+        path: 'cliente/pagar-cuota/:id',
+        component: PagarCuotaComponent,
       },
       {
         path: '',

@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { User } from '../shared/model/user';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../shared/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
 
 
