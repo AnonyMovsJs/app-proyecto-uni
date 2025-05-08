@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CreditoService } from '../../../../shared/services/credito.service';
 import { PagoService } from '../../../../shared/services/pago.service';
 import { CommonModule } from '@angular/common';
+import { CuotaService } from '../../../../shared/services/cuota.service';
+import { Cuota } from '../../../../shared/model/cuota';
+import { Venta } from '../../../../shared/model/venta';
+import { Credito } from '../../../../shared/model/credito';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -14,9 +18,9 @@ import { CommonModule } from '@angular/common';
 })
 export class PagarCuotaComponent implements OnInit {
   cuotaId!: number;
-  cuota: any;
-  credito: any;
-  venta: any;
+  cuota: Cuota;
+  credito: Credito;
+  venta: Venta;
   pagoForm!: FormGroup;
   loading = true;
   submitting = false;
@@ -27,9 +31,13 @@ export class PagarCuotaComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private creditoService: CreditoService,
-    private pagoService: PagoService
-  ) {}
+    private pagoService: PagoService,
+    private cuotaService : CuotaService
+  ) {
+    this.venta = new Venta();
+    this.cuota = new Cuota();
+    this.credito = new Credito();
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -47,24 +55,24 @@ export class PagarCuotaComponent implements OnInit {
     // Por ahora, haremos una simulación
 
     // En un sistema real, tendrías algo como:
-    /*
-    this.cuotaService.obtenerCuota(this.cuotaId).subscribe(
-      cuota => {
+
+    this.cuotaService.obtenerCuotaPorId(this.cuotaId).subscribe({
+      next : cuota => {
         this.cuota = cuota;
         this.pagoForm.patchValue({
           monto: cuota.monto
         });
         this.loading = false;
       },
-      error => {
+      error : error => {
         this.error = 'Error al cargar la cuota';
         this.loading = false;
       }
-    );
-    */
+    });
+
 
     // Simulación para el ejemplo
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.cuota = {
         id: this.cuotaId,
         numeroCuota: 2,
@@ -92,7 +100,7 @@ export class PagarCuotaComponent implements OnInit {
       });
 
       this.loading = false;
-    }, 1000);
+    }, 1000); */
   }
 
   onSubmit(): void {
@@ -106,21 +114,23 @@ export class PagarCuotaComponent implements OnInit {
       monto: this.pagoForm.value.monto,
     };
 
-    this.pagoService.registrarPago(pago).subscribe(
-      (response) => {
+    this.pagoService.registrarPago(pago).subscribe({
+      next : (response) => {
         this.submitting = false;
-        this.success = 'Pago realizado con éxito';
+        /* this.success = 'Pago realizado con éxito'; */
+        Swal.fire('Pagado', 'Cuota pagada exitosamente', 'success');
+        this.router.navigate(['/cliente/dashboard']);
 
         // Redireccionar después de 2 segundos
-        setTimeout(() => {
+        /* setTimeout(() => {
           this.router.navigate(['/cliente/mis-cuotas']);
-        }, 2000);
+        }, 2000); */
       },
-      (error) => {
+      error : (error) => {
         this.submitting = false;
         this.error = 'Error al realizar el pago';
         console.error('Error al registrar pago', error);
       }
-    );
+    });
   }
 }

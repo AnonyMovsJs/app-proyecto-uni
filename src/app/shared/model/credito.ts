@@ -1,3 +1,5 @@
+import { Estado } from "./estado";
+
 export class Credito {
   id!: number;
   venta_id!: number;
@@ -6,5 +8,5 @@ export class Credito {
   numero_cuotas: number = 0;
   fecha_inicio: Date = new Date();
   fecha_fin: Date = new Date();
-  estado!: Enumerator;
+  estado!: Estado;
 }

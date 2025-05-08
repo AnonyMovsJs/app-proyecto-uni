@@ -10,6 +10,7 @@ import { PagarCuotaComponent } from './business/cliente/mis-cuotas/pagar-cuota/p
 import { DetalleCompraComponent } from './business/cliente/mis-compras/detalle-compra/detalle-compra.component';
 import { ClienteDashboardComponent } from './business/cliente/cliente-dashboard/cliente-dashboard.component';
 import { ListaComprasComponent } from './business/cliente/mis-compras/lista-compras/lista-compras.component';
+import { AdminDashboardComponent } from './business/admin/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -39,26 +40,36 @@ export const routes: Routes = [
       {
         path: 'admin/ventas',
         component: NuevaVentaComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/dashboard',
+        component: AdminDashboardComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'cliente/dashboard',
         component: ClienteDashboardComponent,
+        canActivate: [authRutasGuard],
       },
-      {
+      /* {
         path: 'cliente/pagar',
-        component: PagarCuotaComponent,
-      },
+        component: PagarCuotaComponent, //REVISAR CREO QUE NO VA
+      }, */
       {
         path: 'cliente/mis-compras',
         component: ListaComprasComponent,
+        canActivate: [authRutasGuard],
       },
       {
         path: 'cliente/detalle-compra/:id',
         component: DetalleCompraComponent,
+        canActivate: [authRutasGuard],
       },
       {
         path: 'cliente/pagar-cuota/:id',
         component: PagarCuotaComponent,
+        canActivate: [authRutasGuard],
       },
       {
         path: '',

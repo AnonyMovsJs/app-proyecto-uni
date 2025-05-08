@@ -1,0 +1,33 @@
+<div class="container">
+  <h2>Dashboard de Administrador</h2>
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status"></div>
+  </div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="!loading && !error">
+    <div class="row">
+      <div class="col-md-4 mb-4" *ngFor="let item of usersWithDebt">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5>{{ item.user.name || item.user.username }}</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Total Créditos:</strong> {{ item.totalCredits }}</p>
+            <p><strong>Créditos Pagados:</strong> {{ item.paidCredits }}</p>
+            <p><strong>Créditos Pendientes:</strong> {{ item.pendingCredits }}</p>
+            <p><strong>Total Deuda:</strong> S/. {{ item.totalDebt | number:'1.2-2' }}</p>
+          </div>
+          <div class="card-footer text-right">
+            <a [routerLink]="['/admin/user', item.user.id]" class="btn btn-primary btn-sm">
+              Ver Perfil
+            </a>
+            <a [routerLink]="['/admin/user', item.user.id, 'creditos']" class="btn btn-secondary btn-sm ml-2">
+              Ver Créditos
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
