@@ -47,7 +47,12 @@ export class AuthComponent {
 
           this.authService.token = token;
           this.authService.user = login;
-          this.router.navigate(['']);
+          if (this.admin) {
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.router.navigate(['/cliente/dashboard']);
+          }
+
         },
 
         error: (error) => {
@@ -63,4 +68,9 @@ export class AuthComponent {
         },
       });
   }
+
+  get admin() {
+    return this.authService.isAdmin();
+  }
+
 }

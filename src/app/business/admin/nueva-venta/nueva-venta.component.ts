@@ -4,6 +4,7 @@ import { VentaService } from '../../../shared/services/venta.service';
 import { UserService } from '../../../shared/services/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-nueva-venta',
@@ -113,7 +114,8 @@ export class NuevaVentaComponent implements OnInit {
     this.ventaService.crearVenta(venta).subscribe({
       next : (response) => {
         this.loading = false;
-        this.router.navigate(['/admin/ventas']);
+        this.router.navigate(['/admin/dashboard']);
+        Swal.fire('Registrado!','Venta registrado con éxito','success')
       },
       error : (error) => {
         this.loading = false;

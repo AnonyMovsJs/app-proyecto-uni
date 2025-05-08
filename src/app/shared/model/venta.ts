@@ -10,4 +10,5 @@ export class Venta {
   montoTotal: number = 0;
   tipoVenta!: TipoVenta;
   estado!: Estado;
+  fechaVenta: Date = new Date();
 }

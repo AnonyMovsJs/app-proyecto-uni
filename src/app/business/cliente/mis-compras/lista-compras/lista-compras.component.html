@@ -4,6 +4,12 @@
     <div class="spinner-border" role="status"></div>
   </div>
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2></h2>
+    <a routerLink="/cliente/dashboard" class="btn btn-secondary">
+      <i class="fa fa-arrow-left"></i> Volver
+    </a>
+  </div>
   <table *ngIf="!loading && !error" class="table table-striped">
     <thead>
       <tr>

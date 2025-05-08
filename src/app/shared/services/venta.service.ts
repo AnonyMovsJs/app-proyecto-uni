@@ -16,10 +16,6 @@ export class VentaService {
     return this.http.post<Venta>(this.API_URL, venta);
   }
 
-  obtenerVentasPorAdmin(): Observable<Venta[]> {
-    return this.http.get<Venta[]>(`${this.API_URL}/admin`);
-  }
-
   obtenerVentasPorCliente(clienteId: number): Observable<Venta[]> {
     return this.http.get<Venta[]>(`${this.API_URL}/cliente/${clienteId}`);
   }

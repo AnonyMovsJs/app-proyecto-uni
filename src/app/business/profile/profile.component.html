@@ -1,128 +1,57 @@
-<div class="container bootstrap snippets bootdey">
+<div class="container mt-4">
   <div class="row">
-    <div class="profile-nav col-md-3">
-      <div class="panel">
-        <div class="user-heading round">
-          <a href="#">
-            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-          </a>
-          <h1>Camila Smith</h1>
-          <p>deydeytheEmail.com</p>
+    <!-- Sidebar de perfil -->
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <img src="images/perfil.png" class="rounded-circle mb-3" width="120"
+            alt="Avatar">
+          <h5 class="card-title">{{userProfile?.name}} {{userProfile?.lastname}}</h5>
+          <p class="text-muted small">{{userProfile?.email}}</p>
         </div>
-
-        <ul class="nav nav-pills nav-stacked">
-          <li class="active"><a href="#"> <i class="fa fa-user"></i> Profile</a></li>
-          <li><a href="#"> <i class="fa fa-calendar"></i> Recent Activity <span
-                class="label label-warning pull-right r-activity">9</span></a></li>
-          <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
+        <ul class="list-group list-group-flush list-unstyled ">
+          <li class="list-group-item "><i class="fa fa-user me-2"></i>Perfil</li>
+          <a routerLink="/cliente/dashboard" cla><li class="list-group-item "><i class="fa fa-calendar me-2"></i>Actividad reciente <span
+              class="badge bg-warning float-end">9</span></li></a>
+          <li class="list-group-item"><i class="fa fa-edit me-2"></i>Editar perfil</li>
         </ul>
       </div>
     </div>
-    <div class="profile-info col-md-9">
 
-      <div class="panel">
-        <div class="panel-body bio-graph-info">
-          <h1>Bio Graph</h1>
-          <div class="row">
-            <div class="bio-row">
-              <p><span>Nombre </span>: {{userProfile?.name}}</p>
-            </div>
-            <div class="bio-row">
-              <p><span>Apellido</span>: {{userProfile?.lastname}} </p>
-            </div>
-            <div class="bio-row">
-              <p><span>Dni </span>: {{userProfile?.dni}} </p>
-            </div>
-            <div class="bio-row">
-              <p><span>Celular </span>: {{userProfile?.phone}}</p>
-            </div>
-            <div class="bio-row">
-              <p><span>Email </span>: {{userProfile?.email}} </p>
-            </div>
-          </div>
+    <!-- Información del perfil -->
+    <div class="col-md-9">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Información del perfil</h5>
+        </div>
+        <div class="card-body row">
+          <div class="col-md-6 mb-2"><strong>Nombre:</strong> {{userProfile?.name}}</div>
+          <div class="col-md-6 mb-2"><strong>Apellido:</strong> {{userProfile?.lastname}}</div>
+          <div class="col-md-6 mb-2"><strong>DNI:</strong> {{userProfile?.dni}}</div>
+          <div class="col-md-6 mb-2"><strong>Celular:</strong> {{userProfile?.phone}}</div>
+          <div class="col-md-6 mb-2"><strong>Email:</strong> {{userProfile?.email}}</div>
         </div>
       </div>
-      <div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="panel">
-              <div class="panel-body">
-                <div class="bio-chart">
-                  <div style="display:inline;width:100px;height:100px;"><canvas width="100"
-                      height="100px"></canvas><input class="knob" data-width="100" data-height="100"
-                      data-displayprevious="true" data-thickness=".2" value="35" data-fgcolor="#e06b7d"
-                      data-bgcolor="#e8e8e8"
-                      style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(224, 107, 125); padding: 0px;  background: none;">
-                  </div>
-                </div>
-                <div class="bio-desk">
-                  <h4 class="red">Envato Website</h4>
-                  <p>Started : 15 July</p>
-                  <p>Deadline : 15 August</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="panel">
-              <div class="panel-body">
-                <div class="bio-chart">
-                  <div style="display:inline;width:100px;height:100px;"><canvas width="100"
-                      height="100px"></canvas><input class="knob" data-width="100" data-height="100"
-                      data-displayprevious="true" data-thickness=".2" value="63" data-fgcolor="#4CC5CD"
-                      data-bgcolor="#e8e8e8"
-                      style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(76, 197, 205); padding: 0px;  background: none;">
-                  </div>
-                </div>
-                <div class="bio-desk">
-                  <h4 class="terques">ThemeForest CMS </h4>
-                  <p>Started : 15 July</p>
-                  <p>Deadline : 15 August</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="panel">
-              <div class="panel-body">
-                <div class="bio-chart">
-                  <div style="display:inline;width:100px;height:100px;"><canvas width="100"
-                      height="100px"></canvas><input class="knob" data-width="100" data-height="100"
-                      data-displayprevious="true" data-thickness=".2" value="75" data-fgcolor="#96be4b"
-                      data-bgcolor="#e8e8e8"
-                      style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(150, 190, 75); padding: 0px; background: none;">
-                  </div>
-                </div>
-                <div class="bio-desk">
-                  <h4 class="green">VectorLab Portfolio</h4>
-                  <p>Started : 15 July</p>
-                  <p>Deadline : 15 August</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="panel">
-              <div class="panel-body">
-                <div class="bio-chart">
-                  <div style="display:inline;width:100px;height:100px;"><canvas width="100"
-                      height="100px"></canvas><input class="knob" data-width="100" data-height="100"
-                      data-displayprevious="true" data-thickness=".2" value="50" data-fgcolor="#cba4db"
-                      data-bgcolor="#e8e8e8"
-                      style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(203, 164, 219); padding: 0px;  background: none;">
-                  </div>
-                </div>
-                <div class="bio-desk">
-                  <h4 class="purple">Adobe Muse Template</h4>
-                  <p>Started : 15 July</p>
-                  <p>Deadline : 15 August</p>
+
+      <!-- Proyectos activos -->
+      <div class="row">
+        <div class="col-md-6 mb-4" *ngFor="let project of userProjects">
+          <div class="card h-100">
+            <div class="card-body">
+              <h6 class="card-title">{{project.title}}</h6>
+              <p class="mb-1"><strong>Inicio:</strong> {{project.start}}</p>
+              <p><strong>Plazo:</strong> {{project.deadline}}</p>
+              <div class="progress">
+                <div class="progress-bar bg-info" role="progressbar" [style.width.%]="project.progress"
+                  aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                  {{project.progress}}%
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- Puedes agregar más proyectos como objetos en tu TS -->
       </div>
     </div>
   </div>
 </div>
-

@@ -26,101 +26,108 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
-        <li class="nav-item menu-open">
 
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Dashboard
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v1</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+                 @if (admin) {
+                  <li class="nav-item menu-open">
 
-          @if (admin) {
-            <a routerLink="/users" class="nav-link" routerLinkActive="bg-primary">
-              <i class="fa fa-users"></i>
-              <p>
-                Users
-                <i class="fas fa-angle-left right"></i>
-                <!-- <span class="badge badge-info right">6</span> -->
-              </p>
-            </a>
-          }
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fas fa-tachometer-alt"></i>
+                      <p>
+                        Panel Administrador
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        @if (admin) {
+                        <a routerLink="/users" class="nav-link" routerLinkActive="bg-primary">
+                          <i class="fa fa-users"></i>
+                          <p>
+                            Users
+                            <!-- <i class="fas fa-angle-left right"></i> -->
+                            <!-- <span class="badge badge-info right">6</span> -->
+                          </p>
+                        </a>
+                        }
 
+                        @if (admin) {
+
+                      <li class="nav-item">
+                        <a routerLink="/admin/dashboard" class="nav-link" routerLinkActive="bg-primary">
+                          <i class="fa fa-user"></i>
+                          <p> Admin Dashboard</p>
+                        </a>
+                      </li>
+                      }
+
+                      @if (admin) {
+                      <li class="nav-item">
+                        <a routerLink="/admin/ventas" class="nav-link" routerLinkActive="bg-primary">
+                          <i class="fa fa-user"></i>
+                          <p> Ventas</p>
+                        </a>
+                      </li>
+                      }
+                  </li>
+                  </ul>
+                  </li>
+                 }
+
+
+
+      <li class="nav-item">
+        <a routerLink="/user" class="nav-link" routerLinkActive="bg-primary">
+          <i class="fa fa-user"></i>
+          <p> Profile</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/cliente/dashboard" class="nav-link" routerLinkActive="bg-primary">
+          <i class="fa fa-user"></i>
+          <p> Dashboard</p>
+        </a>
+      </li>
+
+
+
+
+      <!-- <li class="nav-header">EXAMPLES</li>
+
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon far fa-envelope"></i>
+          <p>
+            Mailbox
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a routerLink="/user" class="nav-link" routerLinkActive="bg-primary">
-              <i class="fa fa-user"></i>
-              <p> Profile</p>
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Inbox</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a routerLink="/cliente/dashboard" class="nav-link" routerLinkActive="bg-primary">
-              <i class="fa fa-user"></i>
-              <p> Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/admin/dashboard" class="nav-link" routerLinkActive="bg-primary">
-              <i class="fa fa-user"></i>
-              <p> Admin Dashboard</p>
-            </a>
-          </li>
 
-          @if (admin) {
-            <li class="nav-item">
-              <a routerLink="/admin/ventas" class="nav-link" routerLinkActive="bg-primary">
-                <i class="fa fa-user"></i>
-                <p> Ventas</p>
-              </a>
-            </li>
-          }
-
-        <li class="nav-header">EXAMPLES</li>
-
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon far fa-envelope"></i>
-            <p>
-              Mailbox
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Inbox</p>
-              </a>
-            </li>
-
-          </ul>
-        </li>
+        </ul>
+      </li>
 
 
-        <li class="nav-header">MISCELLANEOUS</li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-file"></i>
-            <p>Documentation</p>
-          </a>
-        </li>
+      <li class="nav-header">MISCELLANEOUS</li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fas fa-file"></i>
+          <p>Documentation</p>
+        </a>
+      </li> -->
 
 
-        <li class="nav-item">
-          <a routerLink="/user" class="nav-link" (click)="handlerLogout()">
-            <i class="fa fa-user"></i>
-            <p> Logout</p>
-          </a>
-        </li>
+      <li class="nav-item">
+        <a routerLink="/user" class="nav-link" (click)="handlerLogout()">
+          <i class="fa fa-user"></i>
+          <p> Logout</p>
+        </a>
+      </li>
 
       </ul>
     </nav>
