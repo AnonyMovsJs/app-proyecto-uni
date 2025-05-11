@@ -1,0 +1,247 @@
+<div class="position-fixed" style="bottom: 20px; right: 20px; z-index: 1050;">
+  <!-- Botón para abrir/cerrar el chat -->
+  <button class="btn btn-primary rounded-circle shadow d-flex align-items-center justify-content-center"
+    style="width: 60px; height: 60px;" (click)="toggleChat()">
+    <i class="fas" [ngClass]="isOpen ? 'fa-times' : 'fa-comments'"></i>
+  </button>
+
+  <!-- Contenido del chat -->
+  <div *ngIf="isOpen" class="card shadow mt-2" style="width: 400px; position: absolute; bottom: 70px; right: 0;">
+
+    <!-- Encabezado mejorado con botón de cierre integrado -->
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-headset mr-2"></i>
+        <h5 class="m-0">Asistente de Ventas</h5>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="badge badge-success mr-2">{{ authService.isAdmin() ? 'ADMIN' : 'CLIENTE' }}</span>
+        <button class="btn btn-sm text-white p-0" (click)="toggleChat()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenedor de mensajes -->
+    <div #chatMessages class="card-body p-2 bg-light" style="height: 400px; overflow-y: auto;">
+
+      <!-- Mensajes del chat mejorados -->
+      <div *ngFor="let msg of messages" class="mb-3">
+        <div class="d-flex" [ngClass]="{'justify-content-start': msg.isBot, 'justify-content-end': !msg.isBot}">
+          <!-- Avatar para el bot -->
+          <div *ngIf="msg.isBot" class="mr-2 d-none d-sm-block">
+            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center"
+              style="width: 30px; height: 30px;">
+              <i class="fas fa-robot text-white small"></i>
+            </div>
+          </div>
+
+          <!-- Burbuja de mensaje -->
+          <div class="p-2 rounded" [ngClass]="{'bg-white shadow-sm': msg.isBot, 'bg-primary text-white': !msg.isBot}"
+            style="max-width: 80%;">
+            <p class="mb-1" [innerHTML]="msg.content"></p>
+            <small [ngClass]="{'text-muted': msg.isBot, 'text-white-50': !msg.isBot}" class="d-block text-right">
+              {{ msg.timestamp | date:'shortTime' }}
+            </small>
+          </div>
+
+          <!-- Avatar para el usuario -->
+          <div *ngIf="!msg.isBot" class="ml-2 d-none d-sm-block">
+            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
+              style="width: 30px; height: 30px;">
+              <i class="fas fa-user text-white small"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indicador de carga -->
+      <div *ngIf="loading && !isRecording" class="d-flex justify-content-start mb-3">
+        <div class="p-2 bg-white rounded-pill shadow-sm d-flex align-items-center">
+          <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
+          <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
+          <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
+          <small class="text-muted ml-2">Procesando...</small>
+        </div></div>
+
+    <!-- Área de datos de acción - Mejorada -->
+    <div *ngIf="actionData" class="border-top border-bottom p-2" style="max-height: 250px; overflow-y: auto;">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="m-0 text-primary font-weight-bold">
+          <i class="fas mr-2" [ngClass]="{
+               'fa-table': actionData.type === 'QUERY',
+               'fa-check-circle': actionData.type === 'REGISTER_SALE' || actionData.type === 'CREATE_USER'
+             }"></i>
+          {{ actionData.type === 'QUERY' ? 'Resultados' :
+          actionData.type === 'REGISTER_SALE' ? 'Venta Registrada' :
+          actionData.type === 'CREATE_USER' ? 'Usuario Creado' : 'Datos' }}
+        </h6>
+        <button type="button" class="btn btn-sm" (click)="clearAction()" aria-label="Cerrar">
+          <i class="fas fa-times text-secondary"></i>
+        </button>
+      </div>
+
+      <div [ngSwitch]="actionData.type">
+        <!-- Tabla de resultados mejorada -->
+        <div *ngSwitchCase="'QUERY'">
+          <div *ngIf="actionData.data && actionData.data.length > 0" class="table-responsive">
+            <table class="table table-sm table-hover border">
+              <thead class="thead-light">
+                <tr>
+                  <th *ngFor="let col of getTableColumns(actionData.data)" class="text-nowrap">
+                    {{ col | titlecase }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of actionData.data">
+                  <td *ngFor="let col of getTableColumns(actionData.data)" class="text-nowrap">
+                    <!-- Estado con badges -->
+                    <span *ngIf="col === 'estado' || col === 'Estado'" class="badge" [ngClass]="{'badge-warning': item[col] === 'PENDIENTE',
+                                     'badge-success': item[col] === 'PAGADO',
+                                     'badge-danger': item[col] === 'VENCIDO'}">
+                      {{ formatCellValue(item[col]) }}
+                    </span>
+                    <span *ngIf="col !== 'estado' && col !== 'Estado'">{{ formatCellValue(item[col]) }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="!actionData.data || actionData.data.length === 0" class="alert alert-info">
+            <i class="fas fa-info-circle mr-2"></i> No se encontraron resultados para la consulta.
+          </div>
+        </div>
+
+        <!-- Visualización de venta mejorada -->
+        <div *ngSwitchCase="'REGISTER_SALE'">
+          <div *ngIf="actionData.data && !actionData.data.error" class="alert alert-success">
+            <strong><i class="fas fa-check-circle mr-1"></i> Venta registrada exitosamente</strong>
+          </div>
+          <div *ngIf="actionData.data && actionData.data.error" class="alert alert-danger">
+            <strong><i class="fas fa-exclamation-circle mr-1"></i> Error al registrar venta</strong>
+            <p>{{ actionData.data.mensaje }}</p>
+          </div>
+          <ul *ngIf="actionData.data && !actionData.data.error" class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+              <strong>ID</strong>
+              <span class="badge badge-primary badge-pill">{{ actionData.data.id }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <strong>Cliente</strong>
+              <span>{{ actionData.data.clienteNombre || 'N/A' }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+              <strong>Monto</strong>
+              <span class="text-success font-weight-bold">S/. {{ formatCellValue(actionData.data.montoTotal) }}</span>
+            </li>
+            <li *ngIf="actionData.data.tipoVenta"
+              class="list-group-item d-flex justify-content-between align-items-center">
+              <strong>Tipo</strong>
+              <span class="badge"
+                [ngClass]="{'badge-success': actionData.data.tipoVenta === 'CONTADO', 'badge-primary': actionData.data.tipoVenta === 'CREDITO'}">
+                {{ actionData.data.tipoVenta }}
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Visualización de usuario mejorada -->
+        <div *ngSwitchCase="'CREATE_USER'">
+          <div *ngIf="actionData.data && !actionData.data.error" class="alert alert-success">
+            <strong><i class="fas fa-check-circle mr-1"></i> Usuario creado exitosamente</strong>
+          </div>
+          <div *ngIf="actionData.data && actionData.data.error" class="alert alert-danger">
+            <strong><i class="fas fa-exclamation-circle mr-1"></i> Error al crear usuario</strong>
+            <p>{{ actionData.data.mensaje }}</p>
+          </div>
+          <ul *ngIf="actionData.data && !actionData.data.error" class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+              <strong>ID</strong>
+              <span class="badge badge-primary badge-pill">{{ actionData.data.id }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <strong>Nombre</strong>
+              <span>{{ actionData.data.nombre }} {{ actionData.data.apellido }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+              <strong>Email</strong>
+              <span class="text-primary">{{ actionData.data.email }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Para otros tipos de acción no especificados -->
+        <div *ngSwitchDefault>
+          <pre class="p-2 bg-light border rounded small">{{ formatData(actionData.data) }}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sugerencias mejoradas -->
+    <div *ngIf="messages.length < 4" class="border-top p-2 bg-light">
+      <p class="text-muted small mb-2 font-weight-bold">Sugerencias:</p>
+      <div class="d-flex flex-wrap">
+        <button *ngFor="let suggestion of suggestions" class="btn btn-sm btn-outline-secondary rounded-pill m-1"
+          (click)="useSuggestion(suggestion)">
+          <i class="fas fa-chevron-right small mr-1"></i> {{ suggestion }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Input para enviar mensajes con opción de voz -->
+    <div class="card-footer bg-white">
+      <div class="input-group">
+        <input type="text" class="form-control rounded-pill-left" placeholder="Escribe tu mensaje..."
+          [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" [disabled]="loading || isRecording">
+        <div class="input-group-append">
+          <!-- Botón de micrófono -->
+          <button class="btn btn-outline-secondary" type="button" (click)="toggleVoiceRecognition()"
+            [ngClass]="{'btn-danger': isRecording}" title="Hablar">
+            <i class="fas" [ngClass]="isRecording ? 'fa-stop' : 'fa-microphone'"></i>
+          </button>
+          <!-- Botón de enviar -->
+          <button class="btn btn-primary rounded-pill-right" (click)="sendMessage()"
+            [disabled]="loading || isRecording || newMessage.trim() === ''" title="Enviar mensaje">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+      <!-- Indicador de grabación -->
+      <div *ngIf="isRecording" class="text-center mt-1">
+        <small class="text-danger">
+          <i class="fas fa-circle text-danger mr-1 recording-indicator"></i> Grabando... Habla ahora
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos para esquinas redondeadas y animación del indicador de grabación -->
+<style>
+  .rounded-pill-left {
+    border-radius: 50rem 0 0 50rem !important;
+  }
+
+  .rounded-pill-right {
+    border-radius: 0 50rem 50rem 0 !important;
+  }
+
+  .recording-indicator {
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+</style>

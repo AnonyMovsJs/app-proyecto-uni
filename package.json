@@ -17,9 +17,12 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@stomp/stompjs": "^7.1.1",
+    "@types/sockjs-client": "^1.5.4",
     "app-proyecto-uni": "file:",
     "bootstrap": "^5.3.5",
     "rxjs": "~7.8.0",
+    "sockjs-client": "^1.6.1",
     "sweetalert2": "^11.19.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

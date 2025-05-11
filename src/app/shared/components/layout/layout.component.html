@@ -15,6 +15,7 @@
       <router-outlet></router-outlet>
     </div>
 
+
     <app-footer></app-footer>
 
     <!-- Control Sidebar -->
@@ -22,6 +23,9 @@
       <!-- Control sidebar content goes here -->
     </aside>
   </div>
+
+  <!-- Chatbot componente -->
+  <app-chatbot *ngIf="authService.isAuth()"></app-chatbot>
 
 
 </body>

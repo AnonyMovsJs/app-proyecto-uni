@@ -38,7 +38,16 @@ export class AuthService {
   }
 
   getCurrentUser(): any {
-    return this.user.user; // Solo retorna la propiedad `user` del objeto completo
+    const user = this.user.user;
+    if (!user) return null;
+
+    // Asegurarse de que el objeto tenga una propiedad 'roles'
+    if (!user.roles) {
+      // Determinar el rol basado en isAdmin
+      user.roles = this.user.isAdmin ? ['ADMIN'] : ['USER'];
+    }
+
+    return user;
   }
 
   set token(token: string) {

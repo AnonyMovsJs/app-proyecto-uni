@@ -51,10 +51,6 @@ export class PagarCuotaComponent implements OnInit {
   }
 
   cargarCuota(): void {
-    // Aquí se debería tener un endpoint para obtener la cuota específica con su crédito y venta
-    // Por ahora, haremos una simulación
-
-    // En un sistema real, tendrías algo como:
 
     this.cuotaService.obtenerCuotaPorId(this.cuotaId).subscribe({
       next : cuota => {
@@ -71,7 +67,6 @@ export class PagarCuotaComponent implements OnInit {
     });
 
 
-    // Simulación para el ejemplo
     /* setTimeout(() => {
       this.cuota = {
         id: this.cuotaId,
