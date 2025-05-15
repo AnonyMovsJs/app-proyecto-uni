@@ -1,4 +1,4 @@
-// chatbot.service.ts con mejoras
+// chatbot.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -9,6 +9,7 @@ export interface ChatMessage {
   sender: string;
   timestamp: Date;
   isBot?: boolean;
+  responseType?: string; // Para identificar tipos especiales de respuesta
 }
 
 export interface ActionData {
@@ -20,7 +21,7 @@ export interface ActionData {
   providedIn: 'root',
 })
 export class ChatbotService {
-  private readonly API_URL = 'http://localhost:8080'; // Ajusta al puerto de tu servidor Spring Boot
+  private readonly API_URL = 'http://localhost:8080';
   private messageSubject = new BehaviorSubject<ChatMessage[]>([]);
   private actionSubject = new BehaviorSubject<ActionData | null>(null);
   private isLoading = false;
@@ -33,6 +34,10 @@ export class ChatbotService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   initializeWebSocketConnection() {
+    // Limpiar historial anterior
+    this.clearMessages();
+    this.clearAction();
+
     // Mensaje de bienvenida
     const welcomeMessage: ChatMessage = {
       content: '¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?',
@@ -44,7 +49,9 @@ export class ChatbotService {
   }
 
   disconnect() {
-    // No hay conexión que cerrar
+    // Limpiar todo al desconectar
+    this.clearMessages();
+    this.clearAction();
   }
 
   sendMessage(content: string) {
@@ -74,27 +81,14 @@ export class ChatbotService {
     // Mensaje del usuario
     const userMessage: ChatMessage = {
       content,
-      sender: user ? user.username || 'Usuario' : 'Usuario',
+      sender: user ? user.name || 'Usuario' : 'Usuario',
       timestamp: new Date(),
       isBot: false,
     };
     const currentMessages = this.messageSubject.getValue();
     this.messageSubject.next([...currentMessages, userMessage]);
 
-    // Mostrar estado de carga
-    /* this.isLoading = true;
-    const loadingMessage: ChatMessage = {
-      content: '...',
-      sender: 'AI Asistente',
-      timestamp: new Date(),
-      isBot: true,
-    };
-    const messagesWithLoading = this.messageSubject.getValue();
-    this.messageSubject.next([...messagesWithLoading, loadingMessage]); */
-
-    console.log('Enviando mensaje con rol:', userRole, 'y userId:', userId); // Para depuración
-
-    // Enviar solicitud HTTP con URL completa y rol garantizado
+    // Enviar solicitud HTTP
     this.http
       .post<any>(`${this.API_URL}/api/chatbot/message`, {
         message: content,
@@ -107,28 +101,15 @@ export class ChatbotService {
           this.loadingSubject.next(false);
           this.isLoading = false;
 
-          // Añadir respuesta del asistente - MODIFICAR AQUÍ
-          let messageContent = response.message || 'Solicitado...';
-
-          // Verificar si el mensaje contiene JSON sin procesar
-          if (
-            messageContent.includes('{"action":') ||
-            messageContent.includes('{"type":')
-          ) {
-            // Reemplazar el JSON con un mensaje amigable
-            messageContent =
-              'Lo siento, no he podido entender completamente tu consulta. ¿Podrías reformularla?';
-          }
-
-          // Añadir respuesta del asistenteF
+          // Añadir respuesta del asistente
           const botMessage: ChatMessage = {
-            content: messageContent,
+            content: response.message || 'Solicitado...',
             sender: 'AI Asistente',
             timestamp: new Date(),
             isBot: true,
+            responseType: response.responseType,
           };
-          // MODIFICAR ESTA PARTE (ya no necesitamos filtrar loadingMessage)
-          // Sólo tomamos los mensajes actuales sin filtrar
+
           const currentMessages = this.messageSubject.getValue();
           this.messageSubject.next([...currentMessages, botMessage]);
 
@@ -147,8 +128,6 @@ export class ChatbotService {
           this.loadingSubject.next(false);
           this.isLoading = false;
 
-          // MODIFICAR ESTA PARTE (ya no necesitamos filtrar loadingMessage)
-          // Sólo tomamos los mensajes actuales sin filtrar
           const currentMessages = this.messageSubject.getValue();
 
           // Mensaje de error
@@ -165,7 +144,7 @@ export class ChatbotService {
       });
   }
 
-  // Nuevo método para procesar acciones específicas
+  // Procesamiento de acciones específicas
   private processAction(actionType: string, actionData: any) {
     // Guardar para que el componente lo utilice
     this.actionSubject.next({
@@ -202,18 +181,7 @@ export class ChatbotService {
         break;
 
       case 'QUERY':
-        if (actionData && actionData.length === 0) {
-          actionMessage = '📊 No se encontraron resultados para tu consulta.';
-        } else if (actionData && actionData.error) {
-          actionMessage = `❌ Error en la consulta: ${
-            actionData.mensaje || 'Error desconocido'
-          }`;
-        } else if (actionData && actionData.length > 0) {
-          const count = actionData.length;
-          actionMessage = `📊 Encontré ${count} resultado${
-            count > 1 ? 's' : ''
-          } para tu consulta.`;
-        }
+        // No mostrar mensaje automático, ya que el backend ahora proporciona mensajes contextuales
         break;
     }
 

@@ -1,3 +1,4 @@
+<!-- chatbot.component.html -->
 <div class="position-fixed" style="bottom: 20px; right: 20px; z-index: 1050;">
   <!-- Botón para abrir/cerrar el chat -->
   <button class="btn btn-primary rounded-circle shadow d-flex align-items-center justify-content-center"
@@ -16,9 +17,14 @@
       </div>
       <div class="d-flex align-items-center">
         <span class="badge badge-success mr-2">{{ authService.isAdmin() ? 'ADMIN' : 'CLIENTE' }}</span>
-        <button class="btn btn-sm text-white p-0" (click)="toggleChat()">
-          <i class="fas fa-times"></i>
-        </button>
+        <div class="btn-group">
+          <button class="btn btn-sm text-white p-0 mx-2" title="Reiniciar conversación" (click)="resetChat()">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+          <button class="btn btn-sm text-white p-0" (click)="toggleChat()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -62,7 +68,9 @@
           <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
           <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
           <small class="text-muted ml-2">Procesando...</small>
-        </div></div>
+        </div>
+      </div>
+    </div>
 
     <!-- Área de datos de acción - Mejorada -->
     <div *ngIf="actionData" class="border-top border-bottom p-2" style="max-height: 250px; overflow-y: auto;">
@@ -113,40 +121,7 @@
           </div>
         </div>
 
-        <!-- Visualización de venta mejorada -->
-        <div *ngSwitchCase="'REGISTER_SALE'">
-          <div *ngIf="actionData.data && !actionData.data.error" class="alert alert-success">
-            <strong><i class="fas fa-check-circle mr-1"></i> Venta registrada exitosamente</strong>
-          </div>
-          <div *ngIf="actionData.data && actionData.data.error" class="alert alert-danger">
-            <strong><i class="fas fa-exclamation-circle mr-1"></i> Error al registrar venta</strong>
-            <p>{{ actionData.data.mensaje }}</p>
-          </div>
-          <ul *ngIf="actionData.data && !actionData.data.error" class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
-              <strong>ID</strong>
-              <span class="badge badge-primary badge-pill">{{ actionData.data.id }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>Cliente</strong>
-              <span>{{ actionData.data.clienteNombre || 'N/A' }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
-              <strong>Monto</strong>
-              <span class="text-success font-weight-bold">S/. {{ formatCellValue(actionData.data.montoTotal) }}</span>
-            </li>
-            <li *ngIf="actionData.data.tipoVenta"
-              class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>Tipo</strong>
-              <span class="badge"
-                [ngClass]="{'badge-success': actionData.data.tipoVenta === 'CONTADO', 'badge-primary': actionData.data.tipoVenta === 'CREDITO'}">
-                {{ actionData.data.tipoVenta }}
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Visualización de usuario mejorada -->
+        <!-- Visualización de usuario creado mejorada -->
         <div *ngSwitchCase="'CREATE_USER'">
           <div *ngIf="actionData.data && !actionData.data.error" class="alert alert-success">
             <strong><i class="fas fa-check-circle mr-1"></i> Usuario creado exitosamente</strong>

@@ -1,6 +1,19 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+// chatbot.component.ts
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  AfterViewChecked,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActionData, ChatbotService, ChatMessage } from '../shared/services/chatbot.service';
+import {
+  ActionData,
+  ChatbotService,
+  ChatMessage,
+} from '../shared/services/chatbot.service';
 import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,17 +38,20 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   isRecording = false;
   recognition: any;
 
-  // Mejorar sugerencias por rol
+  // Sugerencias por rol
   adminSuggestions = [
-    'Clientes morosos',
+    'Clientes con deudas',
     'Registrar usuario',
     'Registrar venta',
+    'Cuotas pagadas por Anthony',
+    'Próxima cuota de Anthony',
   ];
 
   userSuggestions = [
-    'Mis deudas pendientes',
+    'Mis cuotas pendientes',
     'Mi próxima cuota',
-    'Mis compras',
+    'Cuánto debo en total',
+    'Mis cuotas pagadas',
   ];
 
   private messagesSubscription!: Subscription;
@@ -44,11 +60,11 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   constructor(
     private chatbotService: ChatbotService,
-    public authService: AuthService, // Público para acceder desde la plantilla
+    public authService: AuthService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     // Inicializar reconocimiento de voz si está disponible
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    if (this.speechRecognition) {
       this.initSpeechRecognition();
     }
   }
@@ -58,6 +74,7 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.messagesSubscription = this.chatbotService.messages$.subscribe(
       (messages) => {
         this.messages = messages;
+        this.changeDetectorRef.detectChanges();
       }
     );
 
@@ -82,7 +99,6 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.chatbotService.initializeWebSocketConnection();
   }
 
-  // Llama a este método cuando el usuario cierre sesión
   ngOnDestroy() {
     // Detener grabación si está activa
     if (this.isRecording && this.recognition) {
@@ -102,7 +118,16 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.scrollToBottom();
   }
 
-  // También modifica toggleChat para limpiar los datos cuando se cierre
+  formatTableData(data: any[]): any[] {
+    // Si hay más de 5 filas, limitar para mejor visualización
+    if (data && data.length > 5) {
+      // Opcionalmente, agregar indicador de "más resultados"
+      const limitedData = data.slice(0, 5);
+      return limitedData;
+    }
+    return data;
+  }
+
   toggleChat() {
     this.isOpen = !this.isOpen;
 
@@ -114,6 +139,8 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!this.isOpen) {
       this.clearAction();
     } else {
+      // Si se está abriendo el chat, inicializar
+      this.chatbotService.initializeWebSocketConnection();
       setTimeout(() => {
         this.scrollToBottom();
       }, 100);
@@ -246,11 +273,10 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  // Añade este método en ChatbotComponent
   resetChat() {
     this.chatbotService.clearMessages();
     this.chatbotService.clearAction();
     this.actionData = null;
-    this.messages = [];
+    this.chatbotService.initializeWebSocketConnection();
   }
 }

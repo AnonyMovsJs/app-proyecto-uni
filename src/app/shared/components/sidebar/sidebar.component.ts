@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { ChatbotService } from '../../services/chatbot.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +13,12 @@ import { AuthService } from '../../services/auth.service';
 export class SidebarComponent implements OnInit {
   userProfile: any;
 
-  constructor(private router : Router,private userService: UserService, private authService : AuthService) {
+  constructor(
+    private chatbotService: ChatbotService,
+    private router: Router,
+    private userService: UserService,
+    private authService: AuthService
+  ) {
     this.userProfile = new User();
   }
 
@@ -25,11 +31,37 @@ export class SidebarComponent implements OnInit {
 
   handlerLogout() {
     this.authService.logout();
-    this.router.navigate(['login'])
+    this.authService.logout();
+    this.chatbotService.clearMessages();
+    this.chatbotService.clearAction();
+
+    this.router.navigate(['login']);
+  }
+
+  login(credentials: any) {
+    this.authService.loginUser(credentials).subscribe({
+      next: (response) => {
+        // Manejar respuesta exitosa
+        // ...
+
+        // Reiniciar el chat con el nuevo usuario
+        this.chatbotService.initializeWebSocketConnection();
+      },
+      error: (error) => {
+        // Manejar error
+      },
+    });
+  }
+
+  // Y en el método de login exitoso
+  onLoginSuccess() {
+    // Inicializar el chat con el nuevo usuario
+    if (this.chatbotService) {
+      this.chatbotService.initializeWebSocketConnection();
+    }
   }
 
   get admin() {
     return this.authService.isAdmin();
   }
-
 }
