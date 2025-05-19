@@ -21,6 +21,7 @@
     "@types/sockjs-client": "^1.5.4",
     "app-proyecto-uni": "file:",
     "bootstrap": "^5.3.5",
+    "chart.js": "^4.4.9",
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",
     "sweetalert2": "^11.19.1",

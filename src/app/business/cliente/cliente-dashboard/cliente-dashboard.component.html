@@ -1,174 +1,425 @@
-<div class="container">
-  <div class="jumbotron">
-    <h1>Bienvenido a tu Panel de Cliente</h1>
-    <p>Aquí puedes ver el resumen de tus compras y pagos pendientes.</p>
-  </div>
-
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="sr-only">Cargando...</span>
+<div class="container-fluid">
+  <!-- Header Section con degradado elegante -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="jumbotron text-white p-4"
+        style="background: linear-gradient(135deg, #0082c8 0%, #0082c8 40%, #667db6 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #4fc3f7;">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 font-weight-bold mb-0">Panel de Cliente</h1>
+            <p class="lead mt-2 mb-0 opacity-75">Monitorea tus compras y pagos pendientes</p>
+          </div>
+          <div class="d-none d-md-block">
+            <button class="btn btn-outline-light px-3" (click)="cargarDatos()">
+              <i class="fas fa-sync-alt mr-2"></i> Actualizar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="error" class="alert alert-danger">
-    {{ error }}
+  <!-- Loading Indicator con efecto profesional -->
+  <div *ngIf="loading" class="row">
+    <div class="col-12 text-center py-5">
+      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
+      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
+      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
+      <p class="text-light mt-3">Cargando datos del dashboard...</p>
+    </div>
+  </div>
+
+  <!-- Error Alert estilizado -->
+  <div *ngIf="error" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
+            <p class="mb-0">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="!loading && !error">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card bg-info text-white mb-4">
+    <!-- Métricas con tarjetas animadas y gradientes elegantes -->
+    <div class="row mb-4">
+      <!-- Card 1: Total Compras -->
+      <div class="col-xl-4 col-md-4 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #0082c8 0%, #0082c8 40%, #667db6 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
           <div class="card-body">
-            <h5 class="card-title">Total Compras</h5>
-            <h2 class="card-text">{{ ventas.length }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Total Compras</h5>
+              <div
+                style="width: 42px; height: 42px; background-color: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-shopping-bag fa-lg"></i>
+              </div>
+            </div>
+            <h2 class="display-4 font-weight-bold mb-1">{{ ventas.length }}</h2>
           </div>
-          <div class="card-footer d-flex align-items-center justify-content-between">
+          <div class="card-footer d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.1) !important; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
             <a routerLink="/cliente/mis-compras" class="text-white">Ver Detalle</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
 
-      <div class="col-md-4">
-        <div class="card bg-warning text-white mb-4">
+      <!-- Card 2: Cuotas Pendientes -->
+      <div class="col-xl-4 col-md-4 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #f46b45 0%, #eea849 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
           <div class="card-body">
-            <h5 class="card-title">Cuotas Pendientes</h5>
-            <h2 class="card-text">{{ cuotasPendientes.length }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Cuotas Pendientes</h5>
+              <div
+                style="width: 42px; height: 42px; background-color: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-clock fa-lg"></i>
+              </div>
+            </div>
+            <h2 class="display-4 font-weight-bold mb-1">{{ cuotasPendientes.length }}</h2>
           </div>
-          <div class="card-footer d-flex align-items-center justify-content-between">
+          <div class="card-footer d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.1) !important; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
             <a routerLink="/cliente/mis-cuotas" class="text-white">Ver Detalle</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
 
-      <div class="col-md-4">
-        <div class="card bg-danger text-white mb-4">
+      <!-- Card 3: Cuotas Vencidas -->
+      <div class="col-xl-4 col-md-4 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #ED213A 0%, #93291E 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
           <div class="card-body">
-            <h5 class="card-title">Cuotas Vencidas</h5>
-            <h2 class="card-text">{{ cuotasVencidas.length }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Cuotas Vencidas</h5>
+              <div
+                style="width: 42px; height: 42px; background-color: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-exclamation-triangle fa-lg"></i>
+              </div>
+            </div>
+            <h2 class="display-4 font-weight-bold mb-1">{{ cuotasVencidas.length }}</h2>
           </div>
-          <div class="card-footer d-flex align-items-center justify-content-between">
+          <div class="card-footer d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.1) !important; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
             <a routerLink="/cliente/mis-cuotas" class="text-white">Ver Detalle</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5>Próximas Cuotas a Pagar</h5>
+    <!-- Segunda fila: Próximas cuotas y Resumen de deuda -->
+    <div class="row mb-4">
+      <!-- Próximas Cuotas a Pagar -->
+      <div class="col-lg-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+          <div class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <h5 class="mb-0">
+              <i class="fas fa-calendar-alt mr-2" style="color: #4fc3f7;"></i>
+              Próximas Cuotas a Pagar
+            </h5>
           </div>
           <div class="card-body">
-            <div *ngIf="obtenerProximasCuotas().length === 0" class="alert alert-success">
-              ¡No tienes cuotas pendientes!
+            <div *ngIf="obtenerProximasCuotas().length === 0" class="alert"
+              style="background-color: rgba(46, 204, 113, 0.15) !important; color: #2ecc71 !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle mr-3" style="font-size: 1.5rem;"></i>
+                <p class="mb-0">¡No tienes cuotas pendientes!</p>
+              </div>
             </div>
-            <table *ngIf="obtenerProximasCuotas().length > 0" class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Cuota</th>
-                  <th>Monto</th>
-                  <th>Vencimiento</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let cuota of obtenerProximasCuotas()">
-                  <td>{{ cuota.numeroCuota }}</td>
-                  <td>S/. {{ cuota.monto | number:'1.2-2' }}</td>
-                  <td>{{ cuota.fechaVencimiento | date:'dd/MM/yyyy' }}</td>
-                  <td>
-                    <button class="btn btn-sm btn-primary" [routerLink]="['/cliente/pagar-cuota', cuota.id]">
-                      Pagar
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+            <div *ngIf="obtenerProximasCuotas().length > 0" class="table-responsive"
+              style="border-radius: 0.5rem; overflow: hidden;">
+              <table class="table mb-0" style="color: rgba(255, 255, 255, 0.9); background: transparent !important;">
+                <thead>
+                  <tr style="background: rgba(0, 0, 0, 0.2);">
+                    <th class="text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Cuota
+                    </th>
+                    <th class="text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Monto
+                    </th>
+                    <th class="text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Vencimiento
+                    </th>
+                    <th class="text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let cuota of obtenerProximasCuotas()"
+                    style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s ease; background: transparent !important;"
+                    onmouseover="this.style.backgroundColor='rgba(255,255,255,0.07)';"
+                    onmouseout="this.style.backgroundColor='transparent';">
+                    <td class="text-white" style="background: transparent !important;">
+                      <div class="d-flex align-items-center">
+                        <div
+                          style="width: 28px; height: 28px; border-radius: 8px; background: rgba(79, 195, 247, 0.2); display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                          <span style="font-weight: 600; color: #4fc3f7;">{{ cuota.numeroCuota }}</span>
+                        </div>
+                        <span>de {{ cuota.totalCuotas }}</span>
+                      </div>
+                    </td>
+                    <td class="text-white font-weight-bold" style="background: transparent !important;">S/. {{
+                      cuota.monto | number:'1.2-2' }}</td>
+                    <td class="text-white" style="background: transparent !important;">
+                      <div class="d-flex align-items-center">
+                        <div
+                          style="width: 36px; height: 36px; border-radius: 8px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 8px;">
+                          <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase;">{{
+                            cuota.fechaVencimiento | date:'MMM' }}</span>
+                          <span style="font-size: 14px; font-weight: 700;">{{ cuota.fechaVencimiento | date:'dd'
+                            }}</span>
+                        </div>
+                        <span>{{ cuota.fechaVencimiento | date:'yyyy' }}</span>
+                      </div>
+                    </td>
+                    <td style="background: transparent !important;">
+                      <button class="btn btn-sm"
+                        style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease;"
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';"
+                        [routerLink]="['/cliente/pagar-cuota', cuota.id]">
+                        <i class="fas fa-credit-card mr-1"></i> Pagar
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5>Resumen de Deuda</h5>
+      <!-- Resumen de Deuda -->
+      <div class="col-lg-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+          <div class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <h5 class="mb-0">
+              <i class="fas fa-money-bill-wave mr-2" style="color: #4fc3f7;"></i>
+              Resumen de Deuda
+            </h5>
           </div>
           <div class="card-body">
             <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Total Deuda:</label>
-                  <h3>S/. {{ calcularTotalDeuda() | number:'1.2-2' }}</h3>
+              <div class="col-md-6 mb-4">
+                <div class="p-3" style="background: rgba(0,0,0,0.2); border-radius: 0.75rem;">
+                  <p class="mb-1" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Total Deuda</p>
+                  <div class="d-flex align-items-center">
+                    <h3 class="mb-0 font-weight-bold">S/. {{ calcularTotalDeuda() | number:'1.2-2' }}</h3>
+                    <div class="ml-auto"
+                      style="width: 40px; height: 40px; border-radius: 8px; background: rgba(79, 195, 247, 0.15); display: flex; align-items: center; justify-content: center;">
+                      <i class="fas fa-coins" style="color: #4fc3f7;"></i>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Cuotas Pendientes:</label>
-                  <h3>{{ cuotasPendientes.length + cuotasVencidas.length }}</h3>
+              <div class="col-md-6 mb-4">
+                <div class="p-3" style="background: rgba(0,0,0,0.2); border-radius: 0.75rem;">
+                  <p class="mb-1" style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Cuotas por Pagar</p>
+                  <div class="d-flex align-items-center">
+                    <h3 class="mb-0 font-weight-bold">{{ cuotasPendientes.length + cuotasVencidas.length }}</h3>
+                    <div class="ml-auto"
+                      style="width: 40px; height: 40px; border-radius: 8px; background: rgba(79, 195, 247, 0.15); display: flex; align-items: center; justify-content: center;">
+                      <i class="fas fa-file-invoice" style="color: #4fc3f7;"></i>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div *ngIf="cuotasVencidas.length > 0" class="alert alert-danger mt-3">
-              <strong>¡Atención!</strong> Tienes {{ cuotasVencidas.length }} cuotas vencidas.
-              Por favor, regulariza tu situación lo antes posible.
+            <div *ngIf="cuotasVencidas.length > 0" class="alert mt-2"
+              style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle mr-3" style="font-size: 1.25rem;"></i>
+                <div>
+                  <strong>¡Atención!</strong> Tienes {{ cuotasVencidas.length }} cuotas vencidas.
+                  <p class="mb-0 mt-1" style="font-size: 0.9rem;">Por favor, regulariza tu situación lo antes posible.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Añadimos un mensaje cuando no hay deudas -->
+            <div *ngIf="(cuotasPendientes.length + cuotasVencidas.length) === 0" class="alert mt-2"
+              style="background-color: rgba(46, 204, 113, 0.15) !important; color: #2ecc71 !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle mr-3" style="font-size: 1.25rem;"></i>
+                <p class="mb-0">¡No tienes deudas pendientes! Tu situación está al día.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5>Últimas Compras</h5>
+    <!-- Tabla de últimas compras -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card border-0 text-white"
+          style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+          <div class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <h5 class="mb-0">
+              <i class="fas fa-shopping-cart mr-2" style="color: #4fc3f7;"></i>
+              Últimas Compras
+            </h5>
+            <a routerLink="/cliente/mis-compras" class="btn btn-sm"
+              style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.2s ease;"
+              onmouseover="this.style.background='rgba(79, 195, 247, 0.3)';"
+              onmouseout="this.style.background='rgba(79, 195, 247, 0.2)';">
+              <i class="fas fa-list mr-1"></i>
+              Ver Todas
+            </a>
           </div>
-          <div class="card-body">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Descripción</th>
-                  <th>Monto</th>
-                  <th>Tipo</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let venta of ventas.slice(0, 5)">
-                  <td>{{ venta.fechaVenta | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ venta.descripcion }}</td>
-                  <td>S/. {{ venta.montoTotal | number:'1.2-2' }}</td>
-                  <td>
-                    <span class="badge" [ngClass]="venta.tipoVenta === 'CONTADO' ? 'badge-success' : 'badge-primary'">
-                      {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
-                    </span>
-                  </td>
-                  <td>
-                    <span class="badge" [ngClass]="{
-                                    'badge-success': venta.estado === 'PAGADO',
-                                    'badge-warning': venta.estado === 'PENDIENTE',
-                                    'badge-danger': venta.estado === 'CANCELADO'
-                                  }">
-                      {{ venta.estado }}
-                    </span>
-                  </td>
-                  <td>
-                    <button class="btn btn-sm btn-info" [routerLink]="['/cliente/detalle-compra', venta.id]">
-                      Ver Detalle
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="text-center mt-3" *ngIf="ventas.length > 5">
-              <a routerLink="/cliente/mis-compras" class="btn btn-link">Ver todas las compras</a>
+          <div class="card-body p-0">
+            <div class="table-responsive"
+              style="border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem; overflow: hidden;">
+              <table class="table mb-0" style="color: rgba(255, 255, 255, 0.9); background: transparent !important;">
+                <thead>
+                  <tr style="background: rgba(0, 0, 0, 0.2);">
+                    <th class="py-3 px-4 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Fecha
+                    </th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Descripción
+                    </th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Monto
+                    </th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Tipo
+                    </th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Estado
+                    </th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let venta of ventas.slice(0, 5)"
+                    style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s ease; background: transparent !important;"
+                    onmouseover="this.style.backgroundColor='rgba(255,255,255,0.07)';"
+                    onmouseout="this.style.backgroundColor='transparent';">
+                    <td class="py-3 px-4 text-white" style="background: transparent !important;">
+                      <div class="d-flex align-items-center">
+                        <div
+                          style="width: 40px; height: 40px; border-radius: 10px; background-color: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                          <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                            venta.fechaVenta | date:'MMM' }}</span>
+                          <span style="font-size: 14px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                            }}</span>
+                        </div>
+                        <span style="color: rgba(255,255,255,0.6); margin-left: 8px;">{{ venta.fechaVenta | date:'yyyy'
+                          }}</span>
+                      </div>
+                    </td>
+                    <td class="py-3 text-white"
+                      style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: transparent !important;">
+                      {{ venta.descripcion }}
+                    </td>
+                    <td class="py-3 font-weight-bold text-white" style="background: transparent !important;">S/. {{
+                      venta.montoTotal | number:'1.2-2' }}</td>
+                    <td class="py-3" style="background: transparent !important;">
+                      <span class="badge py-2 px-3"
+                        [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : '#3498db'"
+                        style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i
+                          [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : 'fas fa-credit-card mr-1'"></i>
+                        {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
+                      </span>
+                    </td>
+                    <td class="py-3" style="background: transparent !important;">
+                      <span class="badge py-2 px-3" [style.background-color]="
+                          venta.estado === 'PAGADO' ? '#2ecc71' :
+                          venta.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
+                        style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i [class]="
+                          venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
+                          venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-exclamation-circle mr-1'"></i>
+                        {{ venta.estado }}
+                      </span>
+                    </td>
+                    <td class="py-3" style="background: transparent !important;">
+                      <button class="btn btn-sm"
+                        style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease;"
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';"
+                        [routerLink]="['/cliente/detalle-compra', venta.id]">
+                        <i class="fas fa-eye mr-1"></i> Ver Detalle
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Mensaje si no hay ventas -->
+                  <tr *ngIf="ventas.length === 0">
+                    <td colspan="6" class="text-center py-5" style="background: transparent !important;">
+                      <div style="opacity: 0.6;">
+                        <i class="fas fa-shopping-cart mb-3" style="font-size: 2.5rem;"></i>
+                        <p class="mb-0">Aún no has realizado compras</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico de Pagos -->
+    <div class="row">
+      <div class="col-12 mb-4">
+        <div class="card border-0 text-white"
+          style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+          <div class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <h5 class="mb-0">
+              <i class="fas fa-chart-bar mr-2" style="color: #4fc3f7;"></i>
+              Historial de Pagos por Mes
+            </h5>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm"
+                style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem 0 0 0.5rem;">Año
+                Actual</button>
+              <button type="button" class="btn btn-sm"
+                style="background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0 0.5rem 0.5rem 0; border-left: none;">Último
+                Año</button>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div style="height: 280px; position: relative;">
+              <canvas id="paymentsChart" width="100%" height="280"></canvas>
             </div>
           </div>
         </div>
@@ -176,3 +427,74 @@
     </div>
   </div>
 </div>
+
+<!-- Estilos adicionales para garantizar que se sobrescriba Bootstrap -->
+<style>
+  /* Anular todos los fondos de tabla de Bootstrap */
+  .table {
+    background-color: transparent !important;
+  }
+
+  .table thead th,
+  .table tbody td {
+    background-color: transparent !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd),
+  .table-striped tbody tr:nth-of-type(even) {
+    background-color: transparent !important;
+  }
+
+  /* Animaciones generales para todo el dashboard */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .card {
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  /* Mejora de estilos para móviles */
+  @media (max-width: 768px) {
+    .display-4 {
+      font-size: 2.5rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+    }
+
+    .table th,
+    .table td {
+      white-space: nowrap;
+    }
+  }
+
+  /* Estilos para scrollbars */
+  .table-responsive::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-responsive::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+</style>

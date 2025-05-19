@@ -1,57 +1,411 @@
-<div class="container mt-4">
-  <div class="row">
-    <!-- Sidebar de perfil -->
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <img src="images/perfil.png" class="rounded-circle mb-3" width="120"
-            alt="Avatar">
-          <h5 class="card-title">{{userProfile?.name}} {{userProfile?.lastname}}</h5>
-          <p class="text-muted small">{{userProfile?.email}}</p>
+<div class="container-fluid">
+  <!-- Header principal -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="p-4 rounded"
+        style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-radius: 0.75rem; border-left: 4px solid #4fc3f7;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="text-white font-weight-bold mb-0">Mi Perfil</h1>
+            <p class="text-light mt-2 mb-0 opacity-75">Visualiza y actualiza tu información personal</p>
+          </div>
         </div>
-        <ul class="list-group list-group-flush list-unstyled ">
-          <li class="list-group-item "><i class="fa fa-user me-2"></i>Perfil</li>
-          <a routerLink="/cliente/dashboard" cla><li class="list-group-item "><i class="fa fa-calendar me-2"></i>Actividad reciente <span
-              class="badge bg-warning float-end">9</span></li></a>
-          <li class="list-group-item"><i class="fa fa-edit me-2"></i>Editar perfil</li>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="row">
+    <div class="col-12 text-center py-5">
+      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
+      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
+      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
+      <p class="text-light mt-3">Cargando datos del perfil...</p>
+    </div>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
+            <p class="mb-0">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div *ngIf="!loading && !error" class="row">
+
+    <!-- Sidebar de perfil -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <div class="card border-0 text-white overflow-hidden"
+        style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="profile-banner"
+          style="height: 80px; background: url('https://via.placeholder.com/800x200/4fc3f7/ffffff?text=') center/cover; opacity: 0.7;">
+        </div>
+
+        <div class="card-body text-center position-relative pt-0" style="margin-top: -40px;">
+          <div class="rounded-circle mx-auto mb-3 profile-avatar"
+            style="width: 90px; height: 90px; background: #4fc3f7; border: 4px solid rgba(255,255,255,0.8); padding: 3px; overflow: hidden; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+            <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"
+              style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; font-size: 2rem; font-weight: bold;">
+              {{ userProfile?.name?.charAt(0) }}{{ userProfile?.lastname?.charAt(0) }}
+            </div>
+          </div>
+
+          <h5 class="card-title mb-1">{{userProfile?.name}} {{userProfile?.lastname}}</h5>
+          <p class="text-light opacity-75 mb-3">{{userProfile?.email}}</p>
+
+          <div>
+            <button class="btn btn-sm mb-3 w-100"
+              style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 0.5rem;"
+              (click)="enableEditMode()">
+              <i class="fas fa-user-edit mr-2"></i> Editar Perfil
+            </button>
+          </div>
+        </div>
+
+        <ul class="list-group list-group-flush border-0">
+          <li class="list-group-item border-0 d-flex align-items-center" [class.active]="activeTab === 'profile'"
+            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.1) !important;"
+            (click)="setActiveTab('profile')">
+            <i class="fas fa-user mr-3"></i>
+            <span>Información Personal</span>
+            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'profile'"></i>
+          </li>
+          <li class="list-group-item border-0 d-flex align-items-center" [class.active]="activeTab === 'activity'"
+            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.1) !important;"
+            (click)="setActiveTab('activity')">
+            <i class="fas fa-history mr-3"></i>
+            <span>Actividad Reciente</span>
+            <span class="badge rounded-pill ml-2" style="background-color: #f39c12;">{{ recentActivity.length }}</span>
+            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'activity'"></i>
+          </li>
+          <li class="list-group-item border-0 d-flex align-items-center" [class.active]="activeTab === 'edit'"
+            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.1) !important;"
+            (click)="setActiveTab('edit')">
+            <i class="fas fa-edit mr-3"></i>
+            <span>Editar Perfil</span>
+            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'edit'"></i>
+          </li>
         </ul>
       </div>
     </div>
 
-    <!-- Información del perfil -->
-    <div class="col-md-9">
-      <div class="card mb-4">
-        <div class="card-header">
-          <h5 class="mb-0">Información del perfil</h5>
+    <!-- Sección principal -->
+    <div class="col-lg-9 col-md-8">
+      <!-- Pestaña: Información de Perfil -->
+      <div *ngIf="activeTab === 'profile'">
+        <div class="card border-0 mb-4"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <i class="fas fa-id-card mr-2" style="color: #4fc3f7;"></i>
+            <h5 class="mb-0 text-white">Información Personal</h5>
+          </div>
+          <div class="card-body text-white">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
+                  <p class="small mb-1 text-light opacity-75">Nombre</p>
+                  <h6 class="mb-0">{{ userProfile?.name || 'No especificado' }}</h6>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
+                  <p class="small mb-1 text-light opacity-75">Apellido</p>
+                  <h6 class="mb-0">{{ userProfile?.lastname || 'No especificado' }}</h6>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
+                  <p class="small mb-1 text-light opacity-75">DNI</p>
+                  <h6 class="mb-0">{{ userProfile?.dni || 'No especificado' }}</h6>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
+                  <p class="small mb-1 text-light opacity-75">Celular</p>
+                  <h6 class="mb-0">{{ userProfile?.phone || 'No especificado' }}</h6>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
+                  <p class="small mb-1 text-light opacity-75">Email</p>
+                  <h6 class="mb-0">{{ userProfile?.email || 'No especificado' }}</h6>
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn btn-primary" (click)="enableEditMode()"
+                style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                <i class="fas fa-pencil-alt mr-2"></i> Editar Información
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="card-body row">
-          <div class="col-md-6 mb-2"><strong>Nombre:</strong> {{userProfile?.name}}</div>
-          <div class="col-md-6 mb-2"><strong>Apellido:</strong> {{userProfile?.lastname}}</div>
-          <div class="col-md-6 mb-2"><strong>DNI:</strong> {{userProfile?.dni}}</div>
-          <div class="col-md-6 mb-2"><strong>Celular:</strong> {{userProfile?.phone}}</div>
-          <div class="col-md-6 mb-2"><strong>Email:</strong> {{userProfile?.email}}</div>
-        </div>
-      </div>
 
-      <!-- Proyectos activos -->
-      <div class="row">
-        <div class="col-md-6 mb-4" *ngFor="let project of userProjects">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title">{{project.title}}</h6>
-              <p class="mb-1"><strong>Inicio:</strong> {{project.start}}</p>
-              <p><strong>Plazo:</strong> {{project.deadline}}</p>
-              <div class="progress">
-                <div class="progress-bar bg-info" role="progressbar" [style.width.%]="project.progress"
-                  aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                  {{project.progress}}%
+        <!-- Proyectos (si existen) -->
+        <div *ngIf="userProjects && userProjects.length > 0" class="card border-0"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <i class="fas fa-project-diagram mr-2" style="color: #4fc3f7;"></i>
+            <h5 class="mb-0 text-white">Proyectos Activos</h5>
+          </div>
+          <div class="card-body text-white">
+            <div class="row">
+              <div class="col-md-6 mb-4" *ngFor="let project of userProjects">
+                <div class="card h-100 border-0"
+                  style="background: rgba(0,0,0,0.2); border-radius: 0.5rem; transition: all 0.3s ease;"
+                  onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.2)';"
+                  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                  <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h6 class="card-title mb-0">{{ project.title }}</h6>
+                      <span class="badge"
+                        [style.background-color]="project.status === 'Completado' ? '#2ecc71' : '#f39c12'"
+                        style="font-weight: 500; border-radius: 4px; font-size: 0.7rem; padding: 0.35rem 0.5rem;">
+                        {{ project.status }}
+                      </span>
+                    </div>
+                    <p class="card-text small text-light opacity-75">{{ project.description }}</p>
+                    <div class="mb-1"><strong class="text-light opacity-75">Inicio: </strong> <span>{{ project.start
+                        }}</span></div>
+                    <div class="mb-3"><strong class="text-light opacity-75">Plazo: </strong> <span>{{ project.deadline
+                        }}</span></div>
+                    <div style="margin-bottom: 0.5rem;">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="small">Progreso</span>
+                        <span>{{ project.progress }}%</span>
+                      </div>
+                      <div class="progress" style="height: 8px; border-radius: 4px; background: rgba(0,0,0,0.3);">
+                        <div class="progress-bar" role="progressbar" [style.width.%]="project.progress"
+                          [style.background-color]="
+                            project.progress < 30 ? '#e74c3c' :
+                            project.progress < 70 ? '#f39c12' : '#2ecc71'" aria-valuenow="50" aria-valuemin="0"
+                          aria-valuemax="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- Puedes agregar más proyectos como objetos en tu TS -->
+      </div>
+
+      <!-- Pestaña: Actividad Reciente -->
+      <div *ngIf="activeTab === 'activity'">
+        <div class="card border-0"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <i class="fas fa-history mr-2" style="color: #4fc3f7;"></i>
+            <h5 class="mb-0 text-white">Actividad Reciente</h5>
+          </div>
+          <div class="card-body text-white px-0 py-0">
+            <ul class="list-group list-group-flush activity-list" style="background: transparent;">
+              <li class="list-group-item border-0 px-4 py-3"
+                style="position: relative; background: transparent; border-bottom: 1px solid rgba(255,255,255,0.05) !important;"
+                *ngFor="let activity of recentActivity">
+
+                <div class="d-flex">
+                  <!-- Indicador y línea de tiempo -->
+                  <div class="mr-3 position-relative activity-timeline">
+                    <div class="activity-indicator" [style.background-color]="getActivityBadgeColor(activity.type)"
+                      style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border: 3px solid rgba(0,0,0,0.2);">
+                      <i [class]="getActivityIcon(activity.type)" style="color: white;"></i>
+                    </div>
+                  </div>
+
+                  <!-- Contenido de la actividad -->
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                      <h6 class="mb-0">{{ activity.title }}</h6>
+                      <small class="text-light opacity-75">{{ getFormattedDate(activity.date) }}</small>
+                    </div>
+                    <p class="mb-2 text-light" style="opacity: 0.85;">{{ activity.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="font-weight-bold" style="font-size: 1.1rem;">S/. {{ activity.amount.toFixed(2)
+                        }}</span>
+                      <span class="badge" [style.background-color]="
+                          activity.status === 'COMPLETADO' ? '#2ecc71' :
+                          activity.status === 'PROCESADO' ? '#3498db' :
+                          activity.status === 'APROBADO' ? '#f39c12' : '#e74c3c'"
+                        style="font-weight: 500; border-radius: 4px; padding: 0.35rem 0.5rem;">
+                        {{ activity.status }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <!-- Mensaje si no hay actividad -->
+              <li *ngIf="recentActivity.length === 0" class="list-group-item border-0 px-4 py-4 text-center"
+                style="background: transparent;">
+                <div style="opacity: 0.6;">
+                  <i class="fas fa-calendar-times mb-3" style="font-size: 2.5rem;"></i>
+                  <p class="mb-0">No hay actividad reciente para mostrar</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer text-center"
+            style="background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.05);">
+            <a routerLink="/cliente/dashboard" class="btn btn-sm"
+              style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); padding: 0.5rem 1.5rem; font-weight: 500; transition: all 0.25s ease;"
+              onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
+              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';">
+              <i class="fas fa-tachometer-alt mr-2"></i> Ver Dashboard Completo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pestaña: Editar Perfil -->
+      <div *ngIf="activeTab === 'edit'">
+        <div class="card border-0"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <i class="fas fa-user-edit mr-2" style="color: #4fc3f7;"></i>
+            <h5 class="mb-0 text-white">Editar Información</h5>
+          </div>
+          <div class="card-body text-white">
+            <!-- Mensaje de éxito -->
+            <div *ngIf="saveSuccess" class="alert mb-4"
+              style="background-color: rgba(46, 204, 113, 0.15) !important; color: #2ecc71 !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle mr-3" style="font-size: 1.25rem;"></i>
+                <p class="mb-0">¡Información actualizada correctamente!</p>
+              </div>
+            </div>
+
+            <form [formGroup]="editProfileForm" (ngSubmit)="saveProfile()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label style="color: rgba(255,255,255,0.7);">Nombre</label>
+                    <input type="text" class="form-control" formControlName="name"
+                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                    <div *ngIf="editProfileForm.get('name')?.invalid && editProfileForm.get('name')?.touched"
+                      class="text-danger mt-1 small">
+                      Nombre es requerido (mínimo 2 caracteres)
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label style="color: rgba(255,255,255,0.7);">Apellido</label>
+                    <input type="text" class="form-control" formControlName="lastname"
+                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                    <div *ngIf="editProfileForm.get('lastname')?.invalid && editProfileForm.get('lastname')?.touched"
+                      class="text-danger mt-1 small">
+                      Apellido es requerido (mínimo 2 caracteres)
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label style="color: rgba(255,255,255,0.7);">DNI</label>
+                    <input type="text" class="form-control" formControlName="dni"
+                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                    <div *ngIf="editProfileForm.get('dni')?.invalid && editProfileForm.get('dni')?.touched"
+                      class="text-danger mt-1 small">
+                      DNI es requerido (8 dígitos numéricos)
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label style="color: rgba(255,255,255,0.7);">Celular</label>
+                    <input type="text" class="form-control" formControlName="phone"
+                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                    <div *ngIf="editProfileForm.get('phone')?.invalid && editProfileForm.get('phone')?.touched"
+                      class="text-danger mt-1 small">
+                      Celular es requerido (9 dígitos numéricos)
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <div class="form-group">
+                    <label style="color: rgba(255,255,255,0.7);">Email</label>
+                    <input type="email" class="form-control" formControlName="email"
+                      style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border-radius: 0.5rem;">
+                    <small class="form-text" style="color: rgba(255,255,255,0.5);">El email no puede ser
+                      modificado.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center mt-2">
+                <button type="button" class="btn btn-secondary mr-2" (click)="cancelEdit()"
+                  style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 0.5rem; padding: 0.5rem 1.5rem;">
+                  <i class="fas fa-times mr-2"></i> Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="editProfileForm.invalid"
+                  style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); border: none; border-radius: 0.5rem; padding: 0.5rem 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.25s ease;"
+                  onmouseover="this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)';"
+                  onmouseout="this.style.boxShadow='0 2px 5px rgba(0,0,0,0.2)';">
+                  <i class="fas fa-save mr-2"></i> Guardar Cambios
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Estilos adicionales para la línea de tiempo de actividades -->
+<style>
+  /* Estilos para la línea de tiempo */
+  .activity-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+  }
+
+  .activity-list li:first-child .activity-timeline::before {
+    top: 20px;
+  }
+
+  .activity-list li:last-child .activity-timeline::before {
+    height: 20px;
+  }
+
+  /* Estilos para los inputs */
+  .form-control:focus {
+    background: rgba(0, 0, 0, 0.3) !important;
+    color: white !important;
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25) !important;
+  }
+
+  /* Ajustes responsive */
+  @media (max-width: 768px) {
+    .profile-avatar {
+      width: 80px !important;
+      height: 80px !important;
+    }
+  }
+
+  /* Active tab highlight */
+  .list-group-item.active {
+    background: rgba(79, 195, 247, 0.15) !important;
+  }
+</style>

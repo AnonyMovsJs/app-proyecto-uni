@@ -1,107 +1,424 @@
-<div class="container">
-  <div class="jumbotron">
-    <h1>Bienvenido al Panel de Administración</h1>
-    <p>Aquí puedes ver métricas de usuarios, ventas y créditos.</p>
+<div class="container-fluid">
+  <!-- Header Section con degradado elegante -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="jumbotron text-white p-4"
+        style="background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #6a11cb;">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 font-weight-bold mb-0">Panel de Administración</h1>
+            <p class="lead mt-2 mb-0 opacity-75">Control y monitoreo en tiempo real del negocio</p>
+          </div>
+          <div class="d-none d-md-block">
+            <button class="btn btn-outline-light px-3" onclick="refreshDashboard()">
+              <i class="fas fa-sync-alt mr-2"></i> Actualizar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status"><span class="sr-only">Cargando...</span></div>
+  <!-- Loading Indicator con efecto profesional -->
+  <div *ngIf="loading" class="row">
+    <div class="col-12 text-center py-5">
+      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
+      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
+      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
+      <p class="text-light mt-3">Cargando datos del dashboard...</p>
+    </div>
   </div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <!-- Error Alert estilizado -->
+  <div *ngIf="error" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
+            <p class="mb-0">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div *ngIf="!loading && !error">
-    <!-- Métricas -->
-    <div class="row">
-      <div class="col-md-3">
-        <div class="card bg-primary text-white mb-4">
+    <!-- Métricas con tarjetas animadas y gradientes elegantes -->
+    <div class="row mb-4">
+      <!-- Card 1: Total Usuarios -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
           <div class="card-body">
-            <h5 class="card-title">Total Usuarios</h5>
-            <h2 class="card-text">{{ totalUsers }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Total Usuarios</h5>
+              <div
+                style="width: 42px; height: 42px; background-color: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-users fa-lg"></i>
+              </div>
+            </div>
+            <h2 class="display-4 font-weight-bold mb-1">{{ totalUsers }}</h2>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center">
+          <div class="card-footer d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.1) !important; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
             <a routerLink="/users" class="text-white">Ver Detalle</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="card bg-info text-white mb-4">
+      <!-- Card 2: Usuarios con Ventas -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #0082c8 0%, #0082c8 40%, #667db6 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
           <div class="card-body">
-            <h5 class="card-title">Usuarios con Ventas</h5>
-            <h2 class="card-text">{{ usersWithSales }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Usuarios con Ventas</h5>
+              <div
+                style="width: 42px; height: 42px; background-color: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-shopping-cart fa-lg"></i>
+              </div>
+            </div>
+            <h2 class="display-4 font-weight-bold mb-1">{{ usersWithSales }}</h2>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center">
+          <div class="card-footer d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.1) !important; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
             <a routerLink="/admin/users?ventas=true" class="text-white">Ver Detalle</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="card bg-warning text-white mb-4">
+      <!-- Card 3: Usuarios con Créditos -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #f46b45 0%, #eea849 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
           <div class="card-body">
-            <h5 class="card-title">Usuarios con Créditos</h5>
-            <h2 class="card-text">{{ usersWithCredit }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Usuarios con Créditos</h5>
+              <div
+                style="width: 42px; height: 42px; background-color: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-credit-card fa-lg"></i>
+              </div>
+            </div>
+            <h2 class="display-4 font-weight-bold mb-1">{{ usersWithCredit }}</h2>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center">
+          <div class="card-footer d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.1) !important; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
             <a routerLink="/admin/users?creditos=true" class="text-white">Ver Detalle</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
-        <div class="card bg-success text-white mb-4">
+      <!-- Card 4: Créditos Completados -->
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
           <div class="card-body">
-            <h5 class="card-title">Créditos Completados</h5>
-            <h2 class="card-text">{{ usersAllCreditPaid }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Créditos Completados</h5>
+              <div
+                style="width: 42px; height: 42px; background-color: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-check-circle fa-lg"></i>
+              </div>
+            </div>
+            <h2 class="display-4 font-weight-bold mb-1">{{ usersAllCreditPaid }}</h2>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center">
+          <div class="card-footer d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.1) !important; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
             <a routerLink="/admin/users?creditosPagados=true" class="text-white">Ver Detalle</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-arrow-right"></i>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Últimas Ventas -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h5>Últimas Ventas</h5>
+<!-- Tabla de Últimas Ventas con fondo corregido -->
+<div class="row mb-4 text-white">
+  <div class="col-12 text-white">
+    <div class="card border-0 text-white"
+      style="background: linear-gradient(135deg, #0b2452 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+      <div class="card-header d-flex justify-content-between align-items-center py-3"
+        style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+
+        <h5 class="mb-0 d-flex align-items-center">
+          <i class="fas fa-history me-2" style="color: #4fc3f7;"></i>
+          Últimas Ventas
+        </h5>
+
+        <button class="btn btn-sm ms-auto"
+          style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.2s ease;"
+          onmouseover="this.style.background='rgba(79, 195, 247, 0.3)';"
+          onmouseout="this.style.background='rgba(79, 195, 247, 0.2)';">
+          <i class="fas fa-list me-1"></i>
+          Ver Todas
+        </button>
+
       </div>
-      <div class="card-body">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Descripción</th>
-              <th>Usuario</th>
-              <th>Monto</th>
-              <th>Tipo</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let venta of recentSales">
-              <td>{{ venta.fechaVenta | date:'dd/MM/yyyy' }}</td>
-              <td>{{ venta.descripcion }}</td>
-              <td>{{ venta.cliente.email }}</td>
-              <td>S/. {{ venta.montoTotal | number:'1.2-2' }}</td>
-              <td>
-                <span class="badge" [ngClass]="venta.tipoVenta === 'CONTADO' ? 'badge-success' : 'badge-primary'">
-                  {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-info" [routerLink]="['/admin/user', venta.cliente.id]">
-                  Ver Usuario
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+
+
+      <div class="card-body p-0 text-white" style="color: white !important;">
+        <div class="table-responsive"
+          style="border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem; overflow: hidden;">
+          <!-- IMPORTANTE: Se añade el background: transparent !important para forzar el fondo transparente -->
+          <table class="table mb-0" style="color: rgba(255, 255, 255, 0.9); background: transparent !important;">
+            <thead>
+              <tr style="background: rgba(0, 0, 0, 0.2);">
+                <th class="py-3 px-4 text-white"
+                  style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                  Fecha</th>
+                <th class="py-3 text-white"
+                  style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                  Descripción</th>
+                <th class="py-3 text-white"
+                  style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                  Usuario</th>
+                <th class="py-3 text-white"
+                  style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                  Monto</th>
+                <th class="py-3 text-white"
+                  style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                  Tipo</th>
+                <th class="py-3 text-white"
+                  style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                  Acción</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr *ngFor="let venta of recentSales"
+                style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s ease; background: transparent !important;"
+                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.07)';"
+                onmouseout="this.style.backgroundColor='transparent';">
+                <td class="py-3 px-4" style="background: transparent !important;">
+                  <div class="d-flex align-items-center">
+                    <div class="mr-2"
+                      style="width: 40px; height: 40px; border-radius: 10px; background-color: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                      <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                        venta.fechaVenta | date:'MMM' }}</span>
+                      <span style="font-size: 14px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                        }}</span>
+                    </div>
+                    <span style="color: rgba(232, 228, 228, 0.6);">{{ venta.fechaVenta | date:'yyyy' }}</span>
+                  </div>
+                </td>
+                <td class="py-3 text-white"
+                  style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: transparent !important;">
+                  {{ venta.descripcion }}
+                </td>
+                <td class="py-3 text-white" style="background: transparent !important;">
+                  <div class="d-flex align-items-center">
+                    <div class="mr-2"
+                      style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                      {{ venta.cliente.email.charAt(0).toUpperCase() }}
+                    </div>
+                    <span>{{ venta.cliente.email }}</span>
+                  </div>
+                </td>
+                <td class="py-3 font-weight-bold text-white" style="color: white; background: transparent !important;">S/. {{
+                  venta.montoTotal | number:'1.2-2' }}</td>
+                <td class="py-3" style="background: transparent !important;">
+                  <span class="badge" [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : '#3498db'"
+                    style="padding: 6px 10px; font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <i
+                      [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : 'fas fa-credit-card mr-1'"></i>
+                    {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
+                  </span>
+                </td>
+                <td class="py-3 text-white" style="background: transparent !important;">
+                  <button class="btn btn-sm"
+                    style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';"
+                    [routerLink]="['/admin/user', venta.cliente.id]">
+                    <i class="fas fa-user mr-1"></i> Ver Usuario
+                  </button>
+                </td>
+              </tr>
+              <!-- Mensaje si no hay ventas -->
+              <tr *ngIf="recentSales.length === 0">
+                <td colspan="6" class="text-center py-5" style="background: transparent !important;">
+                  <div style="opacity: 0.6;">
+                    <i class="fas fa-shopping-cart mb-3" style="font-size: 2.5rem;"></i>
+                    <p class="mb-0">No hay ventas recientes para mostrar</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+    <!-- Gráficos con diseño moderno -->
+    <div class="row">
+      <!-- Gráfico 1: Distribución de Ventas -->
+      <div class="col-lg-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.2) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <h5 class="mb-0">
+              <i class="fas fa-chart-pie mr-2 text-primary"></i>
+              Distribución de Ventas
+            </h5>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-light border-0" type="button" data-toggle="dropdown"
+                aria-expanded="false" style="border-radius: 0.5rem;">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Exportar PNG</a>
+                <a class="dropdown-item" href="#">Ver detalle</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="height: 280px; position: relative;">
+              <canvas id="salesDistributionChart" width="100%" height="280"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico 2: Estado de Pagos -->
+      <div class="col-lg-6 mb-4">
+        <div class="card border-0 text-white h-100"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.2) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <h5 class="mb-0">
+              <i class="fas fa-chart-pie mr-2 text-warning"></i>
+              Estado de Pagos
+            </h5>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-light border-0" type="button" data-toggle="dropdown"
+                aria-expanded="false" style="border-radius: 0.5rem;">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Exportar PNG</a>
+                <a class="dropdown-item" href="#">Ver detalle</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="height: 280px; position: relative;">
+              <canvas id="paymentStatusChart" width="100%" height="280"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico 3: Ingresos Mensuales (ancho completo) -->
+    <div class="row">
+      <div class="col-12 mb-4">
+        <div class="card border-0 text-white"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.2) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <h5 class="mb-0">
+              <i class="fas fa-chart-bar mr-2 text-success"></i>
+              Ingresos Mensuales
+            </h5>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-light border-0" type="button" data-toggle="dropdown"
+                aria-expanded="false" style="border-radius: 0.5rem;">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Exportar PNG</a>
+                <a class="dropdown-item" href="#">Ver detalle</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="height: 280px; position: relative;">
+              <canvas id="monthlyIncomeChart" width="100%" height="280"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos adicionales y animaciones -->
+<style>
+  /* Animaciones generales para todo el dashboard */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Animación para las tablas y tarjetas */
+  .card,
+  .table {
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  /* Mejora de estilos para móviles */
+  @media (max-width: 768px) {
+    .display-4 {
+      font-size: 2.5rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+    }
+
+    .table th,
+    .table td {
+      white-space: nowrap;
+    }
+  }
+
+  /* Estilos para scrollbars */
+  .table-responsive::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-responsive::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+</style>
+
+<script>
+  // Para actualizar el dashboard
+  function refreshDashboard() {
+    if (typeof window.angularComponentRef !== 'undefined') {
+      window.angularComponentRef.refreshDashboard();
+    }
+  }
+</script>

@@ -205,4 +205,29 @@ export class ChatbotService {
   clearAction() {
     this.actionSubject.next(null);
   }
+
+  checkUpcomingPayments(): void {
+    // Esta función se llamaría al inicializar el chatbot
+    if (this.authService.isAuth() && !this.authService.isAdmin()) {
+      const userId = this.authService.getCurrentUser()?.id;
+      if (!userId) return;
+
+      this.http
+        .get<any>(`${this.API_URL}/api/cuotas/proximas-vencer/${userId}`)
+        .subscribe((response) => {
+          if (response && response.length > 0) {
+            // Hay cuotas próximas a vencer, mostrar mensaje de recordatorio
+            const currentMessages = this.messageSubject.getValue();
+            const reminderMessage: ChatMessage = {
+              content: `Recuerda que tienes ${response.length} cuota(s) próxima(s) a vencer. ¿Quieres ver los detalles?`,
+              sender: 'AI Asistente',
+              timestamp: new Date(),
+              isBot: true,
+              responseType: 'REMINDER',
+            };
+            this.messageSubject.next([...currentMessages, reminderMessage]);
+          }
+        });
+    }
+  }
 }

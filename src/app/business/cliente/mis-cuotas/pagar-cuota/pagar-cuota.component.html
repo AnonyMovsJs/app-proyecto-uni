@@ -1,87 +1,323 @@
-<div class="container">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Pagar Cuota</h2>
-    <a routerLink="/cliente/mis-cuotas" class="btn btn-secondary">
-      <i class="fa fa-arrow-left"></i> Volver
-    </a>
-  </div>
-
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="sr-only">Cargando...</span>
+<div class="container-fluid">
+  <!-- Header principal -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="p-4 rounded"
+        style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-radius: 0.75rem; border-left: 4px solid #4fc3f7;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="text-white font-weight-bold mb-0">Pagar Cuota</h1>
+            <p class="text-light mt-2 mb-0 opacity-75">Realiza el pago de tu cuota pendiente</p>
+          </div>
+          <div class="mt-3 mt-md-0">
+            <a routerLink="/cliente/mis-cuotas" class="btn"
+              style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.2s ease;"
+              onmouseover="this.style.background='rgba(79, 195, 247, 0.3)';"
+              onmouseout="this.style.background='rgba(79, 195, 247, 0.2)';">
+              <i class="fas fa-arrow-left mr-2"></i> Volver a Mis Cuotas
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="error" class="alert alert-danger">
-    {{ error }}
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="row">
+    <div class="col-12 text-center py-5">
+      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
+      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
+      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
+      <p class="text-light mt-3">Cargando información de pago...</p>
+    </div>
   </div>
 
-  <div *ngIf="success" class="alert alert-success">
-    {{ success }}
-  </div>
-
-  <div *ngIf="!loading && !error && !success">
-    <div class="card mb-4">
-      <div class="card-header">
-        <h4>Información de la Cuota</h4>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <!-- <p><strong>Venta:</strong> {{ venta.descripcion }}</p> -->
-            <p><strong>Cuota:</strong> {{ cuota.numeroCuota }} de {{ credito.numero_cuotas }}</p>
-            <p><strong>Monto a Pagar:</strong> S/. {{ cuota.monto | number:'1.2-2' }}</p>
+  <!-- Error message -->
+  <div *ngIf="error" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
+            <p class="mb-0">{{ error }}</p>
           </div>
-          <div class="col-md-6">
-            <p><strong>Fecha Vencimiento:</strong> {{ cuota.fechaVencimiento | date:'dd/MM/yyyy' }}</p>
-            <p>
-              <strong>Estado:</strong>
-              <span class="badge" [ngClass]="{
-                      'badge-warning': cuota.estado === 'PENDIENTE',
-                      'badge-danger': cuota.estado === 'VENCIDO'
-                    }">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success message -->
+  <div *ngIf="success" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(46, 204, 113, 0.15) !important; color: #2ecc71 !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-check-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #2ecc71;">Pago realizado con éxito</h5>
+            <p class="mb-0">{{ success }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div *ngIf="!loading && !error && !success" class="row">
+    <div class="col-lg-5 col-md-6 mb-4">
+      <!-- Información de la Cuota -->
+      <div class="card border-0 mb-4"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="card-header d-flex align-items-center py-3"
+          style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+          <i class="fas fa-info-circle mr-2" style="color: #4fc3f7;"></i>
+          <h5 class="mb-0 text-white">Información de la Cuota</h5>
+        </div>
+        <div class="card-body text-white">
+          <div class="d-flex align-items-center mb-4">
+            <div class="mr-3"
+              style="width: 60px; height: 60px; border-radius: 20px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <span style="font-size: 12px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">Cuota</span>
+              <span style="font-size: 22px; font-weight: 700; color: white;">{{ cuota.numeroCuota }}</span>
+            </div>
+            <div>
+              <p class="mb-0 text-light opacity-75" style="font-size: 0.9rem;">de {{ credito.numero_cuotas }} cuotas</p>
+              <span class="badge py-2 px-3"
+                [style.background-color]="cuota.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
+                style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <i [class]="cuota.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-exclamation-circle mr-1'"></i>
                 {{ cuota.estado }}
               </span>
-            </p>
+            </div>
+          </div>
+
+          <div class="p-3 rounded mb-3" style="background: rgba(0,0,0,0.2);">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="small mb-0 text-light opacity-75">Fecha de Vencimiento</p>
+              <span [class]="getEstadoClass()">
+                <i [class]="diasVencimiento > 0 ? 'fas fa-exclamation-triangle mr-1' : 'fas fa-calendar-day mr-1'"></i>
+                {{ cuota.fechaVencimiento | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded mb-3" style="background: rgba(0,0,0,0.2);">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="small mb-0 text-light opacity-75">Monto de la Cuota</p>
+              <span class="font-weight-bold">S/. {{ cuota.monto | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+          <!-- Información de mora (si aplica) -->
+          <div *ngIf="hayMora" class="p-3 rounded mb-3" style="background: rgba(231, 76, 60, 0.15);">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <p class="small mb-0" style="color: #e74c3c;">Interés por mora ({{ diasVencimiento }} días)</p>
+                <small style="color: rgba(231, 76, 60, 0.7);">0.05% diario</small>
+              </div>
+              <span class="font-weight-bold" style="color: #e74c3c;">S/. {{ montoMora | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded" [style.background]="hayMora ? 'rgba(231, 76, 60, 0.08)' : 'rgba(79, 195, 247, 0.1)'"
+            [style.border-left]="'4px solid ' + (hayMora ? '#e74c3c' : '#4fc3f7')">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="small mb-0 font-weight-bold" [style.color]="hayMora ? '#e74c3c' : '#4fc3f7'">Total a Pagar</p>
+              <span class="font-weight-bold" style="font-size: 1.25rem;" [style.color]="hayMora ? '#e74c3c' : '#4fc3f7'">
+                S/. {{ montoTotal | number:'1.2-2' }}
+              </span>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="card mb-4">
-      <div class="card-header">
-        <h4>Realizar Pago</h4>
-      </div>
-      <div class="card-body">
-        <form [formGroup]="pagoForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label for="monto">Monto a Pagar:</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">S/.</span>
+    <div class="col-lg-7 col-md-6">
+      <!-- Formulario de Pago -->
+      <div class="card border-0 mb-4"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="card-header d-flex align-items-center py-3"
+          style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+          <i class="fas fa-money-bill-wave mr-2" style="color: #4fc3f7;"></i>
+          <h5 class="mb-0 text-white">Realizar Pago</h5>
+        </div>
+        <div class="card-body text-white">
+          <form [formGroup]="pagoForm" (ngSubmit)="onSubmit()">
+            <!-- Monto a pagar -->
+            <div class="form-group mb-4">
+              <label style="color: rgba(255,255,255,0.7);">Monto a Pagar:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white;">S/.</span>
+                </div>
+                <input type="number" id="monto" formControlName="monto" class="form-control" step="0.01"
+                  style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0 0.5rem 0.5rem 0;"
+                  [ngClass]="{'is-invalid': pagoForm.get('monto')?.invalid && pagoForm.get('monto')?.touched}">
               </div>
-              <input type="number" id="monto" formControlName="monto" class="form-control" step="0.01"
-                [ngClass]="{'is-invalid': pagoForm.get('monto')?.invalid && pagoForm.get('monto')?.touched}">
-              <div class="invalid-feedback" *ngIf="pagoForm.get('monto')?.invalid && pagoForm.get('monto')?.touched">
+              <div class="text-danger mt-1 small"
+                *ngIf="pagoForm.get('monto')?.invalid && pagoForm.get('monto')?.touched">
                 El monto es requerido y debe ser mayor a 0
               </div>
+
+              <div *ngIf="hayMora" class="mt-2 small" style="color: #e74c3c;">
+                <i class="fas fa-info-circle mr-1"></i>
+                El monto incluye S/. {{ montoMora | number:'1.2-2' }} de interés por mora.
+              </div>
             </div>
-          </div>
 
-          <div class="alert alert-info">
-            <i class="fa fa-info-circle"></i>
-            Este es un pago simulado. En un sistema real, aquí se integraría con un método de pago como Yape, Plin, etc.
-          </div>
+            <!-- Método de pago -->
+            <div class="form-group mb-4">
+              <label style="color: rgba(255,255,255,0.7);">Método de Pago:</label>
 
-          <div class="mt-3">
-            <button type="submit" class="btn btn-primary" [disabled]="pagoForm.invalid || submitting">
-              <span *ngIf="submitting" class="spinner-border spinner-border-sm mr-1"></span>
-              Confirmar Pago
-            </button>
-            <a routerLink="/cliente/mis-cuotas" class="btn btn-secondary ml-2">Cancelar</a>
-          </div>
-        </form>
+              <div class="row">
+                <div class="col-md-6 col-lg-3 mb-3" *ngFor="let metodo of metodosPago">
+                  <div class="payment-option" [class.active]="pagoForm.get('metodoPago')?.value === metodo.id"
+                    style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 1rem; cursor: pointer; transition: all 0.2s ease;"
+                    [style.border-color]="pagoForm.get('metodoPago')?.value === metodo.id ? '#4fc3f7' : 'rgba(255,255,255,0.1)'"
+                    [style.background]="pagoForm.get('metodoPago')?.value === metodo.id ? 'rgba(79, 195, 247, 0.1)' : 'rgba(0,0,0,0.2)'"
+                    (click)="pagoForm.get('metodoPago')?.setValue(metodo.id)">
+                    <div class="text-center mb-2">
+                      <i [class]="'fas ' + metodo.icon" style="font-size: 1.5rem; color: #4fc3f7;"></i>
+                    </div>
+                    <p class="text-center mb-0 small">{{ metodo.nombre }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <input type="hidden" formControlName="metodoPago">
+            </div>
+
+            <!-- Resumen de pago -->
+            <div class="p-3 rounded mb-4" style="background: rgba(0,0,0,0.2);">
+              <h6 class="text-light mb-3">Resumen de pago</h6>
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-light opacity-75">Monto de cuota</span>
+                <span>S/. {{ cuota.monto | number:'1.2-2' }}</span>
+              </div>
+
+              <div *ngIf="hayMora" class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-light opacity-75">Interés por mora</span>
+                <span style="color: #e74c3c;">S/. {{ montoMora | number:'1.2-2' }}</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-light opacity-75">Comisión</span>
+                <span>S/. 0.00</span>
+              </div>
+
+              <hr style="border-color: rgba(255,255,255,0.1);">
+
+              <div class="d-flex justify-content-between align-items-center font-weight-bold">
+                <span>Total a pagar</span>
+                <span style="color: #4fc3f7; font-size: 1.1rem;">
+                  S/. {{ montoTotalCuota | number:'1.2-2' }}
+                </span>
+
+              </div>
+
+              <div class="mt-2 text-center small text-light opacity-75">
+                <i class="fas fa-calendar-day mr-1"></i> {{ getFechaPagoFormateada() }}
+              </div>
+            </div>
+
+            <!-- Términos y condiciones -->
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" id="aceptaTerminos" formControlName="aceptaTerminos">
+              <label class="form-check-label text-light" for="aceptaTerminos" style="font-size: 0.9rem;">
+                Acepto los <a href="#" style="color: #4fc3f7;">términos y condiciones</a> para el procesamiento de este
+                pago
+              </label>
+              <div class="text-danger mt-1 small"
+                *ngIf="pagoForm.get('aceptaTerminos')?.invalid && pagoForm.get('aceptaTerminos')?.touched">
+                Debes aceptar los términos y condiciones para continuar
+              </div>
+            </div>
+
+            <!-- Nota informativa -->
+            <div class="alert border-0 mb-4"
+              style="background: rgba(52, 152, 219, 0.1) !important; border-left: 4px solid #3498db; border-radius: 0.5rem;">
+              <div class="d-flex">
+                <i class="fas fa-info-circle mr-3" style="color: #3498db; font-size: 1.25rem;"></i>
+                <p class="mb-0 small" style="color: rgba(255,255,255,0.8);">
+                  Este es un pago simulado con fines demostrativos. En un sistema real, aquí se integraría
+                  con un proveedor de pagos para procesar la transacción de manera segura.
+                </p>
+              </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-center mt-4">
+              <a routerLink="/cliente/mis-cuotas" class="btn mr-3"
+                style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 0.5rem; padding: 0.5rem 1.5rem; transition: all 0.2s ease;"
+                onmouseover="this.style.background='rgba(255,255,255,0.2)';"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)';">
+                <i class="fas fa-times mr-2"></i> Cancelar
+              </a>
+
+              <button type="submit" class="btn" [disabled]="pagoForm.invalid || submitting"
+                style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 0.5rem; padding: 0.5rem 2rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.25s ease;"
+                [style.opacity]="pagoForm.invalid || submitting ? '0.6' : '1'"
+                onmouseover="if(!this.disabled) this.style.transform='translateY(-2px)'; if(!this.disabled) this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)';"
+                onmouseout="if(!this.disabled) this.style.transform='translateY(0)'; if(!this.disabled) this.style.boxShadow='0 2px 5px rgba(0,0,0,0.2)';">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm mr-2" role="status"></span>
+                <i *ngIf="!submitting" class="fas fa-check-circle mr-2"></i>
+                Confirmar Pago
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Estilos adicionales para elementos de formulario -->
+<style>
+  /* Estilo para mantener consistency con nuestro diseño */
+  .form-control:focus {
+    background: rgba(0, 0, 0, 0.3) !important;
+    color: white !important;
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25) !important;
+  }
+
+  /* Estilo para checkbox */
+  .form-check-input {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .form-check-input:checked {
+    background-color: #4fc3f7;
+    border-color: #4fc3f7;
+  }
+
+  /* Animaciones */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .card {
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  /* Diseño responsive */
+  @media (max-width: 768px) {
+    .payment-option {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

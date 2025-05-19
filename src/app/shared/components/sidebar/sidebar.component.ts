@@ -4,14 +4,16 @@ import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { ChatbotService } from '../../services/chatbot.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
   userProfile: any;
+
 
   constructor(
     private chatbotService: ChatbotService,
@@ -53,6 +55,13 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    // Inicializar AdminLTE después de que la vista se cargue
+    if (typeof (window as any).$ !== 'undefined') {
+      (window as any).$('[data-widget="treeview"]').Treeview('init');
+    }
+  }
+
   // Y en el método de login exitoso
   onLoginSuccess() {
     // Inicializar el chat con el nuevo usuario
@@ -64,4 +73,5 @@ export class SidebarComponent implements OnInit {
   get admin() {
     return this.authService.isAdmin();
   }
+
 }
