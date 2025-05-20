@@ -1,4 +1,3 @@
-// chatbot.component.ts
 import {
   Component,
   OnInit,
@@ -20,8 +19,10 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chatbot',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './chatbot.component.html',
+  styleUrls: ['./chatbot.component.css'],
 })
 export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('chatMessages') private messagesContainer!: ElementRef;
@@ -31,7 +32,7 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   isOpen = false;
   loading = false;
   actionData: ActionData | null = null;
-  private readonly speechRecognition =
+  public readonly speechRecognition =
     'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
 
   // Propiedades para el reconocimiento de voz
@@ -278,5 +279,47 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.chatbotService.clearAction();
     this.actionData = null;
     this.chatbotService.initializeWebSocketConnection();
+  }
+
+  // Método para obtener la clase CSS según el estado
+  getStatusClass(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE':
+        return 'badge-warning';
+      case 'PAGADO':
+        return 'badge-success';
+      case 'VENCIDO':
+        return 'badge-danger';
+      default:
+        return 'badge-secondary';
+    }
+  }
+
+  // Método para determinar el tipo de acción
+  getActionTitle(type: string): string {
+    switch (type) {
+      case 'QUERY':
+        return 'Resultados de Consulta';
+      case 'REGISTER_SALE':
+        return 'Venta Registrada';
+      case 'CREATE_USER':
+        return 'Usuario Creado';
+      default:
+        return 'Información';
+    }
+  }
+
+  // Método para obtener ícono según tipo de acción
+  getActionIcon(type: string): string {
+    switch (type) {
+      case 'QUERY':
+        return 'fa-table';
+      case 'REGISTER_SALE':
+        return 'fa-shopping-cart';
+      case 'CREATE_USER':
+        return 'fa-user-plus';
+      default:
+        return 'fa-info-circle';
+    }
   }
 }

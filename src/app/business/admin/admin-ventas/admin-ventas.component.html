@@ -1,0 +1,442 @@
+<div class="container-fluid">
+  <!-- Header Section con degradado elegante -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="jumbotron text-white p-4"
+        style="background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #6a11cb;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="display-5 font-weight-bold mb-0">Ventas Registradas</h1>
+            <p class="lead mt-2 mb-0 opacity-75">Historial de todas las transacciones realizadas en el sistema</p>
+          </div>
+          <div class="mt-3 mt-md-0">
+            <a routerLink="/admin/dashboard" class="btn btn-outline-light px-3">
+              <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator con efecto profesional -->
+  <div *ngIf="loading" class="row">
+    <div class="col-12 text-center py-5">
+      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
+      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
+      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
+      <p class="text-light mt-3">Cargando datos de ventas...</p>
+    </div>
+  </div>
+
+  <!-- Error Alert estilizado -->
+  <div *ngIf="error" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
+            <p class="mb-0">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <!-- Barra de filtros y búsqueda -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card border-0 text-white"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-body p-3">
+            <div class="row">
+              <!-- Búsqueda -->
+              <div class="col-md-6 col-lg-4 mb-3 mb-md-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-right: none;">
+                      <i class="fas fa-search"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Buscar venta..." [(ngModel)]="searchTerm"
+                    (input)="aplicarFiltros()"
+                    style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+                </div>
+              </div>
+
+              <!-- Filtro de Estado -->
+              <div class="col-md-3 col-lg-3 mb-3 mb-md-0">
+                <select class="custom-select" [(ngModel)]="estadoFiltro" (change)="aplicarFiltros()"
+                  style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; height: 38px; border-radius: 0.25rem;">
+                  <option value="TODOS">Todos los estados</option>
+                  <option value="PAGADO">Pagado</option>
+                  <option value="PENDIENTE">Pendiente</option>
+                  <option value="VENCIDO">Vencido</option>
+                </select>
+              </div>
+
+              <!-- Filtro de Tipo -->
+              <div class="col-md-3 col-lg-3 mb-3 mb-md-0">
+                <select class="custom-select" [(ngModel)]="tipoFiltro" (change)="aplicarFiltros()"
+                  style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; height: 38px; border-radius: 0.25rem;">
+                  <option value="TODOS">Todos los tipos</option>
+                  <option value="CONTADO">Contado</option>
+                  <option value="CREDITO">Crédito</option>
+                </select>
+              </div>
+
+              <!-- Botón de refrescar -->
+              <div class="col-md-12 col-lg-2 text-right">
+                <button class="btn w-100" (click)="cargarVentas()"
+                  style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; height: 38px;">
+                  <i class="fas fa-sync-alt mr-2"></i> Actualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de ventas (Escritorio) -->
+    <div class="row d-none d-lg-block">
+      <div class="col-12">
+        <div class="card border-0 text-white mb-4"
+          style="background: linear-gradient(135deg, #0b2452 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+          <div class="card-header py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">
+                <i class="fas fa-shopping-cart mr-2" style="color: #4fc3f7;"></i>
+                Todas las Ventas
+              </h5>
+              <span class="badge bg-info px-3 py-2" style="border-radius: 30px; font-weight: 500;">
+                <i class="fas fa-chart-bar mr-1"></i>
+                Total: {{ ventasFiltradas.length }} ventas
+              </span>
+            </div>
+          </div>
+
+          <div class="card-body p-0">
+            <div class="table-responsive"
+              style="border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem; overflow: hidden;">
+              <table class="table mb-0" style="color: rgba(255, 255, 255, 0.9); background: transparent !important;">
+                <thead>
+                  <tr style="background: rgba(0, 0, 0, 0.2);">
+                    <th class="py-3 px-4 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Fecha</th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Descripción</th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Usuario</th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Monto</th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Tipo</th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Estado</th>
+                    <th class="py-3 text-white"
+                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
+                      Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let venta of paginaActual()"
+                    style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s ease; background: transparent !important;"
+                    onmouseover="this.style.backgroundColor='rgba(255,255,255,0.07)';"
+                    onmouseout="this.style.backgroundColor='transparent';">
+                    <td class="py-3 px-4" style="background: transparent !important;">
+                      <div class="d-flex align-items-center">
+                        <div class="mr-2"
+                          style="width: 40px; height: 40px; border-radius: 10px; background-color: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                          <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                            venta.fechaVenta | date:'MMM' }}</span>
+                          <span style="font-size: 14px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                            }}</span>
+                        </div>
+                        <span style="color: rgba(232, 228, 228, 0.6);">{{ venta.fechaVenta | date:'yyyy' }}</span>
+                      </div>
+                    </td>
+                    <td class="py-3 text-white"
+                      style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: transparent !important;">
+                      {{ venta.descripcion }}
+                    </td>
+                    <td class="py-3 text-white" style="background: transparent !important;">
+                      <div class="d-flex align-items-center">
+                        <div class="mr-2"
+                          style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                          {{ venta.cliente.name.charAt(0).toUpperCase() }}
+                        </div>
+                        <div>
+                          <div style="line-height: 1.2;">{{ venta.cliente.name }} {{ venta.cliente.lastname }}</div>
+                          <small style="font-size: 0.75rem; opacity: 0.7;">{{ venta.cliente.email }}</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="py-3 font-weight-bold text-white"
+                      style="color: white; background: transparent !important;">S/. {{
+                      venta.montoTotal | number:'1.2-2' }}</td>
+                    <td class="py-3" style="background: transparent !important;">
+                      <span class="badge"
+                        [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : '#3498db'"
+                        style="padding: 6px 10px; font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i
+                          [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : 'fas fa-credit-card mr-1'"></i>
+                        {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
+                      </span>
+                    </td>
+                    <td class="py-3" style="background: transparent !important;">
+                      <span class="badge" [style.background-color]="
+                          venta.estado === 'PAGADO' ? '#2ecc71' :
+                          venta.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
+                        style="padding: 6px 10px; font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i [class]="
+                          venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
+                          venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-times-circle mr-1'"></i>
+                        {{ venta.estado }}
+                      </span>
+                    </td>
+                    <td class="py-3" style="background: transparent !important;">
+                      <div class="btn-group">
+                        <a [routerLink]="['/admin/user', venta.cliente.id]" class="btn btn-sm mr-2"
+                          style="background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); border-radius: 0.25rem;">
+                          <i class="fas fa-user mr-1"></i> Ver Cliente
+                        </a>
+                        <a [routerLink]="['/admin/venta', venta.id]" class="btn btn-sm"
+                          style="background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 0.25rem;">
+                          <i class="fas fa-eye mr-1"></i> Detalles
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Mensaje si no hay ventas -->
+            <div *ngIf="ventasFiltradas.length === 0" class="text-center py-5">
+              <div style="opacity: 0.6;">
+                <i class="fas fa-shopping-cart mb-3" style="font-size: 2.5rem;"></i>
+                <p class="mb-0">No se encontraron ventas con los filtros seleccionados</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paginación -->
+          <div *ngIf="ventasFiltradas.length > 0" class="card-footer py-3"
+            style="background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
+            <nav aria-label="Paginación de ventas">
+              <ul class="pagination justify-content-center mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="cambiarPagina(1)"
+                    style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                    <i class="fas fa-angle-double-left"></i>
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="cambiarPagina(currentPage - 1)"
+                    style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                    <i class="fas fa-angle-left"></i>
+                  </a>
+                </li>
+                <li class="page-item" *ngFor="let page of obtenerRangoPaginas()" [class.active]="page === currentPage">
+                  <a class="page-link" (click)="cambiarPagina(page)"
+                    style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                    {{ page }}
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="cambiarPagina(currentPage + 1)"
+                    style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                    <i class="fas fa-angle-right"></i>
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="cambiarPagina(totalPages)"
+                    style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                    <i class="fas fa-angle-double-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista de Tarjetas (Móvil y Tablet) -->
+    <div class="row d-lg-none">
+      <div class="col-12">
+        <div *ngFor="let venta of paginaActual()" class="card border-0 text-white mb-3 animate-card"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease; transition: all 0.3s ease;"
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.25)';"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.15)';">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div class="d-flex align-items-center">
+                <div
+                  style="width: 48px; height: 48px; border-radius: 12px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 15px;">
+                  <span style="font-size: 12px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                    venta.fechaVenta | date:'MMM' }}</span>
+                  <span style="font-size: 16px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                    }}</span>
+                </div>
+                <div>
+                  <h6 class="mb-0">{{ venta.cliente.name }} {{ venta.cliente.lastname }}</h6>
+                  <small class="text-light opacity-75">{{ venta.cliente.email }}</small>
+                </div>
+              </div>
+              <span class="font-weight-bold" style="font-size: 1.1rem;">S/. {{ venta.montoTotal | number:'1.2-2'
+                }}</span>
+            </div>
+
+            <p class="mb-3" style="color: rgba(255,255,255,0.8);">{{ venta.descripcion }}</p>
+
+            <div class="d-flex justify-content-between mb-3">
+              <span class="badge" [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : '#3498db'"
+                style="padding: 6px 10px; font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <i
+                  [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : 'fas fa-credit-card mr-1'"></i>
+                {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
+              </span>
+
+              <span class="badge" [style.background-color]="
+                venta.estado === 'PAGADO' ? '#2ecc71' :
+                venta.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
+                style="padding: 6px 10px; font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <i [class]="
+                venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
+                venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-times-circle mr-1'"></i>
+                {{ venta.estado }}
+              </span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <a [routerLink]="['/admin/user', venta.cliente.id]" class="btn btn-sm mr-2"
+                style="background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); border-radius: 0.25rem; flex: 1; text-align: center;">
+                <i class="fas fa-user mr-1"></i> Ver Cliente
+              </a>
+              <a [routerLink]="['/admin/venta', venta.id]" class="btn btn-sm"
+                style="background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 0.25rem; flex: 1; text-align: center;">
+                <i class="fas fa-eye mr-1"></i> Detalles
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensaje si no hay ventas (móvil) -->
+        <div *ngIf="ventasFiltradas.length === 0" class="card border-0 text-white mb-3"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-body text-center py-5">
+            <div style="opacity: 0.6;">
+              <i class="fas fa-shopping-cart mb-3" style="font-size: 2.5rem;"></i>
+              <p class="mb-0">No se encontraron ventas con los filtros seleccionados</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paginación (móvil) -->
+        <div *ngIf="ventasFiltradas.length > 0" class="mb-4">
+          <nav aria-label="Paginación de ventas" class="d-flex justify-content-center">
+            <ul class="pagination">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="cambiarPagina(1)"
+                  style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                  <i class="fas fa-angle-double-left"></i>
+                </a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="cambiarPagina(currentPage - 1)"
+                  style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                  <i class="fas fa-angle-left"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngFor="let page of obtenerRangoPaginas()" [class.active]="page === currentPage">
+                <a class="page-link" (click)="cambiarPagina(page)"
+                  style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                  {{ page }}
+                </a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="cambiarPagina(currentPage + 1)"
+                  style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                  <i class="fas fa-angle-right"></i>
+                </a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="cambiarPagina(totalPages)"
+                  style="cursor: pointer; background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.1);">
+                  <i class="fas fa-angle-double-right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+  /* Animaciones para elementos */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Estilos para la página activa en la paginación */
+  .pagination .page-item.active .page-link {
+    background-color: #4fc3f7 !important;
+    color: white !important;
+    border-color: #4fc3f7 !important;
+  }
+
+  /* Custom select */
+  .custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23ffffff' d='M0 0l4 4 4-4H0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 8px 8px;
+    padding-right: 2rem;
+  }
+
+  /* Hover effects */
+  .page-link:hover {
+    background-color: rgba(79, 195, 247, 0.3) !important;
+    border-color: rgba(79, 195, 247, 0.3) !important;
+  }
+
+  /* Ajuste enlaces de paginación */
+  .page-link {
+    min-width: 38px;
+    text-align: center;
+  }
+
+  /* Responsive para paginación */
+  @media (max-width: 576px) {
+    .pagination .page-link {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+</style>

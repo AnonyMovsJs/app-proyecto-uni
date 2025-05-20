@@ -1,6 +1,8 @@
+import { Cuota } from "./cuota";
+
 export class Pago {
   id!: number;
-  cuota_id!: number;
+  cuota: Cuota = new Cuota();
   monto: number = 0;
-  fecha_pago: Date = new Date();
+  fechaPago: Date = new Date();
 }

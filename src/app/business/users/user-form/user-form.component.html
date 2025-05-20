@@ -1,65 +1,257 @@
-<div class="container">
-  <div class="card" tabindex="-1" style="display: block;">
-    <div class="card-dialog">
-      <div class="card-content">
-        <div class="card-header">
-          <h5 class="card-title">Form {{id ? 'Editar' :'Crear'}} User</h5>
-
-        </div>
-        <div class="card-body">
-
-
-          <form (ngSubmit)="onSubmit()" #userForm="ngForm">
-
-            <div class="my-3">
-              <input name="name" placeholder="Ingresar Nombre" class="form-control" [(ngModel)]="user.name">
-
-              @if (errorValidationBackend?.name) {
-              <div class="text-danger mx-2">{{errorValidationBackend.name}}</div>
-              }
-            </div>
-
-            <div class="my-3">
-              <input name="lastname" placeholder="Ingresar Apellido" class="form-control" [(ngModel)]="user.lastname">
-
-              @if (errorValidationBackend?.lastname) {
-              <div class="text-danger mx-2">{{errorValidationBackend.lastname}}</div>
-              }
-            </div>
-
-            <div class="my-3">
-              <input name="dni" placeholder="Ingresar Dni" class="form-control" [(ngModel)]="user.dni">
-
-              @if (errorValidationBackend?.dni) {
-              <div class="text-danger mx-2">{{errorValidationBackend.dni}}</div>
-              }
-            </div>
-
-            <div class="my-3">
-              <input name="phone" placeholder="Ingresar Teléfono" class="form-control" [(ngModel)]="user.phone">
-
-              @if (errorValidationBackend?.phone) {
-              <div class="text-danger mx-2">{{errorValidationBackend.phone}}</div>
-              }
-            </div>
-
-            <div class="my-3">
-              <input name="address" placeholder="Ingresar Dirección" class="form-control" [(ngModel)]="user.address">
-
-              @if (errorValidationBackend?.address) {
-              <div class="text-danger mx-2">{{errorValidationBackend.address}}</div>
-              }
-            </div>
-
-            <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">{{user.id>0 ? 'Editar' :
-              'Crear'}}</button>
-
-
-          </form>
-
+<!-- user-form.component.html -->
+<div class="container-fluid">
+  <!-- Header Section con degradado elegante -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="jumbotron text-white p-4"
+        style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #4fc3f7;">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 font-weight-bold mb-0">{{ isEditMode ? 'Editar Usuario' : 'Nuevo Usuario' }}</h1>
+            <p class="lead mt-2 mb-0 opacity-75">{{ isEditMode ? 'Actualiza la información del usuario' : 'Registra un
+              nuevo usuario en el sistema' }}</p>
+          </div>
+          <div>
+            <a routerLink="/users" class="btn"
+              style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 0.5rem; padding: 8px 16px; transition: all 0.3s ease;">
+              <i class="fas fa-arrow-left mr-2"></i> Volver a Usuarios
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Contenedor del formulario -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease; border: none; color: white;">
+        <div class="card-header" style="background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05);">
+          <h5 class="mb-0">
+            <i class="fas" [ngClass]="isEditMode ? 'fa-user-edit' : 'fa-user-plus'" class="mr-2"></i>
+            {{ isEditMode ? 'Formulario de Edición' : 'Formulario de Registro' }}
+          </h5>
+        </div>
+
+        <!-- Loading indicator -->
+        <div *ngIf="loading" class="card-body text-center py-5">
+          <div class="spinner-border text-light" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+          <p class="text-light mt-3">{{ isEditMode ? 'Cargando datos del usuario...' : 'Procesando...' }}</p>
+        </div>
+
+        <!-- Formulario -->
+        <div *ngIf="!loading" class="card-body">
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <!-- Primera fila: Nombre y Apellido -->
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label class="form-label text-muted">Nombre</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" formControlName="name" placeholder="Ingrese su nombre"
+                    [ngClass]="{'is-invalid': hasError('name')}"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                </div>
+                <div *ngIf="hasError('name')" class="text-danger mt-1">
+                  {{ getFieldErrorMessage('name') }}
+                </div>
+                <div *ngIf="errorValidationBackend?.name" class="text-danger mt-1">
+                  {{ errorValidationBackend.name }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-muted">Apellido</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" formControlName="lastname" placeholder="Ingrese su apellido"
+                    [ngClass]="{'is-invalid': hasError('lastname')}"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                </div>
+                <div *ngIf="hasError('lastname')" class="text-danger mt-1">
+                  {{ getFieldErrorMessage('lastname') }}
+                </div>
+                <div *ngIf="errorValidationBackend?.lastname" class="text-danger mt-1">
+                  {{ errorValidationBackend.lastname }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Segunda fila: DNI y Teléfono -->
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label class="form-label text-muted">DNI</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      <i class="fas fa-id-card"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" formControlName="dni" placeholder="Ingrese su DNI (8 dígitos)"
+                    [ngClass]="{'is-invalid': hasError('dni')}"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                </div>
+                <div *ngIf="hasError('dni')" class="text-danger mt-1">
+                  {{ getFieldErrorMessage('dni') }}
+                </div>
+                <div *ngIf="errorValidationBackend?.dni" class="text-danger mt-1">
+                  {{ errorValidationBackend.dni }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-muted">Teléfono</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      <i class="fas fa-phone"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" formControlName="phone"
+                    placeholder="Ingrese su teléfono (9 dígitos)" [ngClass]="{'is-invalid': hasError('phone')}"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                </div>
+                <div *ngIf="hasError('phone')" class="text-danger mt-1">
+                  {{ getFieldErrorMessage('phone') }}
+                </div>
+                <div *ngIf="errorValidationBackend?.phone" class="text-danger mt-1">
+                  {{ errorValidationBackend.phone }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Tercera fila: Dirección -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <label class="form-label text-muted">Dirección</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" formControlName="address" placeholder="Ingrese su dirección"
+                    [ngClass]="{'is-invalid': hasError('address')}"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                </div>
+                <div *ngIf="hasError('address')" class="text-danger mt-1">
+                  {{ getFieldErrorMessage('address') }}
+                </div>
+                <div *ngIf="errorValidationBackend?.address" class="text-danger mt-1">
+                  {{ errorValidationBackend.address }}
+                </div>
+              </div>
+            </div>
+
+            @if (isEditMode) {
+
+              <div class="col-md-12 mb-3">
+                <div class="form-group">
+                  <label style="color: rgba(255,255,255,0.7);">Email</label>
+                  <input type="email" class="form-control" formControlName="email"
+                    style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border-radius: 0.5rem;">
+                  <small class="form-text" style="color: rgba(255,255,255,0.5);">El email no puede ser
+                    modificado.</small>
+                </div>
+              </div>
+            }
+
+            <!-- Solo para modo edición: Contraseña (opcional) -->
+            <!-- <div class="row mb-3" *ngIf="isEditMode">
+              <div class="col-md-12">
+                <label class="form-label text-muted">Nueva Contraseña (opcional)</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </div>
+                  <input type="password" class="form-control" formControlName="password"
+                    placeholder="Dejar en blanco para mantener actual"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                </div>
+                <small class="text-muted">Dejar en blanco para mantener la contraseña actual</small>
+              </div>
+            </div> -->
+
+
+
+            <!-- Botones de acción -->
+            <div class="row mt-4">
+              <div class="col-6">
+                <button type="button" class="btn btn-block" routerLink="/users"
+                  style="background: rgba(231, 76, 60, 0.15); color: white; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 0.5rem; padding: 10px 0; transition: all 0.3s ease;">
+                  <i class="fas fa-times mr-2"></i> Cancelar
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="submit" class="btn btn-block" [disabled]="userForm.invalid || loading"
+                  style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 0.5rem; padding: 10px 0; transition: all 0.3s ease;">
+                  <i class="fas" [ngClass]="isEditMode ? 'fa-save' : 'fa-user-plus'" class="mr-2"></i>
+                  {{ isEditMode ? 'Guardar Cambios' : 'Registrar Usuario' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+  /* Animaciones para formulario */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Estilos para inputs con foco */
+  .form-control:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25) !important;
+    border-color: rgba(79, 195, 247, 0.5) !important;
+    color: white !important;
+  }
+
+  /* Estilos para inputs disabled */
+  .form-control:disabled {
+    background: rgba(0, 0, 0, 0.2) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  /* Estilos para botones */
+  .btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+</style>

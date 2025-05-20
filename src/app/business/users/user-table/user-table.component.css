@@ -1,0 +1,126 @@
+/* Estilos para la tabla personalizada */
+:host ::ng-deep .table {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+:host ::ng-deep .table thead th,
+:host ::ng-deep .table tbody td {
+  background-color: transparent !important;
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+:host ::ng-deep .table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+}
+
+/* Mostrar offcanvas */
+.user-details-offcanvas.show {
+  transform: translateX(0) !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* Mostrar overlay */
+.offcanvas-overlay.active {
+  display: block !important;
+}
+
+/* Animaciones para filas y tarjetas */
+.animate-row:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.animate-card {
+  transition: all 0.3s ease;
+}
+
+.animate-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Offcanvas responsive */
+@media (max-width: 767px) {
+  .user-details-offcanvas {
+    width: 100% !important;
+  }
+}
+
+/* Estilos para el overlay */
+.offcanvas-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1049;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.offcanvas-overlay.active {
+  display: block;
+}
+
+/* Estilos para el offcanvas */
+.user-details-offcanvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background: linear-gradient(to bottom, #2c3e50, #1a252f);
+  z-index: 1050;
+  overflow-y: auto;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.user-details-offcanvas.show {
+  transform: translateX(0);
+}
+
+/* Asegurar que todo el texto sea blanco */
+:host ::ng-deep .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+:host ::ng-deep td,
+:host ::ng-deep th,
+:host ::ng-deep p,
+:host ::ng-deep div,
+:host ::ng-deep span,
+:host ::ng-deep h1,
+:host ::ng-deep h2,
+:host ::ng-deep h3,
+:host ::ng-deep h4,
+:host ::ng-deep h5,
+:host ::ng-deep h6 {
+  color: white !important;
+}
+
+/* Estilos para que el texto sea legible */
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+
+input::placeholder {
+  color: rgb(175, 169, 169);
+  opacity: 1;
+  /* Asegura que el blanco se vea claramente */
+}

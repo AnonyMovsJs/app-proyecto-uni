@@ -1,208 +1,330 @@
-<!-- chatbot.component.html -->
-<div class="position-fixed" style="bottom: 20px; right: 20px; z-index: 1050;">
-  <!-- Botón para abrir/cerrar el chat -->
-  <button class="btn btn-primary rounded-circle shadow d-flex align-items-center justify-content-center"
-    style="width: 60px; height: 60px;" (click)="toggleChat()">
-    <i class="fas" [ngClass]="isOpen ? 'fa-times' : 'fa-comments'"></i>
+<div class="chatbot-container" [ngClass]="{'open': isOpen}">
+  <!-- Botón flotante para abrir/cerrar el chat -->
+  <button class="chatbot-toggle" (click)="toggleChat()"
+    [style.background]="isOpen ? '#e74c3c' : 'linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%)'" style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; color: white;
+    border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
+    z-index: 1050; transition: all 0.3s ease;">
+    <i [class]="isOpen ? 'fas fa-times' : 'fas fa-comment-dots'" style="font-size: 1.5rem;"></i>
   </button>
 
-  <!-- Contenido del chat -->
-  <div *ngIf="isOpen" class="card shadow mt-2" style="width: 400px; position: absolute; bottom: 70px; right: 0;">
+  <!-- Ventana del chatbot -->
+  <div class="chatbot-window" style="position: fixed; bottom: 90px; right: 20px; width: 350px; height: 500px;
+    background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3); display: flex; flex-direction: column; z-index: 1049;
+    transform-origin: bottom right; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);"
+    [style.transform]="isOpen ? 'scale(1)' : 'scale(0)'">
 
-    <!-- Encabezado mejorado con botón de cierre integrado -->
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <!-- Header del chat -->
+    <div class="chatbot-header" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 15px;
+      display: flex; justify-content: space-between; align-items: center; color: white;
+      border-bottom: 1px solid rgba(255,255,255,0.1);">
       <div class="d-flex align-items-center">
-        <i class="fas fa-headset mr-2"></i>
-        <h5 class="m-0">Asistente de Ventas</h5>
-      </div>
-      <div class="d-flex align-items-center">
-        <span class="badge badge-success mr-2">{{ authService.isAdmin() ? 'ADMIN' : 'CLIENTE' }}</span>
-        <div class="btn-group">
-          <button class="btn btn-sm text-white p-0 mx-2" title="Reiniciar conversación" (click)="resetChat()">
-            <i class="fas fa-sync-alt"></i>
-          </button>
-          <button class="btn btn-sm text-white p-0" (click)="toggleChat()">
-            <i class="fas fa-times"></i>
-          </button>
+        <div class="chatbot-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2);
+          display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+          <i class="fas fa-robot" style="color: white; font-size: 1.25rem;"></i>
         </div>
+        <div>
+          <h5 class="mb-0" style="font-weight: 600;">Asistente Virtual</h5>
+          <span class="small" style="opacity: 0.7;">
+            <i class="fas fa-circle" style="font-size: 0.5rem; color: #2ecc71; margin-right: 5px;"></i>
+            <span class="badge badge-pill" [ngClass]="authService.isAdmin() ? 'badge-danger' : 'badge-info'"
+              style="font-size: 0.7rem;">
+              {{ authService.isAdmin() ? 'ADMIN' : 'CLIENTE' }}
+            </span>
+          </span>
+        </div>
+      </div>
+      <div>
+        <button class="btn-icon" (click)="resetChat()"
+          style="background: none; border: none; color: white; opacity: 0.7; cursor: pointer;"
+          title="Reiniciar conversación">
+          <i class="fas fa-sync-alt mr-2"></i>
+        </button>
+        <button class="btn-icon" (click)="toggleChat()"
+          style="background: none; border: none; color: white; opacity: 0.7; cursor: pointer;" title="Cerrar">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
     </div>
 
     <!-- Contenedor de mensajes -->
-    <div #chatMessages class="card-body p-2 bg-light" style="height: 400px; overflow-y: auto;">
+    <div #chatMessages class="chatbot-messages"
+      style="flex: 1; padding: 15px; overflow-y: auto; scrollbar-width: thin;">
 
-      <!-- Mensajes del chat mejorados -->
-      <div *ngFor="let msg of messages" class="mb-3">
-        <div class="d-flex" [ngClass]="{'justify-content-start': msg.isBot, 'justify-content-end': !msg.isBot}">
-          <!-- Avatar para el bot -->
-          <div *ngIf="msg.isBot" class="mr-2 d-none d-sm-block">
-            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center"
-              style="width: 30px; height: 30px;">
-              <i class="fas fa-robot text-white small"></i>
-            </div>
-          </div>
+      <!-- Mensajes -->
+      <div *ngFor="let msg of messages; let i = index" class="chat-message"
+        [ngClass]="{'user-message': !msg.isBot, 'bot-message': msg.isBot}"
+        style="margin-bottom: 15px; max-width: 85%; animation: fadeIn 0.3s ease;">
 
-          <!-- Burbuja de mensaje -->
-          <div class="p-2 rounded" [ngClass]="{'bg-white shadow-sm': msg.isBot, 'bg-primary text-white': !msg.isBot}"
-            style="max-width: 80%;">
-            <p class="mb-1" [innerHTML]="msg.content"></p>
-            <small [ngClass]="{'text-muted': msg.isBot, 'text-white-50': !msg.isBot}" class="d-block text-right">
-              {{ msg.timestamp | date:'shortTime' }}
-            </small>
-          </div>
+        <!-- Avatar para mensajes del bot -->
+        <div *ngIf="msg.isBot" class="message-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%);
+          display: flex; align-items: center; justify-content: center; float: left; margin-right: 10px;">
+          <i class="fas fa-robot" style="color: white; font-size: 0.875rem;"></i>
+        </div>
 
-          <!-- Avatar para el usuario -->
-          <div *ngIf="!msg.isBot" class="ml-2 d-none d-sm-block">
-            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
-              style="width: 30px; height: 30px;">
-              <i class="fas fa-user text-white small"></i>
-            </div>
+        <!-- Contenido del mensaje -->
+        <div class="message-content"
+          [style.background]="msg.isBot ? 'rgba(255,255,255,0.05)' : 'linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%)'"
+          [style.border-radius]="msg.isBot ? '0 15px 15px 15px' : '15px 0 15px 15px'"
+          [style.margin-left]="msg.isBot ? '40px' : '0'" [style.float]="msg.isBot ? 'left' : 'right'" style="padding: 10px 15px; color: white; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+          border: 1px solid rgba(255,255,255,0.05); max-width: 85%; word-break: break-word;">
+          <div style="margin-bottom: 5px;" [innerHTML]="msg.content"></div>
+          <div class="message-time" style="font-size: 0.7rem; text-align: right; opacity: 0.7; margin-top: 5px;">
+            {{ msg.timestamp | date:'shortTime' }}
           </div>
         </div>
+
+        <div style="clear: both;"></div>
       </div>
 
-      <!-- Indicador de carga -->
-      <div *ngIf="loading && !isRecording" class="d-flex justify-content-start mb-3">
-        <div class="p-2 bg-white rounded-pill shadow-sm d-flex align-items-center">
-          <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
-          <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
-          <div class="spinner-grow spinner-grow-sm text-primary mx-1" role="status"></div>
-          <small class="text-muted ml-2">Procesando...</small>
+      <!-- Indicador de carga mientras el bot está escribiendo -->
+      <div *ngIf="loading" class="chat-message bot-message" style="margin-bottom: 15px; max-width: 85%;">
+        <div class="message-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%);
+          display: flex; align-items: center; justify-content: center; float: left; margin-right: 10px;">
+          <i class="fas fa-robot" style="color: white; font-size: 0.875rem;"></i>
         </div>
+
+        <div class="message-content typing-indicator" style="background: rgba(255,255,255,0.05); border-radius: 0 15px 15px 15px; padding: 15px;
+          color: white; box-shadow: 0 1px 4px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.05);
+          float: left; margin-left: 40px; display: flex; align-items: center;">
+          <div class="typing-dot" style="background: white; width: 6px; height: 6px; border-radius: 50%;
+            margin-right: 4px; opacity: 0.7; animation: typingAnimation 1.5s infinite ease-in-out;"></div>
+          <div class="typing-dot" style="background: white; width: 6px; height: 6px; border-radius: 50%;
+            margin-right: 4px; opacity: 0.7; animation: typingAnimation 1.5s infinite ease-in-out 0.2s;"></div>
+          <div class="typing-dot" style="background: white; width: 6px; height: 6px; border-radius: 50%;
+            opacity: 0.7; animation: typingAnimation 1.5s infinite ease-in-out 0.4s;"></div>
+        </div>
+
+        <div style="clear: both;"></div>
+      </div>
+
+      <!-- Indicador de grabación de voz -->
+      <div *ngIf="isRecording" class="chat-message bot-message" style="margin-bottom: 15px; max-width: 85%;">
+        <div class="message-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+          display: flex; align-items: center; justify-content: center; float: left; margin-right: 10px;">
+          <i class="fas fa-microphone" style="color: white; font-size: 0.875rem;"></i>
+        </div>
+
+        <div class="message-content recording-indicator" style="background: rgba(231, 76, 60, 0.15); border-radius: 0 15px 15px 15px; padding: 15px;
+          color: white; box-shadow: 0 1px 4px rgba(0,0,0,0.1); border: 1px solid rgba(231, 76, 60, 0.2);
+          float: left; margin-left: 40px; display: flex; align-items: center;">
+          <i class="fas fa-circle recording-pulse" style="color: #e74c3c; font-size: 0.6rem; margin-right: 10px;"></i>
+          <span>Grabando... Habla ahora</span>
+        </div>
+
+        <div style="clear: both;"></div>
       </div>
     </div>
 
-    <!-- Área de datos de acción - Mejorada -->
-    <div *ngIf="actionData" class="border-top border-bottom p-2" style="max-height: 250px; overflow-y: auto;">
+    <!-- Sección de acciones (resultados, tablas, etc.) -->
+    <div *ngIf="actionData" class="action-data" style="max-height: 200px; overflow-y: auto; padding: 15px; background: rgba(0,0,0,0.2);
+      border-top: 1px solid rgba(255,255,255,0.05); animation: slideUp 0.3s ease;">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <h6 class="m-0 text-primary font-weight-bold">
-          <i class="fas mr-2" [ngClass]="{
-               'fa-table': actionData.type === 'QUERY',
-               'fa-check-circle': actionData.type === 'REGISTER_SALE' || actionData.type === 'CREATE_USER'
-             }"></i>
-          {{ actionData.type === 'QUERY' ? 'Resultados' :
-          actionData.type === 'REGISTER_SALE' ? 'Venta Registrada' :
-          actionData.type === 'CREATE_USER' ? 'Usuario Creado' : 'Datos' }}
+        <h6 class="mb-0 font-weight-bold text-white">
+          <i [class]="'fas ' + getActionIcon(actionData.type) + ' mr-2'" style="color: #4fc3f7;"></i>
+          {{ getActionTitle(actionData.type) }}
         </h6>
-        <button type="button" class="btn btn-sm" (click)="clearAction()" aria-label="Cerrar">
-          <i class="fas fa-times text-secondary"></i>
+        <button class="btn btn-sm text-white" (click)="clearAction()"
+          style="opacity: 0.7; background: none; border: none;">
+          <i class="fas fa-times"></i>
         </button>
       </div>
 
       <div [ngSwitch]="actionData.type">
-        <!-- Tabla de resultados mejorada -->
-        <div *ngSwitchCase="'QUERY'">
-          <div *ngIf="actionData.data && actionData.data.length > 0" class="table-responsive">
-            <table class="table table-sm table-hover border">
-              <thead class="thead-light">
-                <tr>
-                  <th *ngFor="let col of getTableColumns(actionData.data)" class="text-nowrap">
+        <!-- Tablas de resultados para consultas -->
+        <div *ngSwitchCase="'QUERY'" class="action-query">
+          <div *ngIf="actionData.data && actionData.data.length > 0" class="table-responsive"
+            style="max-height: 150px; overflow-y: auto; border-radius: 5px;">
+            <table class="table table-sm table-dark" style="background: rgba(0,0,0,0.2); margin-bottom: 0;">
+              <thead>
+                <tr style="background: rgba(0,0,0,0.3);">
+                  <th *ngFor="let col of getTableColumns(actionData.data)" scope="col"
+                    style="padding: 8px; font-size: 0.85rem; font-weight: 500; border-color: rgba(255,255,255,0.1);">
                     {{ col | titlecase }}
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of actionData.data">
-                  <td *ngFor="let col of getTableColumns(actionData.data)" class="text-nowrap">
-                    <!-- Estado con badges -->
-                    <span *ngIf="col === 'estado' || col === 'Estado'" class="badge" [ngClass]="{'badge-warning': item[col] === 'PENDIENTE',
-                                     'badge-success': item[col] === 'PAGADO',
-                                     'badge-danger': item[col] === 'VENCIDO'}">
+                <tr *ngFor="let item of formatTableData(actionData.data)" style="border-color: rgba(255,255,255,0.05);">
+                  <td *ngFor="let col of getTableColumns(actionData.data)"
+                    style="padding: 8px; font-size: 0.85rem; border-color: rgba(255,255,255,0.05);">
+                    <span *ngIf="col.toLowerCase() === 'estado'" class="badge badge-pill"
+                      [ngClass]="getStatusClass(item[col])">
+                      {{ item[col] }}
+                    </span>
+                    <span *ngIf="col.toLowerCase() !== 'estado'">
                       {{ formatCellValue(item[col]) }}
                     </span>
-                    <span *ngIf="col !== 'estado' && col !== 'Estado'">{{ formatCellValue(item[col]) }}</span>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div *ngIf="!actionData.data || actionData.data.length === 0" class="alert alert-info">
-            <i class="fas fa-info-circle mr-2"></i> No se encontraron resultados para la consulta.
+          <div *ngIf="!actionData.data || actionData.data.length === 0" class="text-center text-white p-3"
+            style="background: rgba(0,0,0,0.1); border-radius: 5px;">
+            No se encontraron resultados para esta consulta.
           </div>
         </div>
 
-        <!-- Visualización de usuario creado mejorada -->
-        <div *ngSwitchCase="'CREATE_USER'">
-          <div *ngIf="actionData.data && !actionData.data.error" class="alert alert-success">
-            <strong><i class="fas fa-check-circle mr-1"></i> Usuario creado exitosamente</strong>
+        <!-- Registro de ventas -->
+        <div *ngSwitchCase="'REGISTER_SALE'" class="action-sale">
+          <div *ngIf="actionData.data && !actionData.data.error" class="alert" style="background: rgba(46, 204, 113, 0.15); border-left: 3px solid #2ecc71;
+            border-radius: 5px; padding: 10px; margin-bottom: 10px; color: white;">
+            <i class="fas fa-check-circle mr-2" style="color: #2ecc71;"></i>
+            Venta registrada exitosamente.
           </div>
-          <div *ngIf="actionData.data && actionData.data.error" class="alert alert-danger">
-            <strong><i class="fas fa-exclamation-circle mr-1"></i> Error al crear usuario</strong>
-            <p>{{ actionData.data.mensaje }}</p>
+
+          <div *ngIf="actionData.data && actionData.data.error" class="alert" style="background: rgba(231, 76, 60, 0.15); border-left: 3px solid #e74c3c;
+            border-radius: 5px; padding: 10px; margin-bottom: 10px; color: white;">
+            <i class="fas fa-exclamation-circle mr-2" style="color: #e74c3c;"></i>
+            {{ actionData.data.mensaje || "Error al registrar la venta" }}
           </div>
-          <ul *ngIf="actionData.data && !actionData.data.error" class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
-              <strong>ID</strong>
-              <span class="badge badge-primary badge-pill">{{ actionData.data.id }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>Nombre</strong>
-              <span>{{ actionData.data.nombre }} {{ actionData.data.apellido }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
-              <strong>Email</strong>
-              <span class="text-primary">{{ actionData.data.email }}</span>
-            </li>
-          </ul>
+
+          <div *ngIf="actionData.data && !actionData.data.error" class="sale-details"
+            style="background: rgba(0,0,0,0.1); border-radius: 5px; padding: 10px;">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-light" style="opacity: 0.8;">ID Venta:</span>
+              <span class="text-white font-weight-bold">{{ actionData.data.id || 'N/A' }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2" *ngIf="actionData.data.montoTotal">
+              <span class="text-light" style="opacity: 0.8;">Monto Total:</span>
+              <span class="text-white font-weight-bold">S/. {{ formatCellValue(actionData.data.montoTotal) }}</span>
+            </div>
+            <div class="d-flex justify-content-between" *ngIf="actionData.data.tipoVenta">
+              <span class="text-light" style="opacity: 0.8;">Tipo:</span>
+              <span class="badge"
+                [ngClass]="actionData.data.tipoVenta === 'CONTADO' ? 'badge-success' : 'badge-primary'">
+                {{ actionData.data.tipoVenta }}
+              </span>
+            </div>
+          </div>
         </div>
 
-        <!-- Para otros tipos de acción no especificados -->
-        <div *ngSwitchDefault>
-          <pre class="p-2 bg-light border rounded small">{{ formatData(actionData.data) }}</pre>
+        <!-- Creación de usuario -->
+        <div *ngSwitchCase="'CREATE_USER'" class="action-user">
+          <div *ngIf="actionData.data && !actionData.data.error" class="alert" style="background: rgba(46, 204, 113, 0.15); border-left: 3px solid #2ecc71;
+            border-radius: 5px; padding: 10px; margin-bottom: 10px; color: white;">
+            <i class="fas fa-check-circle mr-2" style="color: #2ecc71;"></i>
+            Usuario creado exitosamente.
+          </div>
+
+          <div *ngIf="actionData.data && actionData.data.error" class="alert" style="background: rgba(231, 76, 60, 0.15); border-left: 3px solid #e74c3c;
+            border-radius: 5px; padding: 10px; margin-bottom: 10px; color: white;">
+            <i class="fas fa-exclamation-circle mr-2" style="color: #e74c3c;"></i>
+            {{ actionData.data.mensaje || "Error al crear usuario" }}
+          </div>
+
+          <div *ngIf="actionData.data && !actionData.data.error" class="user-details"
+            style="background: rgba(0,0,0,0.1); border-radius: 5px; padding: 10px;">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-light" style="opacity: 0.8;">Nombre:</span>
+              <span class="text-white font-weight-bold">
+                {{ actionData.data.nombre || '' }} {{ actionData.data.apellido || '' }}
+              </span>
+            </div>
+            <div class="d-flex justify-content-between" *ngIf="actionData.data.email">
+              <span class="text-light" style="opacity: 0.8;">Email:</span>
+              <span class="text-white">{{ actionData.data.email }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formato para otros tipos de acciones -->
+        <div *ngSwitchDefault class="action-default">
+          <pre style="background: rgba(0,0,0,0.1); color: white; font-size: 0.85rem; padding: 10px;
+            border-radius: 5px; max-height: 150px; overflow: auto;">{{ formatData(actionData.data) }}</pre>
         </div>
       </div>
     </div>
 
-    <!-- Sugerencias mejoradas -->
-    <div *ngIf="messages.length < 4" class="border-top p-2 bg-light">
-      <p class="text-muted small mb-2 font-weight-bold">Sugerencias:</p>
+    <!-- Sugerencias de mensajes -->
+    <div *ngIf="messages.length < 4" class="chatbot-suggestions"
+      style="padding: 10px 15px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.05);">
+      <p class="mb-2 text-light small">
+        <i class="fas fa-lightbulb mr-1" style="color: #f39c12;"></i>
+        Sugerencias:
+      </p>
       <div class="d-flex flex-wrap">
-        <button *ngFor="let suggestion of suggestions" class="btn btn-sm btn-outline-secondary rounded-pill m-1"
-          (click)="useSuggestion(suggestion)">
-          <i class="fas fa-chevron-right small mr-1"></i> {{ suggestion }}
+        <button *ngFor="let suggestion of suggestions" class="btn btn-sm rounded-pill mb-1 mr-1" style="background: rgba(79, 195, 247, 0.15); color: white; border: 1px solid rgba(79, 195, 247, 0.3);
+          font-size: 0.75rem; padding: 4px 10px; transition: all 0.2s ease;" (click)="useSuggestion(suggestion)">
+          <i class="fas fa-chevron-right mr-1" style="font-size: 0.7rem;"></i>
+          {{ suggestion }}
         </button>
       </div>
     </div>
 
-    <!-- Input para enviar mensajes con opción de voz -->
-    <div class="card-footer bg-white">
+    <!-- Input para enviar mensajes -->
+    <div class="chatbot-input" style="padding: 15px; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center;">
       <div class="input-group">
-        <input type="text" class="form-control rounded-pill-left" placeholder="Escribe tu mensaje..."
-          [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" [disabled]="loading || isRecording">
-        <div class="input-group-append">
-          <!-- Botón de micrófono -->
-          <button class="btn btn-outline-secondary" type="button" (click)="toggleVoiceRecognition()"
-            [ngClass]="{'btn-danger': isRecording}" title="Hablar">
+        <input type="text" [(ngModel)]="newMessage" placeholder="Escribe un mensaje..." class="form-control"
+          (keyup.enter)="sendMessage()" [disabled]="loading || isRecording" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white;
+          border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
+
+        <!-- Botón de reconocimiento de voz -->
+        <div class="input-group-append" *ngIf="speechRecognition">
+          <button class="btn" [ngClass]="{'btn-danger': isRecording, 'btn-outline-secondary': !isRecording}"
+            type="button" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white;"
+            (click)="toggleVoiceRecognition()" title="Usar micrófono">
             <i class="fas" [ngClass]="isRecording ? 'fa-stop' : 'fa-microphone'"></i>
           </button>
-          <!-- Botón de enviar -->
-          <button class="btn btn-primary rounded-pill-right" (click)="sendMessage()"
-            [disabled]="loading || isRecording || newMessage.trim() === ''" title="Enviar mensaje">
+        </div>
+
+        <!-- Botón de enviar -->
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" (click)="sendMessage()"
+            [disabled]="!newMessage.trim() || loading || isRecording" style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); border: none;
+            border-top-right-radius: 20px; border-bottom-right-radius: 20px;">
             <i class="fas fa-paper-plane"></i>
           </button>
         </div>
-      </div>
-      <!-- Indicador de grabación -->
-      <div *ngIf="isRecording" class="text-center mt-1">
-        <small class="text-danger">
-          <i class="fas fa-circle text-danger mr-1 recording-indicator"></i> Grabando... Habla ahora
-        </small>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Estilos para esquinas redondeadas y animación del indicador de grabación -->
 <style>
-  .rounded-pill-left {
-    border-radius: 50rem 0 0 50rem !important;
+  /* Animaciones para el chatbot */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .rounded-pill-right {
-    border-radius: 0 50rem 50rem 0 !important;
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .recording-indicator {
+  @keyframes typingAnimation {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.5);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Animación para el indicador de grabación */
+  .recording-pulse {
     animation: pulse 1s infinite;
   }
 
@@ -212,11 +334,44 @@
     }
 
     50% {
-      opacity: 0.5;
+      opacity: 0.3;
     }
 
     100% {
       opacity: 1;
+    }
+  }
+
+  /* Estilos para la scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+  }
+
+  /* Estilos responsivos */
+  @media (max-width: 767px) {
+    .chatbot-window {
+      width: 300px;
+      height: 450px;
+      right: 10px;
+      bottom: 80px;
+    }
+
+    .message-content {
+      max-width: 80%;
+    }
+
+    .chatbot-toggle {
+      width: 50px;
+      height: 50px;
     }
   }
 </style>

@@ -11,6 +11,8 @@ import { DetalleCompraComponent } from './business/cliente/mis-compras/detalle-c
 import { ClienteDashboardComponent } from './business/cliente/cliente-dashboard/cliente-dashboard.component';
 import { ListaComprasComponent } from './business/cliente/mis-compras/lista-compras/lista-compras.component';
 import { AdminDashboardComponent } from './business/admin/admin-dashboard/admin-dashboard.component';
+import { AdminVentasComponent } from './business/admin/admin-ventas/admin-ventas.component';
+import { AdminUsuarioDetalleComponent } from './business/admin/admin-usuario-detalle/admin-usuario-detalle.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +47,16 @@ export const routes: Routes = [
       {
         path: 'admin/dashboard',
         component: AdminDashboardComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/compras',
+        component: AdminVentasComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/user/:id',
+        component: AdminUsuarioDetalleComponent,
         canActivate: [authGuard],
       },
       {

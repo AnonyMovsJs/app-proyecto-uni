@@ -1,51 +1,264 @@
-<div class="container">
-  <h2>Mis Compras</h2>
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status"></div>
+<div class="container-fluid">
+  <!-- Header Section con degradado elegante -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="jumbotron text-white p-4"
+        style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #4fc3f7;">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 font-weight-bold mb-0">Mis Compras</h1>
+            <p class="lead mt-2 mb-0 opacity-75">Historial de todas tus transacciones realizadas</p>
+          </div>
+          <div>
+            <a routerLink="/cliente/dashboard" class="btn"
+              style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 0.5rem; padding: 8px 16px; transition: all 0.3s ease;"
+              onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.2)';"
+              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+              <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2></h2>
-    <a routerLink="/cliente/dashboard" class="btn btn-secondary">
-      <i class="fa fa-arrow-left"></i> Volver
-    </a>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="row">
+    <div class="col-12 text-center py-5">
+      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
+      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
+      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
+      <p class="text-light mt-3">Cargando tu historial de compras...</p>
+    </div>
   </div>
-  <table *ngIf="!loading && !error" class="table table-striped">
-    <thead>
-      <tr>
-        <!-- <th>Fecha</th> -->
-        <th>Descripción</th>
-        <th>Monto</th>
-        <th>Tipo</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let venta of ventas">
-        <!-- <td>{{ venta.fecha_venta| date:'dd/MM/yyyy' }}</td> -->
-        <td>{{ venta.descripcion }}</td>
-        <td>S/. {{ venta.montoTotal| number:'1.2-2' }}</td>
-        <td>
-          <span class="badge text-bg-dark" [ngClass]="venta.tipoVenta">
-            {{ venta.tipoVenta }}
-          </span>
-        </td>
-        <td>
-          <span class="badge" [ngClass]="{
-               'badge-success': venta.estado === 'PAGADO',
-               'badge-warning': venta.estado === 'PENDIENTE',
-             'badge-danger': venta.estado === 'VENCIDO'
-             }">
-            {{ venta.estado }}
-          </span>
-        </td>
-        <td>
-          <a [routerLink]="['/cliente/detalle-compra', venta.id]" class="btn btn-sm btn-info">
-            Ver Detalle
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
+            <p class="mb-0">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista desktop - Tabla de compras -->
+  <div *ngIf="!loading && !error" class="row">
+    <div class="col-12 d-none d-md-block">
+      <div class="table-responsive custom-table-container"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
+        <table class="table table-hover custom-table mb-0">
+          <thead>
+            <tr style="background: rgba(0,0,0,0.2) !important;">
+              <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Fecha</th>
+              <th class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">Descripción</th>
+              <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Monto</th>
+              <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Tipo</th>
+              <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Estado</th>
+              <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let venta of ventas"
+              style="cursor: pointer; transition: all 0.3s ease; border-color: rgba(255,255,255,0.05); animation: fadeIn 0.5s ease;"
+              class="animate-row custom-tr" [routerLink]="['/cliente/detalle-compra', venta.id]">
+              <td class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">
+                <div class="d-flex align-items-center justify-content-center">
+                  <div
+                    style="width: 40px; height: 40px; border-radius: 10px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                      venta.fechaVenta | date:'MMM' }}</span>
+                    <span style="font-size: 14px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                      }}</span>
+                  </div>
+                  <span style="margin-left: 8px; color: rgba(255,255,255,0.6);">{{ venta.fechaVenta | date:'yyyy'
+                    }}</span>
+                </div>
+              </td>
+              <td class="text-white"
+                style="border-color: rgba(255,255,255,0.05) !important; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ venta.descripcion }}
+              </td>
+              <td class="text-center text-white font-weight-bold"
+                style="border-color: rgba(255,255,255,0.05) !important;">
+                S/. {{ venta.montoTotal | number:'1.2-2' }}
+              </td>
+              <td class="text-center" style="border-color: rgba(255,255,255,0.05) !important;">
+                <span class="badge py-2 px-3"
+                  [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : '#3498db'"
+                  style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <i
+                    [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : 'fas fa-credit-card mr-1'"></i>
+                  {{ venta.tipoVenta }}
+                </span>
+              </td>
+              <td class="text-center" style="border-color: rgba(255,255,255,0.05) !important;">
+                <span class="badge py-2 px-3" [style.background-color]="
+                    venta.estado === 'PAGADO' ? '#2ecc71' :
+                    venta.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
+                  style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <i [class]="
+                    venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
+                    venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-exclamation-circle mr-1'"></i>
+                  {{ venta.estado }}
+                </span>
+              </td>
+              <td class="text-center" style="border-color: rgba(255,255,255,0.05) !important;">
+                <button class="btn btn-sm"
+                  style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease; padding: 6px 14px;"
+                  [routerLink]="['/cliente/detalle-compra', venta.id]" (click)="$event.stopPropagation()">
+                  <i class="fas fa-eye mr-1"></i> Ver Detalle
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mensaje si no hay compras -->
+      <div *ngIf="ventas.length === 0" class="text-center mt-4 p-5"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <i class="fas fa-shopping-cart text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
+        <h4 class="text-light">No tienes compras registradas</h4>
+        <p class="text-muted">Aquí se mostrarán tus compras cuando realices alguna</p>
+        <a routerLink="/cliente/dashboard" class="btn mt-3"
+          style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease; padding: 8px 20px;">
+          <i class="fas fa-home mr-2"></i> Volver al Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Vista móvil - Cards de compras -->
+    <div class="col-12 d-md-none">
+      <div *ngFor="let venta of ventas" class="card mb-3 animate-card"
+        [routerLink]="['/cliente/detalle-compra', venta.id]"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: none; color: white; cursor: pointer; transition: all 0.3s ease; animation: fadeIn 0.5s ease;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <div
+                style="width: 48px; height: 48px; border-radius: 12px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 15px;">
+                <span style="font-size: 12px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                  venta.fechaVenta | date:'MMM' }}</span>
+                <span style="font-size: 16px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                  }}</span>
+              </div>
+              <div>
+                <span class="badge" [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : '#3498db'"
+                  style="font-weight: 500; border-radius: 4px; font-size: 0.7rem; padding: 0.25rem 0.5rem;">
+                  <i
+                    [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : 'fas fa-credit-card mr-1'"></i>
+                  {{ venta.tipoVenta }}
+                </span>
+                <span class="badge ml-1" [style.background-color]="
+                    venta.estado === 'PAGADO' ? '#2ecc71' :
+                    venta.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
+                  style="font-weight: 500; border-radius: 4px; font-size: 0.7rem; padding: 0.25rem 0.5rem;">
+                  <i [class]="
+                    venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
+                    venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-exclamation-circle mr-1'"></i>
+                  {{ venta.estado }}
+                </span>
+              </div>
+            </div>
+            <h5 class="mb-0 font-weight-bold text-white">S/. {{ venta.montoTotal | number:'1.2-2' }}</h5>
+          </div>
+
+          <p class="text-white mb-3">{{ venta.descripcion }}</p>
+
+          <div class="text-right">
+            <button class="btn btn-sm"
+              style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease; padding: 6px 14px;"
+              [routerLink]="['/cliente/detalle-compra', venta.id]" (click)="$event.stopPropagation()">
+              <i class="fas fa-eye mr-1"></i> Ver Detalle
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje si no hay compras (móvil) -->
+      <div *ngIf="ventas.length === 0" class="text-center mt-4 p-4"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <i class="fas fa-shopping-cart text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
+        <h5 class="text-light">No tienes compras registradas</h5>
+        <p class="text-muted small">Aquí se mostrarán tus compras cuando realices alguna</p>
+        <a routerLink="/cliente/dashboard" class="btn mt-2"
+          style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease; padding: 8px 20px;">
+          <i class="fas fa-home mr-2"></i> Volver al Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+  /* Estilos para la tabla personalizada */
+  .custom-table-container {
+    background: linear-gradient(to bottom, #2c3e50, #1a252f) !important;
+  }
+
+  .custom-table {
+    background-color: transparent !important;
+    color: white !important;
+  }
+
+  .custom-table thead th,
+  .custom-table tbody td,
+  .custom-tr td,
+  .custom-tr th {
+    background-color: transparent !important;
+    color: white !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* Animaciones para filas y tarjetas */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-row:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .animate-card {
+    transition: all 0.3s ease;
+  }
+
+  .animate-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Estilos para scrollbars */
+  .table-responsive::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-responsive::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+</style>

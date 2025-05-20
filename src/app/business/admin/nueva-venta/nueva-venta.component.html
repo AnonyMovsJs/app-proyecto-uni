@@ -1,154 +1,355 @@
-<div class="container">
-  <h2>Registrar Nueva Venta</h2>
-
-  <div *ngIf="error" class="alert alert-danger">
-    {{ error }}
+<div class="container-fluid">
+  <!-- Header Section con degradado elegante -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="jumbotron text-white p-4"
+        style="background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #6a11cb;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="display-5 font-weight-bold mb-0">Registrar Nueva Venta</h1>
+            <p class="lead mt-2 mb-0 opacity-75">Complete los datos para registrar una nueva transacción en el sistema
+            </p>
+          </div>
+          <div class="mt-3 mt-md-0">
+            <a routerLink="/admin/ventas" class="btn btn-outline-light px-3">
+              <i class="fas fa-arrow-left mr-2"></i> Volver a Ventas
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <form [formGroup]="ventaForm" (ngSubmit)="onSubmit()">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="cliente">Cliente:</label>
-          <select id="cliente" formControlName="clienteId" class="form-control"
-            [ngClass]="{'is-invalid': ventaForm.get('clienteId')?.invalid && ventaForm.get('clienteId')?.touched}">
-            <option value="">Seleccione un cliente</option>
-            <option *ngFor="let cliente of clientes" [value]="cliente.id">
-              {{ cliente.name }}
-            </option>
-          </select>
-          <div class="invalid-feedback"
-            *ngIf="ventaForm.get('clienteId')?.invalid && ventaForm.get('clienteId')?.touched">
-            Debe seleccionar un cliente
+  <!-- Error Alert -->
+  <div *ngIf="error" class="row mb-4">
+    <div class="col-12">
+      <div class="alert"
+        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <div>
+            <h5 class="mb-1" style="color: #e74c3c;">Error al registrar venta</h5>
+            <p class="mb-0">{{ error }}</p>
           </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="tipoVenta">Tipo de Venta:</label>
-          <select id="tipoVenta" formControlName="tipoVenta" class="form-control">
-            <option *ngFor="let tipo of tiposVenta" [value]="tipo.id">
-              {{ tipo.nombre }}
-            </option>
-          </select>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="descripcion">Descripción:</label>
-      <input type="text" id="descripcion" formControlName="descripcion" class="form-control"
-        [ngClass]="{'is-invalid': ventaForm.get('descripcion')?.invalid && ventaForm.get('descripcion')?.touched}">
-      <div class="invalid-feedback"
-        *ngIf="ventaForm.get('descripcion')?.invalid && ventaForm.get('descripcion')?.touched">
-        La descripción es requerida
-      </div>
-    </div>
+  <!-- Contenido principal -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card border-0 text-white mb-4"
+        style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
+        <div class="card-body p-4">
+          <form [formGroup]="ventaForm" (ngSubmit)="onSubmit()">
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label for="cliente" class="form-label text-light opacity-75">Cliente:</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                  <select id="cliente" formControlName="clienteId" class="form-control"
+                    [ngClass]="{'is-invalid': ventaForm.get('clienteId')?.invalid && ventaForm.get('clienteId')?.touched}"
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    <option value="" disabled>Seleccione un cliente</option>
+                    <option *ngFor="let cliente of clientes" [value]="cliente.id">
+                      {{ cliente.name }} {{ cliente.lastname }}
+                    </option>
+                  </select>
+                </div>
+                <div class="text-danger mt-1 small"
+                  *ngIf="ventaForm.get('clienteId')?.invalid && ventaForm.get('clienteId')?.touched">
+                  Debe seleccionar un cliente
+                </div>
+              </div>
 
-    <h4>Detalles de la Venta</h4>
-    <div formArrayName="detalles">
-      <div *ngFor="let detalle of detalles.controls; let i = index" [formGroupName]="i" class="row mb-3">
-        <div class="col-md-5">
-          <div class="form-group">
-            <label>Nombre del Producto:</label>
-            <input type="text" formControlName="nombreProducto" class="form-control"
-              [ngClass]="{'is-invalid': detalle.get('nombreProducto')?.invalid && detalle.get('nombreProducto')?.touched}">
-            <div class="invalid-feedback"
-              *ngIf="detalle.get('nombreProducto')?.invalid && detalle.get('nombreProducto')?.touched">
-              El nombre del producto es requerido
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-2">
-          <div class="form-group">
-            <label>Cantidad:</label>
-            <input type="number" formControlName="cantidad" class="form-control" min="1"
-              [ngClass]="{'is-invalid': detalle.get('cantidad')?.invalid && detalle.get('cantidad')?.touched}">
-            <div class="invalid-feedback" *ngIf="detalle.get('cantidad')?.invalid && detalle.get('cantidad')?.touched">
-              La cantidad debe ser mayor a 0
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Precio Unitario:</label>
-            <input type="number" formControlName="precioUnitario" class="form-control" step="0.01" min="0.01"
-              [ngClass]="{'is-invalid': detalle.get('precioUnitario')?.invalid && detalle.get('precioUnitario')?.touched}">
-            <div class="invalid-feedback"
-              *ngIf="detalle.get('precioUnitario')?.invalid && detalle.get('precioUnitario')?.touched">
-              El precio unitario debe ser mayor a 0
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-1">
-          <div class="form-group">
-            <label>Subtotal:</label>
-            <div class="form-control-plaintext">
-              S/. {{ calcularSubtotal(detalle) | number:'1.2-2' }}
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-1">
-          <label>&nbsp;</label>
-          <button type="button" class="btn btn-danger btn-sm" (click)="eliminarDetalle(i)"
-            [disabled]="detalles.length <= 1">
-            <i class="fa fa-trash"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <button type="button" class="btn btn-secondary" (click)="agregarDetalle()">
-          <i class="fa fa-plus"></i> Agregar Producto
-        </button>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12 text-right">
-        <h4>Total: S/. {{ calcularTotal() | number:'1.2-2' }}</h4>
-      </div>
-    </div>
-
-    <div *ngIf="esCredito" formGroupName="credito" class="card mt-3 mb-3">
-      <div class="card-header">
-        <h4>Información del Crédito</h4>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="interes">Interés (%):</label>
-              <input type="number" id="interes" formControlName="interes" class="form-control" min="0" step="0.01">
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="numeroCuotas">Número de Cuotas:</label>
-              <input type="number" id="numeroCuotas" formControlName="numeroCuotas" class="form-control" min="1"
-                [ngClass]="{'is-invalid': ventaForm.get('credito.numeroCuotas')?.invalid && ventaForm.get('credito.numeroCuotas')?.touched}">
-              <div class="invalid-feedback"
-                *ngIf="ventaForm.get('credito.numeroCuotas')?.invalid && ventaForm.get('credito.numeroCuotas')?.touched">
-                El número de cuotas debe ser mayor a 0
+              <div class="col-md-6">
+                <label for="tipoVenta" class="form-label text-light opacity-75">Tipo de Venta:</label>
+                <div class="d-flex">
+                  <div class="custom-radio-group" style="display: flex; width: 100%;">
+                    <div *ngFor="let tipo of tiposVenta" class="flex-fill"
+                      style="transition: all 0.3s ease; cursor: pointer;"
+                      [style.opacity]="ventaForm.get('tipoVenta')?.value === tipo.id ? '1' : '0.6'">
+                      <div class="custom-radio py-2 text-center"
+                        [style.background]="ventaForm.get('tipoVenta')?.value === tipo.id ? (tipo.id === 'CONTADO' ? 'rgba(46, 204, 113, 0.15)' : 'rgba(52, 152, 219, 0.15)') : 'rgba(0,0,0,0.2)'"
+                        [style.border-color]="ventaForm.get('tipoVenta')?.value === tipo.id ? (tipo.id === 'CONTADO' ? '#2ecc71' : '#3498db') : 'rgba(255,255,255,0.1)'"
+                        style="border: 1px solid; border-radius: 0.5rem; height: 100%;"
+                        (click)="ventaForm.get('tipoVenta')?.setValue(tipo.id)">
+                        <i [class]="tipo.id === 'CONTADO' ? 'fas fa-money-bill-wave mr-2' : 'fas fa-credit-card mr-2'"
+                          [style.color]="tipo.id === 'CONTADO' ? '#2ecc71' : '#3498db'"></i>
+                        {{ tipo.nombre }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+
+            <div class="form-group mb-4">
+              <label for="descripcion" class="form-label text-light opacity-75">Descripción de la venta:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                    <i class="fas fa-file-alt"></i>
+                  </span>
+                </div>
+                <input type="text" id="descripcion" formControlName="descripcion" class="form-control"
+                  placeholder="Descripción breve de la venta"
+                  [ngClass]="{'is-invalid': ventaForm.get('descripcion')?.invalid && ventaForm.get('descripcion')?.touched}"
+                  style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+              </div>
+              <div class="text-danger mt-1 small"
+                *ngIf="ventaForm.get('descripcion')?.invalid && ventaForm.get('descripcion')?.touched">
+                La descripción es requerida
+              </div>
+            </div>
+
+            <!-- Detalles de la Venta con diseño elegante -->
+            <div class="card mb-4"
+              style="background: rgba(0,0,0,0.2); border: none; border-radius: 0.75rem; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+              <div class="card-header d-flex justify-content-between align-items-center"
+                style="background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+                <h5 class="mb-0 text-white">
+                  <i class="fas fa-shopping-cart mr-2" style="color: #4fc3f7;"></i>
+                  Detalles de la Venta
+                </h5>
+                <button type="button" class="btn" (click)="agregarDetalle()"
+                  style="background: rgba(79, 195, 247, 0.15); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.3s ease;"
+                  onmouseover="this.style.background='rgba(79, 195, 247, 0.25)';"
+                  onmouseout="this.style.background='rgba(79, 195, 247, 0.15)';">
+                  <i class="fas fa-plus mr-2"></i>
+                  Agregar Producto
+                </button>
+              </div>
+              <div class="card-body p-0">
+                <div formArrayName="detalles">
+                  <div *ngFor="let detalle of detalles.controls; let i = index" [formGroupName]="i"
+                    class="p-3 border-bottom"
+                    style="border-color: rgba(255,255,255,0.05) !important; transition: all 0.3s ease;"
+                    [style.background]="i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent'">
+                    <div class="row">
+                      <div class="col-md-5 mb-3 mb-md-0">
+                        <label class="form-label text-light opacity-75 small">Nombre del Producto:</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"
+                              style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                              <i class="fas fa-box"></i>
+                            </span>
+                          </div>
+                          <input type="text" formControlName="nombreProducto" class="form-control"
+                            placeholder="Nombre del producto"
+                            [ngClass]="{'is-invalid': detalle.get('nombreProducto')?.invalid && detalle.get('nombreProducto')?.touched}"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                        </div>
+                        <div class="text-danger mt-1 small"
+                          *ngIf="detalle.get('nombreProducto')?.invalid && detalle.get('nombreProducto')?.touched">
+                          El nombre del producto es requerido
+                        </div>
+                      </div>
+
+                      <div class="col-md-2 mb-3 mb-md-0">
+                        <label class="form-label text-light opacity-75 small">Cantidad:</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"
+                              style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                              <i class="fas fa-hashtag"></i>
+                            </span>
+                          </div>
+                          <input type="number" formControlName="cantidad" class="form-control" min="1"
+                            [ngClass]="{'is-invalid': detalle.get('cantidad')?.invalid && detalle.get('cantidad')?.touched}"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                        </div>
+                        <div class="text-danger mt-1 small"
+                          *ngIf="detalle.get('cantidad')?.invalid && detalle.get('cantidad')?.touched">
+                          La cantidad debe ser mayor a 0
+                        </div>
+                      </div>
+
+                      <div class="col-md-3 mb-3 mb-md-0">
+                        <label class="form-label text-light opacity-75 small">Precio Unitario:</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"
+                              style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                              <i class="fas fa-dollar-sign"></i>
+                            </span>
+                          </div>
+                          <input type="number" formControlName="precioUnitario" class="form-control" step="0.01"
+                            min="0.01"
+                            [ngClass]="{'is-invalid': detalle.get('precioUnitario')?.invalid && detalle.get('precioUnitario')?.touched}"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                        </div>
+                        <div class="text-danger mt-1 small"
+                          *ngIf="detalle.get('precioUnitario')?.invalid && detalle.get('precioUnitario')?.touched">
+                          El precio unitario debe ser mayor a 0
+                        </div>
+                      </div>
+
+                      <div class="col-md-1 mb-3 mb-md-0 d-flex align-items-end">
+                        <div class="input-group">
+                          <div class="p-2"
+                            style="background: rgba(0,0,0,0.2); border-radius: 0.25rem; width: 100%; text-align: center; font-weight: bold; color: #4fc3f7;">
+                            S/. {{ calcularSubtotal(detalle) | number:'1.2-2' }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-1 mb-3 mb-md-0 d-flex align-items-end justify-content-center">
+                        <button type="button" class="btn" (click)="eliminarDetalle(i)" [disabled]="detalles.length <= 1"
+                          style="background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 0.5rem; transition: all 0.3s ease;"
+                          onmouseover="this.style.background='rgba(231, 76, 60, 0.25)';"
+                          onmouseout="this.style.background='rgba(231, 76, 60, 0.15)';">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer"
+                style="background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255,255,255,0.05); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
+                <div class="d-flex justify-content-end align-items-center">
+                  <h4 class="mb-0 mr-2">Total:</h4>
+                  <div class="p-2"
+                    style="background: rgba(46, 204, 113, 0.15); border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 0.5rem; min-width: 150px; text-align: center; font-weight: bold; color: #2ecc71; font-size: 1.25rem;">
+                    S/. {{ calcularTotal() | number:'1.2-2' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Información del Crédito (condicional) -->
+            <div *ngIf="esCredito" formGroupName="credito" class="card mb-4"
+              style="background: rgba(52, 152, 219, 0.08); border: 1px solid rgba(52, 152, 219, 0.2); border-radius: 0.75rem; box-shadow: 0 3px 10px rgba(0,0,0,0.1); animation: fadeIn 0.5s ease;">
+              <div class="card-header d-flex align-items-center"
+                style="background: rgba(52, 152, 219, 0.15); border-bottom: 1px solid rgba(52, 152, 219, 0.2); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+                <i class="fas fa-credit-card mr-2" style="color: #3498db;"></i>
+                <h5 class="mb-0 text-white">Información del Crédito</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="interes" class="form-label text-light opacity-75">Interés (%):</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          style="background: rgba(52, 152, 219, 0.15); border: 1px solid rgba(52, 152, 219, 0.3); border-right: none; color: #3498db;">
+                          <i class="fas fa-percentage"></i>
+                        </span>
+                      </div>
+                      <input type="number" id="interes" formControlName="interes" class="form-control" min="0"
+                        step="0.01"
+                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="numeroCuotas" class="form-label text-light opacity-75">Número de Cuotas:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          style="background: rgba(52, 152, 219, 0.15); border: 1px solid rgba(52, 152, 219, 0.3); border-right: none; color: #3498db;">
+                          <i class="fas fa-calculator"></i>
+                        </span>
+                      </div>
+                      <input type="number" id="numeroCuotas" formControlName="numeroCuotas" class="form-control" min="1"
+                        [ngClass]="{'is-invalid': ventaForm.get('credito.numeroCuotas')?.invalid && ventaForm.get('credito.numeroCuotas')?.touched}"
+                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    </div>
+                    <div class="text-danger mt-1 small"
+                      *ngIf="ventaForm.get('credito.numeroCuotas')?.invalid && ventaForm.get('credito.numeroCuotas')?.touched">
+                      El número de cuotas debe ser mayor a 0
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Información adicional sobre crédito -->
+                <div class="alert mt-3"
+                  style="background: rgba(52, 152, 219, 0.1); border-left: 4px solid #3498db; border-radius: 0.5rem;">
+                  <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle mr-3" style="color: #3498db; font-size: 1.25rem;"></i>
+                    <p class="mb-0 small text-light">
+                      Al seleccionar crédito, se generarán automáticamente las cuotas según el plazo e interés
+                      especificados. El cliente podrá visualizar y pagar cada cuota desde su perfil.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-center mt-4">
+              <a routerLink="/admin/ventas" class="btn mr-3"
+                style="background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 0.5rem; padding: 0.5rem 1.5rem; transition: all 0.3s ease;"
+                onmouseover="this.style.background='rgba(231, 76, 60, 0.25)';"
+                onmouseout="this.style.background='rgba(231, 76, 60, 0.15)';">
+                <i class="fas fa-times mr-2"></i> Cancelar
+              </a>
+
+              <button type="submit" class="btn" [disabled]="ventaForm.invalid || loading"
+                style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none; border-radius: 0.5rem; padding: 0.5rem 2rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.25s ease;"
+                [style.opacity]="ventaForm.invalid || loading ? '0.6' : '1'"
+                onmouseover="if(!this.disabled) this.style.transform='translateY(-2px)'; if(!this.disabled) this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)';"
+                onmouseout="if(!this.disabled) this.style.transform='translateY(0)'; if(!this.disabled) this.style.boxShadow='0 2px 5px rgba(0,0,0,0.2)';">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-2" role="status"></span>
+                <i *ngIf="!loading" class="fas fa-check-circle mr-2"></i>
+                Registrar Venta
+              </button>
+            </div>
+
+          </form>
         </div>
       </div>
     </div>
-
-    <div class="mt-3">
-      <button type="submit" class="btn btn-primary" [disabled]="loading">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Registrar Venta
-      </button>
-      <a routerLink="/admin/ventas" class="btn btn-secondary ml-2">Cancelar</a>
-    </div>
-  </form>
+  </div>
 </div>
+
+<style>
+  /* Animaciones para elementos */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Estilos para los inputs cuando tienen foco */
+  .form-control:focus,
+  .input-group-text:focus {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: white !important;
+    border-color: #4fc3f7 !important;
+    box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25) !important;
+  }
+
+  /* Ajustes para el formulario */
+  select option {
+    background: #2c3e50;
+    color: white;
+  }
+
+  /* Ajustes responsivos */
+  @media (max-width: 768px) {
+    .card-header h5 {
+      font-size: 1rem;
+    }
+
+    .card-header button {
+      font-size: 0.85rem;
+      padding: 0.375rem 0.75rem;
+    }
+  }
+</style>

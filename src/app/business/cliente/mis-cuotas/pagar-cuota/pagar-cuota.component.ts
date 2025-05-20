@@ -153,9 +153,9 @@ export class PagarCuotaComponent implements OnInit {
                     this.credito = creditoEncontrado;
 
                     // Ahora que tenemos el crédito, cargamos la venta
-                    if (this.credito.venta_id) {
+                    if (this.credito.venta) {
                       this.ventaService
-                        .obtenerVenta(this.credito.venta_id)
+                        .obtenerVenta(this.credito.venta)
                         .subscribe({
                           next: (venta: Venta) => {
                             this.venta = venta;

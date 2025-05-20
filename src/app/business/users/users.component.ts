@@ -1,29 +1,15 @@
 import { Component } from '@angular/core';
-import { UserTableComponent } from "./user-table/user-table.component";
-
+import { UserTableComponent } from './user-table/user-table.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-users',
-  imports: [UserTableComponent],
+  standalone: true,
+  imports: [UserTableComponent, CommonModule, RouterModule],
   templateUrl: './users.component.html',
-  styleUrl: './users.component.css',
+  styleUrls: ['./users.component.css'],
 })
-export default class UsersComponent{
-
-
-  /*   users: User[] = [];
-
-  constructor(private userService: UserService) { }
-
-
-  ngOnInit(): void {
-    this.loadUsers();
-  }
-
-  loadUsers() {
-    this.userService.findAll().subscribe({
-      next : (data) => this.users = data,
-      error : (error) => console.log(error.error),
-    })
-  } */
+export default class UsersComponent {
+  constructor() {}
 }

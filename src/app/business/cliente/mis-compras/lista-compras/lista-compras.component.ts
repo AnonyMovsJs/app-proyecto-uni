@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../../shared/services/user.service';
 import { VentaService } from '../../../../shared/services/venta.service';
 import { Venta } from '../../../../shared/model/venta';
@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-lista-compras',
+  standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './lista-compras.component.html',
-  styleUrl: './lista-compras.component.css',
+  styleUrls: ['./lista-compras.component.css'],
 })
-export class ListaComprasComponent {
+export class ListaComprasComponent implements OnInit {
   ventas: Venta[] = [];
   loading = false;
   error = '';
@@ -37,14 +38,16 @@ export class ListaComprasComponent {
           },
           error: (err) => {
             console.error('Error al cargar ventas:', err);
-            this.error = 'Error al cargar tus compras';
+            this.error =
+              'Error al cargar tus compras. Por favor, intenta nuevamente más tarde.';
             this.loading = false;
           },
         });
       },
       error: (err) => {
         console.error('Error al obtener perfil:', err);
-        this.error = 'Error al obtener perfil de usuario';
+        this.error =
+          'Error al obtener tu perfil de usuario. Por favor, intenta nuevamente más tarde.';
         this.loading = false;
       },
     });
