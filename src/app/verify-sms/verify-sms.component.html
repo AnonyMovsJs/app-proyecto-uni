@@ -1,0 +1,58 @@
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+  <div class="card" style="min-width: 320px; max-width: 400px; width: 100%;">
+    <div class="card-header">
+      <h3>Verificación SMS</h3>
+      <div class="d-flex justify-content-end">
+        <span><i class="fas fa-sms"></i></span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="text-center mb-3">
+        <i class="fas fa-mobile-alt" style="font-size: 2rem; color: #007bff;"></i>
+        <p class="mt-2 text-muted">
+          Hemos enviado un código de 6 dígitos a tu teléfono
+        </p>
+        <small class="text-muted">{{ email }}</small>
+      </div>
+
+      <form (ngSubmit)="onVerifySms()">
+        @if (errorMessage) {
+        <div class="alert alert-danger">
+          Por favor ingresa un código válido de 6 dígitos
+        </div>
+        }
+
+        <div class="form-group my-3">
+          <label for="smsCode" class="form-label">Código de Verificación</label>
+          <input type="text" id="smsCode" class="form-control text-center" name="smsCode" placeholder="000000"
+            maxlength="6" [(ngModel)]="smsCode" [disabled]="isLoading"
+            style="font-size: 1.5rem; letter-spacing: 0.5rem;" autocomplete="off" />
+          <small class="form-text text-muted">
+            Ingresa el código de 6 dígitos que recibiste por SMS
+          </small>
+        </div>
+
+        <div class="form-group my-3 d-grid gap-2">
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading || smsCode.length !== 6">
+            @if (isLoading) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Verificando...
+            } @else {
+            Verificar Código
+            }
+          </button>
+
+          <button type="button" class="btn btn-outline-secondary" (click)="onBackToLogin()" [disabled]="isLoading">
+            Volver al Login
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3">
+        <small class="text-muted">
+          ¿No recibiste el código? Verifica tu número de teléfono o intenta nuevamente.
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

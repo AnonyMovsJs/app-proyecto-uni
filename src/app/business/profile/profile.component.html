@@ -9,6 +9,11 @@
             <h1 class="text-white font-weight-bold mb-0">Mi Perfil</h1>
             <p class="text-light mt-2 mb-0 opacity-75">Visualiza y actualiza tu información personal</p>
           </div>
+          <div class="mt-3 mt-md-0">
+            <button class="btn btn-outline-light px-3" (click)="refreshData()">
+              <i class="fas fa-sync-alt mr-2"></i> Actualizar
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -69,6 +74,32 @@
               (click)="enableEditMode()">
               <i class="fas fa-user-edit mr-2"></i> Editar Perfil
             </button>
+          </div>
+        </div>
+
+        <!-- Estadísticas del usuario -->
+        <div class="card-footer px-0 pb-0 pt-3"
+          style="background: transparent; border-top: 1px solid rgba(255,255,255,0.1);">
+          <div class="row g-0">
+            <div class="col-6 text-center py-3 border-right" style="border-color: rgba(255,255,255,0.1) !important;">
+              <h3 class="mb-0" style="color: #4fc3f7; font-weight: bold;">{{ totalCompras }}</h3>
+              <small class="text-light opacity-75">Compras</small>
+            </div>
+            <div class="col-6 text-center py-3">
+              <h3 class="mb-0" style="color: #4fc3f7; font-weight: bold;">{{ formatCurrency(totalGastado) }}</h3>
+              <small class="text-light opacity-75">Total Gastado</small>
+            </div>
+          </div>
+          <div class="row g-0">
+            <div class="col-6 text-center py-3 border-right border-top"
+              style="border-color: rgba(255,255,255,0.1) !important;">
+              <h3 class="mb-0" style="color: #e74c3c; font-weight: bold;">{{ formatCurrency(totalDeuda) }}</h3>
+              <small class="text-light opacity-75">Deuda Pendiente</small>
+            </div>
+            <div class="col-6 text-center py-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+              <h3 class="mb-0" style="color: #2ecc71; font-weight: bold;">{{ formatCurrency(totalPagado) }}</h3>
+              <small class="text-light opacity-75">Total Pagado</small>
+            </div>
           </div>
         </div>
 
@@ -136,10 +167,16 @@
                   <h6 class="mb-0">{{ userProfile?.phone || 'No especificado' }}</h6>
                 </div>
               </div>
-              <div class="col-md-12 mb-3">
+              <div class="col-md-6 mb-3">
                 <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
                   <p class="small mb-1 text-light opacity-75">Email</p>
                   <h6 class="mb-0">{{ userProfile?.email || 'No especificado' }}</h6>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
+                  <p class="small mb-1 text-light opacity-75">Dirección</p>
+                  <h6 class="mb-0">{{ userProfile?.address || 'No especificada' }}</h6>
                 </div>
               </div>
             </div>
@@ -152,51 +189,128 @@
           </div>
         </div>
 
-        <!-- Proyectos (si existen) -->
-        <div *ngIf="userProjects && userProjects.length > 0" class="card border-0"
+        <!-- Resumen de Estado Financiero -->
+        <div class="card border-0 mb-4"
           style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
           <div class="card-header d-flex align-items-center py-3"
             style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <i class="fas fa-project-diagram mr-2" style="color: #4fc3f7;"></i>
-            <h5 class="mb-0 text-white">Proyectos Activos</h5>
+            <i class="fas fa-chart-pie mr-2" style="color: #4fc3f7;"></i>
+            <h5 class="mb-0 text-white">Estado Financiero</h5>
           </div>
           <div class="card-body text-white">
             <div class="row">
-              <div class="col-md-6 mb-4" *ngFor="let project of userProjects">
-                <div class="card h-100 border-0"
-                  style="background: rgba(0,0,0,0.2); border-radius: 0.5rem; transition: all 0.3s ease;"
-                  onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.2)';"
-                  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                  <div class="card-body text-white">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                      <h6 class="card-title mb-0">{{ project.title }}</h6>
-                      <span class="badge"
-                        [style.background-color]="project.status === 'Completado' ? '#2ecc71' : '#f39c12'"
-                        style="font-weight: 500; border-radius: 4px; font-size: 0.7rem; padding: 0.35rem 0.5rem;">
-                        {{ project.status }}
-                      </span>
+              <div class="col-md-3 mb-3">
+                <div class="card h-100 text-white"
+                  style="background: rgba(52, 152, 219, 0.15); border-radius: 10px; border: 1px solid rgba(52, 152, 219, 0.2);">
+                  <div class="card-body p-3 text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                      <i class="fas fa-shopping-cart mr-2" style="color: #3498db;"></i>
+                      <h6 class="mb-0" style="color: #3498db;">Total Compras</h6>
                     </div>
-                    <p class="card-text small text-light opacity-75">{{ project.description }}</p>
-                    <div class="mb-1"><strong class="text-light opacity-75">Inicio: </strong> <span>{{ project.start
-                        }}</span></div>
-                    <div class="mb-3"><strong class="text-light opacity-75">Plazo: </strong> <span>{{ project.deadline
-                        }}</span></div>
-                    <div style="margin-bottom: 0.5rem;">
-                      <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small">Progreso</span>
-                        <span>{{ project.progress }}%</span>
-                      </div>
-                      <div class="progress" style="height: 8px; border-radius: 4px; background: rgba(0,0,0,0.3);">
-                        <div class="progress-bar" role="progressbar" [style.width.%]="project.progress"
-                          [style.background-color]="
-                            project.progress < 30 ? '#e74c3c' :
-                            project.progress < 70 ? '#f39c12' : '#2ecc71'" aria-valuenow="50" aria-valuemin="0"
-                          aria-valuemax="100">
-                        </div>
-                      </div>
-                    </div>
+                    <h4 class="mb-0 font-weight-bold text-white">{{ totalCompras }}</h4>
                   </div>
                 </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <div class="card h-100 text-white"
+                  style="background: rgba(46, 204, 113, 0.15); border-radius: 10px; border: 1px solid rgba(46, 204, 113, 0.2);">
+                  <div class="card-body p-3 text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                      <i class="fas fa-money-bill-wave mr-2" style="color: #2ecc71;"></i>
+                      <h6 class="mb-0" style="color: #2ecc71;">Total Pagado</h6>
+                    </div>
+                    <h4 class="mb-0 font-weight-bold text-white">{{ formatCurrency(totalPagado) }}</h4>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <div class="card h-100 text-white"
+                  style="background: rgba(231, 76, 60, 0.15); border-radius: 10px; border: 1px solid rgba(231, 76, 60, 0.2);">
+                  <div class="card-body p-3 text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                      <i class="fas fa-exclamation-triangle mr-2" style="color: #e74c3c;"></i>
+                      <h6 class="mb-0" style="color: #e74c3c;">Deuda Pendiente</h6>
+                    </div>
+                    <h4 class="mb-0 font-weight-bold text-white">{{ formatCurrency(totalDeuda) }}</h4>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <div class="card h-100 text-white"
+                  style="background: rgba(243, 156, 18, 0.15); border-radius: 10px; border: 1px solid rgba(243, 156, 18, 0.2);">
+                  <div class="card-body p-3 text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                      <i class="fas fa-calendar-alt mr-2" style="color: #f39c12;"></i>
+                      <h6 class="mb-0" style="color: #f39c12;">Cuotas Pendientes</h6>
+                    </div>
+                    <h4 class="mb-0 font-weight-bold text-white">{{ cuotasPendientes + cuotasVencidas }}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alertas de estado -->
+            <div *ngIf="totalDeuda > 0" class="alert mt-3"
+              style="background: rgba(243, 156, 18, 0.15) !important; border-left: 4px solid #f39c12; border-radius: 0.5rem;">
+              <div class="d-flex align-items-start">
+                <i class="fas fa-exclamation-triangle mt-1 mr-3" style="color: #f39c12;"></i>
+                <div>
+                  <h6 style="color: #f39c12;">Tienes cuotas pendientes</h6>
+                  <p class="mb-0 text-white">Tienes una deuda pendiente de <strong>{{ formatCurrency(totalDeuda)
+                      }}</strong>.
+                    <br>{{ cuotasPendientes }} cuotas pendientes y {{ cuotasVencidas }} cuotas vencidas.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="totalDeuda === 0 && creditos.length > 0" class="alert mt-3"
+              style="background: rgba(46, 204, 113, 0.15) !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem;">
+              <div class="d-flex align-items-start">
+                <i class="fas fa-check-circle mt-1 mr-3" style="color: #2ecc71;"></i>
+                <div>
+                  <h6 style="color: #2ecc71;">¡Estás al día!</h6>
+                  <p class="mb-0 text-white">Has pagado todas tus cuotas a tiempo. Total pagado: <strong>{{
+                      formatCurrency(totalPagado) }}</strong>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enlaces rápidos -->
+        <div class="card border-0"
+          style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+          <div class="card-header d-flex align-items-center py-3"
+            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            <i class="fas fa-link mr-2" style="color: #4fc3f7;"></i>
+            <h5 class="mb-0 text-white">Enlaces Rápidos</h5>
+          </div>
+          <div class="card-body text-white">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <a routerLink="/cliente/dashboard" class="btn btn-block h-100"
+                  style="background: rgba(79, 195, 247, 0.15); color: white; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 10px; text-decoration: none;">
+                  <i class="fas fa-tachometer-alt mb-2" style="font-size: 1.5rem;"></i>
+                  <div>Dashboard</div>
+                </a>
+              </div>
+              <div class="col-md-4 mb-3">
+                <a routerLink="/cliente/mis-compras" class="btn btn-block h-100"
+                  style="background: rgba(46, 204, 113, 0.15); color: white; border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 10px; text-decoration: none;">
+                  <i class="fas fa-shopping-bag mb-2" style="font-size: 1.5rem;"></i>
+                  <div>Mis Compras</div>
+                </a>
+              </div>
+              <div class="col-md-4 mb-3">
+                <a routerLink="/cliente/mis-cuotas" class="btn btn-block h-100"
+                  style="background: rgba(243, 156, 18, 0.15); color: white; border: 1px solid rgba(243, 156, 18, 0.3); border-radius: 10px; text-decoration: none;">
+                  <i class="fas fa-calendar-alt mb-2" style="font-size: 1.5rem;"></i>
+                  <div>Mis Cuotas</div>
+                </a>
               </div>
             </div>
           </div>
@@ -235,12 +349,9 @@
                     </div>
                     <p class="mb-2 text-light" style="opacity: 0.85;">{{ activity.description }}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                      <span class="font-weight-bold" style="font-size: 1.1rem;">S/. {{ activity.amount.toFixed(2)
+                      <span class="font-weight-bold" style="font-size: 1.1rem;">{{ formatCurrency(activity.amount)
                         }}</span>
-                      <span class="badge" [style.background-color]="
-                          activity.status === 'COMPLETADO' ? '#2ecc71' :
-                          activity.status === 'PROCESADO' ? '#3498db' :
-                          activity.status === 'APROBADO' ? '#f39c12' : '#e74c3c'"
+                      <span class="badge" [ngClass]="getStatusClass(activity.status)"
                         style="font-weight: 500; border-radius: 4px; padding: 0.35rem 0.5rem;">
                         {{ activity.status }}
                       </span>
@@ -336,7 +447,18 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12 mb-3">
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label style="color: rgba(255,255,255,0.7);">Dirección</label>
+                    <input type="text" class="form-control" formControlName="address"
+                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                    <div *ngIf="editProfileForm.get('address')?.invalid && editProfileForm.get('address')?.touched"
+                      class="text-danger mt-1 small">
+                      Dirección es requerida
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label style="color: rgba(255,255,255,0.7);">Email</label>
                     <input type="email" class="form-control" formControlName="email"
@@ -351,7 +473,7 @@
                   style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 0.5rem; padding: 0.5rem 1.5rem;">
                   <i class="fas fa-times mr-2"></i> Cancelar
                 </button>
-                <button type="submit" class="btn btn-primary ml-2" [disabled]="editProfileForm.invalid"
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="editProfileForm.invalid || loading"
                   style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); border: none; border-radius: 0.5rem; padding: 0.5rem 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.25s ease;"
                   onmouseover="this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)';"
                   onmouseout="this.style.boxShadow='0 2px 5px rgba(0,0,0,0.2)';">
@@ -407,5 +529,11 @@
   /* Active tab highlight */
   .list-group-item.active {
     background: rgba(79, 195, 247, 0.15) !important;
+  }
+
+  /* Enlaces rápidos hover */
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
   }
 </style>

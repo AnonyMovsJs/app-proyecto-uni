@@ -4,6 +4,7 @@ import { ForbiddenComponent } from './shared/components/forbidden/forbidden.comp
 import { authGuard } from './guards/auth.guard';
 import { UserFormComponent } from './business/users/user-form/user-form.component';
 import { authRutasGuard } from './guards/auth-rutas.guard';
+import { VerifySmsComponent } from './verify-sms/verify-sms.component'; // AGREGAR IMPORT
 import { Component } from '@angular/core';
 import { NuevaVentaComponent } from './business/admin/nueva-venta/nueva-venta.component';
 import { PagarCuotaComponent } from './business/cliente/mis-cuotas/pagar-cuota/pagar-cuota.component';
@@ -94,6 +95,17 @@ export const routes: Routes = [
   {
     path: 'login',
     component: AuthComponent,
+  },
+
+  // AGREGAR ESTA RUTA NUEVA
+  {
+    path: 'verify-sms',
+    component: VerifySmsComponent,
+  },
+
+  {
+    path: 'forbidden',
+    component: ForbiddenComponent,
   },
 
   {

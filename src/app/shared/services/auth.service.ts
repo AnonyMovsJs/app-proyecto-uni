@@ -8,6 +8,10 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private url: string = 'http://localhost:8080/login';
 
+  /* PASO 7 */
+  private _tempToken: string | undefined;
+  private _pendingAuth: any = null;
+
   private _token: string | undefined;
   private _user: any = {
     isAuth: false,
@@ -35,6 +39,59 @@ export class AuthService {
     }
 
     return this._user;
+  }
+
+  verifySms(verificationData: {
+    email: string;
+    code: string;
+    tempToken: string;
+    admin: boolean;
+  }): Observable<any> {
+    return this.http.post<any>(
+      'http://localhost:8080/api/auth/verify-sms',
+      verificationData
+    );
+  }
+
+  set tempToken(token: string) {
+    this._tempToken = token;
+    sessionStorage.setItem('tempToken', token);
+  }
+
+  get tempToken() {
+    if (this._tempToken != null) {
+      return this._tempToken;
+    } else if (sessionStorage.getItem('tempToken')) {
+      this._tempToken = sessionStorage.getItem('tempToken') || '';
+      return this._tempToken;
+    }
+    return '';
+  }
+
+  // Almacenar datos pendientes de autenticación
+  set pendingAuth(data: any) {
+    this._pendingAuth = data;
+    sessionStorage.setItem('pendingAuth', JSON.stringify(data));
+  }
+
+  get pendingAuth() {
+    if (this._pendingAuth) {
+      return this._pendingAuth;
+    } else if (sessionStorage.getItem('pendingAuth')) {
+      this._pendingAuth = JSON.parse(
+        sessionStorage.getItem('pendingAuth') || '{}'
+      );
+      return this._pendingAuth;
+    }
+    return null;
+  }
+
+  // Limpiar datos temporales
+  clearTempData() {
+    this._tempToken = undefined;
+    this._pendingAuth = null;
+    sessionStorage.removeItem('tempToken');
+    sessionStorage.removeItem('pendingAuth');
   }
 
   getCurrentUser(): any {
@@ -82,6 +139,7 @@ export class AuthService {
     return this.user.isAuth;
   }
 
+  // Modificar método logout existente (agregar limpieza de datos temporales)
   logout() {
     this._token = undefined;
     this._user = {
@@ -89,6 +147,9 @@ export class AuthService {
       isAdmin: false,
       user: undefined,
     };
+
+    // Limpiar datos temporales también
+    this.clearTempData();
 
     sessionStorage.removeItem('login');
     sessionStorage.removeItem('token');
