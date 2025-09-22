@@ -21,9 +21,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  loginUser({ email, password }: any): Observable<any> {
-    return this.http.post<any>(this.url, { email, password });
-  }
 
   set user(user: any) {
     this._user = user;
@@ -41,58 +38,6 @@ export class AuthService {
     return this._user;
   }
 
-  verifySms(verificationData: {
-    email: string;
-    code: string;
-    tempToken: string;
-    admin: boolean;
-  }): Observable<any> {
-    return this.http.post<any>(
-      'http://localhost:8080/api/auth/verify-sms',
-      verificationData
-    );
-  }
-
-  set tempToken(token: string) {
-    this._tempToken = token;
-    sessionStorage.setItem('tempToken', token);
-  }
-
-  get tempToken() {
-    if (this._tempToken != null) {
-      return this._tempToken;
-    } else if (sessionStorage.getItem('tempToken')) {
-      this._tempToken = sessionStorage.getItem('tempToken') || '';
-      return this._tempToken;
-    }
-    return '';
-  }
-
-  // Almacenar datos pendientes de autenticación
-  set pendingAuth(data: any) {
-    this._pendingAuth = data;
-    sessionStorage.setItem('pendingAuth', JSON.stringify(data));
-  }
-
-  get pendingAuth() {
-    if (this._pendingAuth) {
-      return this._pendingAuth;
-    } else if (sessionStorage.getItem('pendingAuth')) {
-      this._pendingAuth = JSON.parse(
-        sessionStorage.getItem('pendingAuth') || '{}'
-      );
-      return this._pendingAuth;
-    }
-    return null;
-  }
-
-  // Limpiar datos temporales
-  clearTempData() {
-    this._tempToken = undefined;
-    this._pendingAuth = null;
-    sessionStorage.removeItem('tempToken');
-    sessionStorage.removeItem('pendingAuth');
-  }
 
   getCurrentUser(): any {
     const user = this.user.user;
@@ -139,6 +84,80 @@ export class AuthService {
     return this.user.isAuth;
   }
 
+
+  checkAdmin(isAdmin: boolean) {
+    this._user.idAdmin = isAdmin;
+    sessionStorage.setItem('login', JSON.stringify(this._user));
+  }
+
+  // Nuevo método para enviar WhatsApp
+  sendWhatsApp(whatsappData: { email: string }): Observable<any> {
+    return this.http.post<any>(
+      'http://localhost:8080/api/auth/send-whatsapp',
+      whatsappData
+    );
+  }
+
+  // Método modificado loginUser (reemplaza el existente)
+  loginUser({ email, password }: any): Observable<any> {
+    return this.http.post<any>(this.url, { email, password });
+  }
+
+  // Nuevo método para verificar SMS
+  verifySms(verificationData: {
+    email: string;
+    code: string;
+    tempToken: string;
+    admin: boolean;
+  }): Observable<any> {
+    return this.http.post<any>(
+      'http://localhost:8080/api/auth/verify-sms',
+      verificationData
+    );
+  }
+
+  // Getters y setters para token temporal
+  set tempToken(token: string) {
+    this._tempToken = token;
+    sessionStorage.setItem('tempToken', token);
+  }
+
+  get tempToken() {
+    if (this._tempToken != null) {
+      return this._tempToken;
+    } else if (sessionStorage.getItem('tempToken')) {
+      this._tempToken = sessionStorage.getItem('tempToken') || '';
+      return this._tempToken;
+    }
+    return '';
+  }
+
+  // Almacenar datos pendientes de autenticación
+  set pendingAuth(data: any) {
+    this._pendingAuth = data;
+    sessionStorage.setItem('pendingAuth', JSON.stringify(data));
+  }
+
+  get pendingAuth() {
+    if (this._pendingAuth) {
+      return this._pendingAuth;
+    } else if (sessionStorage.getItem('pendingAuth')) {
+      this._pendingAuth = JSON.parse(
+        sessionStorage.getItem('pendingAuth') || '{}'
+      );
+      return this._pendingAuth;
+    }
+    return null;
+  }
+
+  // Limpiar datos temporales
+  clearTempData() {
+    this._tempToken = undefined;
+    this._pendingAuth = null;
+    sessionStorage.removeItem('tempToken');
+    sessionStorage.removeItem('pendingAuth');
+  }
+
   // Modificar método logout existente (agregar limpieza de datos temporales)
   logout() {
     this._token = undefined;
@@ -153,10 +172,5 @@ export class AuthService {
 
     sessionStorage.removeItem('login');
     sessionStorage.removeItem('token');
-  }
-
-  checkAdmin(isAdmin: boolean) {
-    this._user.idAdmin = isAdmin;
-    sessionStorage.setItem('login', JSON.stringify(this._user));
   }
 }

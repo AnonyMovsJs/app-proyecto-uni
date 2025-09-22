@@ -19,6 +19,12 @@ export class VerifySmsComponent implements OnInit {
   errorMessage: boolean = false;
   isLoading: boolean = false;
 
+  // Nuevas propiedades para WhatsApp
+  showWhatsAppButton: boolean = false;
+  whatsappSending: boolean = false;
+  whatsappSent: boolean = false;
+  countdown: number = 5;
+
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
@@ -26,14 +32,59 @@ export class VerifySmsComponent implements OnInit {
     const pendingAuth = this.authService.pendingAuth;
 
     if (!pendingAuth) {
-      // Si no hay datos pendientes, redirigir al login
-      this.router.navigate(['/auth']);
+      this.router.navigate(['/login']);
       return;
     }
 
     this.email = pendingAuth.email;
     this.isAdmin = pendingAuth.isAdmin;
     this.tempToken = pendingAuth.tempToken;
+
+    // Iniciar countdown para mostrar botón WhatsApp después de 5 segundos
+    this.startWhatsAppCountdown();
+  }
+
+  startWhatsAppCountdown() {
+    const timer = setInterval(() => {
+      this.countdown--;
+      if (this.countdown <= 0) {
+        this.showWhatsAppButton = true;
+        clearInterval(timer);
+      }
+    }, 1000);
+  }
+
+  onSendWhatsApp() {
+    this.whatsappSending = true;
+
+    const whatsappData = {
+      email: this.email,
+    };
+
+    this.authService.sendWhatsApp(whatsappData).subscribe({
+      next: (response) => {
+        this.whatsappSending = false;
+        this.whatsappSent = true;
+
+        Swal.fire({
+          title: 'WhatsApp Enviado',
+          text: 'Revisa tu WhatsApp para obtener el código de verificación',
+          icon: 'success',
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      },
+      error: (error) => {
+        this.whatsappSending = false;
+        console.error('Error enviando WhatsApp:', error);
+
+        Swal.fire({
+          title: 'Error WhatsApp',
+          text: 'No se pudo enviar el código por WhatsApp. Intenta nuevamente.',
+          icon: 'error',
+        });
+      },
+    });
   }
 
   onVerifySms() {
@@ -56,10 +107,8 @@ export class VerifySmsComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
 
-        // Limpiar datos temporales
         this.authService.clearTempData();
 
-        // Guardar token y datos de usuario
         const token = response.token;
         const payload = this.authService.getPayload(token);
         const user = { email: payload.sub };
@@ -72,7 +121,6 @@ export class VerifySmsComponent implements OnInit {
         this.authService.token = token;
         this.authService.user = login;
 
-        // Mostrar mensaje de éxito
         Swal.fire({
           title: 'Autenticación Exitosa',
           text: response.message,
@@ -80,7 +128,6 @@ export class VerifySmsComponent implements OnInit {
           timer: 2000,
           showConfirmButton: false,
         }).then(() => {
-          // Redirigir según el rol
           if (response.isAdmin) {
             this.router.navigate(['/admin/dashboard']);
           } else {
@@ -91,13 +138,13 @@ export class VerifySmsComponent implements OnInit {
 
       error: (error) => {
         this.isLoading = false;
-        console.error('Error de verificación SMS:', error);
+        console.error('Error de verificación:', error);
 
         let errorTitle = 'Error de Verificación';
         let errorText = 'Error interno del servidor';
 
         if (error.error && error.error.error === 'INVALID_SMS_CODE') {
-          errorText = 'Código SMS inválido o expirado';
+          errorText = 'Código inválido o expirado';
         } else if (error.error && error.error.message) {
           errorText = error.error.message;
         }
@@ -109,6 +156,6 @@ export class VerifySmsComponent implements OnInit {
 
   onBackToLogin() {
     this.authService.clearTempData();
-    this.router.navigate(['/login']); // Cambia '/auth' por '/login'
+    this.router.navigate(['/login']);
   }
 }
