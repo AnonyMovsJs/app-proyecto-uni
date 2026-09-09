@@ -14,6 +14,10 @@ import { ListaComprasComponent } from './business/cliente/mis-compras/lista-comp
 import { AdminDashboardComponent } from './business/admin/admin-dashboard/admin-dashboard.component';
 import { AdminVentasComponent } from './business/admin/admin-ventas/admin-ventas.component';
 import { AdminUsuarioDetalleComponent } from './business/admin/admin-usuario-detalle/admin-usuario-detalle.component';
+import { ControlCobranzasComponent } from './business/admin/control-cobranzas/control-cobranzas.component';
+import { EvaluacionIaComponent } from './business/admin/evaluacion-ia/evaluacion-ia.component';
+
+import { AdminPagosComponent } from './business/admin/admin-pagos/admin-pagos.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +46,11 @@ export const routes: Routes = [
       },
       {
         path: 'admin/ventas',
+        component: AdminVentasComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/ventas/nueva',
         component: NuevaVentaComponent,
         canActivate: [authGuard],
       },
@@ -53,6 +62,26 @@ export const routes: Routes = [
       {
         path: 'admin/compras',
         component: AdminVentasComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/venta/:id',
+        component: DetalleCompraComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/cobranzas',
+        component: ControlCobranzasComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/pagos',
+        component: AdminPagosComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'admin/evaluacion-ia',
+        component: EvaluacionIaComponent,
         canActivate: [authGuard],
       },
       {

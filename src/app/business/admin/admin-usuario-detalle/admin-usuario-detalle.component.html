@@ -521,9 +521,11 @@
                 <thead>
                   <tr style="background: rgba(0, 0, 0, 0.15) !important;">
                     <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">ID</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Cuota</th>
+                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Método</th>
                     <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Fecha de Pago</th>
                     <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Monto</th>
+                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Estado</th>
+                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Comprobante</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -531,11 +533,34 @@
                     style="transition: all 0.25s ease; background: transparent !important; border-color: rgba(255,255,255,0.05) !important;"
                     onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)';"
                     onmouseout="this.style.backgroundColor='transparent';">
-                    <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ pago.id }}</td>
-                    <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ pago.cuota }}</td>
-                    <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ formatDate(pago.fechaPago) }}</td>
-                    <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;" class="font-weight-bold">
+                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">#{{ pago.id }}</td>
+                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">
+                      <span class="badge px-2 py-1" [style.background]="pago.metodoPago === 'YAPE' ? '#7127ba' : '#34495e'">
+                        {{ pago.metodoPago || 'EFECTIVO' }}
+                      </span>
+                    </td>
+                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">{{ formatDate(pago.fechaPago) }}</td>
+                    <td class="text-white align-middle font-weight-bold" style="border-color: rgba(255,255,255,0.05) !important;">
                       <span style="color: #2ecc71;">{{ formatCurrency(pago.monto) }}</span>
+                    </td>
+                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">
+                      <span class="badge" [ngClass]="{
+                        'badge-warning': pago.estado === 'PENDIENTE',
+                        'badge-success': pago.estado === 'APROBADO' || !pago.estado,
+                        'badge-danger': pago.estado === 'RECHAZADO'
+                      }">
+                        {{ pago.estado || 'APROBADO' }}
+                      </span>
+                      <small *ngIf="pago.estado === 'RECHAZADO' && pago.motivoRechazo" class="d-block text-danger mt-1">
+                        <i class="fas fa-info-circle mr-1"></i>{{ pago.motivoRechazo }}
+                      </small>
+                    </td>
+                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">
+                      <button *ngIf="pago.comprobanteUrl" class="btn btn-sm btn-outline-info"
+                        (click)="verFotoComprobante(pago)">
+                        <i class="fas fa-image mr-1"></i> Ver Foto
+                      </button>
+                      <span *ngIf="!pago.comprobanteUrl" class="text-muted small">Sin comprobante</span>
                     </td>
                   </tr>
                 </tbody>
@@ -548,7 +573,63 @@
   </div>
 </div>
 
+<!-- Modal para ver comprobante del usuario -->
+<div *ngIf="modalComprobanteVisible" class="modal-backdrop-custom" (click)="cerrarModalComprobante()">
+  <div class="modal-dialog-custom" (click)="$event.stopPropagation()">
+    <div class="card bg-dark text-white border-secondary">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-receipt mr-2 text-info"></i> Comprobante de Pago Yape</h5>
+        <button type="button" class="close text-white" (click)="cerrarModalComprobante()">&times;</button>
+      </div>
+
+      <!-- Alerta si el pago fue rechazado con su motivo -->
+      <div *ngIf="pagoSeleccionado && pagoSeleccionado.estado === 'RECHAZADO'" class="p-3 pb-0">
+        <div class="alert alert-danger mb-0" style="background-color: rgba(231, 76, 60, 0.2); border-left: 4px solid #e74c3c;">
+          <h6 class="font-weight-bold mb-1 text-danger">
+            <i class="fas fa-exclamation-triangle mr-2"></i> Pago Rechazado
+          </h6>
+          <p class="mb-1 text-white small"><strong>Motivo:</strong> {{ pagoSeleccionado.motivoRechazo || 'Comprobante no válido' }}</p>
+          <small class="text-light opacity-75" *ngIf="pagoSeleccionado.fechaValidacion">
+            Fecha de revisión: {{ pagoSeleccionado.fechaValidacion }}
+          </small>
+        </div>
+      </div>
+
+      <div class="card-body text-center p-3">
+        <img [src]="comprobanteSeleccionadoUrl" alt="Comprobante Yape"
+          style="max-width: 100%; max-height: 65vh; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+      </div>
+      <div class="card-footer text-right">
+        <a [href]="comprobanteSeleccionadoUrl" target="_blank" class="btn btn-outline-info mr-2">
+          <i class="fas fa-external-link-alt mr-1"></i> Abrir en tamaño real
+        </a>
+        <button class="btn btn-secondary" (click)="cerrarModalComprobante()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <style>
+  /* Modal flotante */
+  .modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+  }
+
+  .modal-dialog-custom {
+    width: 90%;
+    max-width: 650px;
+    z-index: 1060;
+  }
+
   /* Animaciones */
   @keyframes fadeIn {
     from {

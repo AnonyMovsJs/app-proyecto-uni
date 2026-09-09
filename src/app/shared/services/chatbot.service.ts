@@ -10,6 +10,7 @@ export interface ChatMessage {
   timestamp: Date;
   isBot?: boolean;
   responseType?: string; // Para identificar tipos especiales de respuesta
+  actionData?: ActionData | null;
 }
 
 export interface ActionData {
@@ -101,13 +102,22 @@ export class ChatbotService {
           this.loadingSubject.next(false);
           this.isLoading = false;
 
-          // Añadir respuesta del asistente
+          // Añadir respuesta del asistente con su actionData si corresponde
+          let currentAction: ActionData | null = null;
+          if (response && response.requiresAction && response.actionData) {
+            currentAction = {
+              type: response.actionType,
+              data: response.actionData,
+            };
+          }
+
           const botMessage: ChatMessage = {
             content: response.message || 'Solicitado...',
             sender: 'AI Asistente',
             timestamp: new Date(),
             isBot: true,
             responseType: response.responseType,
+            actionData: currentAction,
           };
 
           const currentMessages = this.messageSubject.getValue();

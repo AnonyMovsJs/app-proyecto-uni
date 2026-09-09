@@ -11,4 +11,7 @@ export class Venta {
   tipoVenta!: TipoVenta;
   estado!: Estado;
   fechaVenta: Date = new Date();
+  totalPagado?: number;
+  saldoPendiente?: number;
 }
+

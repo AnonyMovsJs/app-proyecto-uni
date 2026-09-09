@@ -30,29 +30,42 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   messages: ChatMessage[] = [];
   newMessage = '';
   isOpen = false;
+  isExpanded = false;
+  modalActionData: ActionData | null = null;
   loading = false;
   actionData: ActionData | null = null;
   public readonly speechRecognition =
     'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
 
-  // Propiedades para el reconocimiento de voz
+  // Reconocimiento y síntesis de voz
   isRecording = false;
   recognition: any;
+  speechEnabled = false;
 
-  // Sugerencias por rol
+  // Pasos de pensamiento dinámicos estilo Vercel AI
+  thinkingSteps = [
+    '🧠 Analizando intención con motor MCP...',
+    '⚡ Consultando base de datos transaccional...',
+    '📊 Verificando estados de mora y cronograma...',
+    '✨ Sintetizando respuesta ejecutiva...'
+  ];
+  currentThinkingStep = this.thinkingSteps[0];
+  private thinkingInterval: any;
+
+  // Sugerencias dinámicas por rol
   adminSuggestions = [
+    '¿Quién no paga?',
     'Clientes con deudas',
-    'Registrar usuario',
-    'Registrar venta',
-    'Cuotas pagadas por Anthony',
-    'Próxima cuota de Anthony',
+    '¿Cuánto debe Anthony?',
+    'Registrar cliente',
+    'Cuotas de Ronald Villacorta'
   ];
 
   userSuggestions = [
+    '¿Cuánto debo en total?',
+    '¿Cuándo vence mi próxima cuota?',
     'Mis cuotas pendientes',
-    'Mi próxima cuota',
-    'Cuánto debo en total',
-    'Mis cuotas pagadas',
+    'Mis cuotas pagadas'
   ];
 
   private messagesSubscription!: Subscription;
@@ -64,30 +77,37 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     public authService: AuthService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-    // Inicializar reconocimiento de voz si está disponible
     if (this.speechRecognition) {
       this.initSpeechRecognition();
     }
   }
 
   ngOnInit() {
-    // Suscribirse a mensajes
     this.messagesSubscription = this.chatbotService.messages$.subscribe(
       (messages) => {
         this.messages = messages;
+        if (messages.length > 0 && this.speechEnabled) {
+          const lastMsg = messages[messages.length - 1];
+          if (lastMsg.isBot && lastMsg.content) {
+            this.speak(this.stripHtml(lastMsg.content));
+          }
+        }
         this.changeDetectorRef.detectChanges();
       }
     );
 
-    // Suscribirse al estado de carga
     this.loadingSubscription = this.chatbotService.loading$.subscribe(
       (isLoading) => {
         this.loading = isLoading;
+        if (isLoading) {
+          this.startThinkingCycle();
+        } else {
+          this.stopThinkingCycle();
+        }
         this.changeDetectorRef.detectChanges();
       }
     );
 
-    // Suscribirse a acciones
     this.actionSubscription = this.chatbotService.actions$.subscribe(
       (action) => {
         this.actionData = action;
@@ -101,32 +121,20 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnDestroy() {
-    // Detener grabación si está activa
     if (this.isRecording && this.recognition) {
       this.recognition.stop();
     }
+    this.stopThinkingCycle();
 
-    // Cancelar suscripciones
     if (this.messagesSubscription) this.messagesSubscription.unsubscribe();
     if (this.actionSubscription) this.actionSubscription.unsubscribe();
     if (this.loadingSubscription) this.loadingSubscription.unsubscribe();
 
-    // Limpiar
     this.chatbotService.disconnect();
   }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
-  }
-
-  formatTableData(data: any[]): any[] {
-    // Si hay más de 5 filas, limitar para mejor visualización
-    if (data && data.length > 5) {
-      // Opcionalmente, agregar indicador de "más resultados"
-      const limitedData = data.slice(0, 5);
-      return limitedData;
-    }
-    return data;
   }
 
   toggleChat() {
@@ -140,15 +148,29 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!this.isOpen) {
       this.clearAction();
     } else {
-      // Si se está abriendo el chat, inicializar
-      this.chatbotService.initializeWebSocketConnection();
       setTimeout(() => {
         this.scrollToBottom();
-      }, 100);
+      }, 120);
     }
   }
 
-  // Método para inicializar el reconocimiento de voz
+  private startThinkingCycle() {
+    let index = 0;
+    this.currentThinkingStep = this.thinkingSteps[0];
+    this.thinkingInterval = setInterval(() => {
+      index = (index + 1) % this.thinkingSteps.length;
+      this.currentThinkingStep = this.thinkingSteps[index];
+      this.changeDetectorRef.detectChanges();
+    }, 900);
+  }
+
+  private stopThinkingCycle() {
+    if (this.thinkingInterval) {
+      clearInterval(this.thinkingInterval);
+      this.thinkingInterval = null;
+    }
+  }
+
   private initSpeechRecognition() {
     const SpeechRecognition =
       (window as any).SpeechRecognition ||
@@ -157,68 +179,110 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.recognition = new SpeechRecognition();
     this.recognition.continuous = false;
     this.recognition.interimResults = false;
-    this.recognition.lang = 'es-ES';
+    this.recognition.lang = 'es-PE';
 
     this.recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
-      console.log('Texto reconocido:', transcript);
-
       this.newMessage = transcript;
       this.changeDetectorRef.detectChanges();
     };
 
     this.recognition.onend = () => {
       this.isRecording = false;
-
-      // Si hay texto reconocido, enviarlo automáticamente
       if (this.newMessage && this.newMessage.trim() !== '') {
-        console.log('Enviando mensaje automáticamente');
         this.sendMessage();
       }
-
       this.changeDetectorRef.detectChanges();
     };
 
     this.recognition.onerror = (event: any) => {
-      console.error('Error en reconocimiento:', event.error);
+      console.warn('Reconocimiento de voz:', event.error);
       this.isRecording = false;
       this.changeDetectorRef.detectChanges();
     };
   }
 
-  // Método para alternar el reconocimiento de voz
   toggleVoiceRecognition() {
-    if (!this.recognition) {
-      alert('Tu navegador no soporta reconocimiento de voz');
+    if (!this.speechRecognition) {
+      alert('El reconocimiento de voz no está soportado en este navegador. Te recomendamos usar Google Chrome o Microsoft Edge.');
       return;
+    }
+
+    if (!this.recognition) {
+      this.initSpeechRecognition();
     }
 
     if (this.isRecording) {
       this.recognition.stop();
+      this.isRecording = false;
     } else {
-      // Limpiar mensaje previo antes de empezar
       this.newMessage = '';
-      this.recognition.start();
-      this.isRecording = true;
+      try {
+        this.recognition.start();
+        this.isRecording = true;
+      } catch (e) {
+        console.warn('Error al iniciar reconocimiento de voz:', e);
+        this.isRecording = false;
+      }
     }
   }
 
-  // Método para enviar mensajes
+  toggleSpeech() {
+    this.speechEnabled = !this.speechEnabled;
+    if (!this.speechEnabled && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  }
+
+  private speak(text: string) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'es-PE';
+    utterance.rate = 1.05;
+    window.speechSynthesis.speak(utterance);
+  }
+
+  private stripHtml(html: string): string {
+    const tmp = document.createElement('DIV');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  formatMarkdown(text: string): string {
+    if (!text) return '';
+    let formatted = text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\n/g, '<br>');
+    return formatted;
+  }
+
   sendMessage() {
     if (!this.newMessage.trim() || this.loading) return;
-
-    console.log('Enviando mensaje:', this.newMessage);
-    this.chatbotService.sendMessage(this.newMessage);
+    const msg = this.newMessage.trim();
     this.newMessage = '';
-
-    // Limpiar acción previa
-    this.actionData = null;
     this.chatbotService.clearAction();
+    this.actionData = null;
+    this.chatbotService.sendMessage(msg);
   }
 
   useSuggestion(suggestion: string) {
     this.newMessage = suggestion;
     this.sendMessage();
+  }
+
+  toggleExpandWindow() {
+    this.isExpanded = !this.isExpanded;
+  }
+
+  openModalWithData(action: ActionData) {
+    this.modalActionData = action;
+  }
+
+  closeModal() {
+    this.modalActionData = null;
   }
 
   clearAction() {
@@ -232,35 +296,40 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
       : this.userSuggestions;
   }
 
-  // Formateo de datos para visualización
-  formatData(data: any): string {
-    if (!data) return 'No hay datos disponibles';
-
-    try {
-      if (typeof data === 'string') return data;
-      return JSON.stringify(data, null, 2);
-    } catch (e) {
-      return 'Error al formatear datos';
-    }
-  }
-
-  // Determinar columnas para tablas dinámicas
   getTableColumns(data: any[]): string[] {
     if (!data || !Array.isArray(data) || data.length === 0) return [];
     return Object.keys(data[0]);
   }
 
-  // Formatear valor según su tipo
+  formatTableColumnName(col: string): string {
+    const map: { [key: string]: string } = {
+      cliente: 'Cliente',
+      dni: 'DNI',
+      telefono: 'Teléfono',
+      cuotasPendientes: 'Cuotas Pend.',
+      cuotasVencidas: 'Cuotas Venc.',
+      totalDeuda: 'Total Deuda',
+      desdeCuando: 'Desde Cuándo',
+      diasAtraso: 'Días Atraso',
+      estado: 'Estado',
+      cuota: 'Cuota',
+      monto: 'Monto',
+      vencimiento: 'Vencimiento'
+    };
+    return map[col] || col;
+  }
+
   formatCellValue(value: any): string {
     if (value === null || value === undefined) return '';
-    if (typeof value === 'number') {
-      // Formatear números con comas para miles y dos decimales
-      return value.toLocaleString('es-PE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-    }
     return String(value);
+  }
+
+  getStatusClass(status: string): string {
+    const s = String(status).toUpperCase();
+    if (s.includes('CRIT') || s.includes('VENCID')) return 'critico';
+    if (s.includes('MORA')) return 'en-mora';
+    if (s.includes('PAGAD') || s.includes('DIA')) return 'al-dia';
+    return 'por-vencer';
   }
 
   private scrollToBottom() {
@@ -270,7 +339,7 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.messagesContainer.nativeElement.scrollHeight;
       }
     } catch (err) {
-      console.error('Error al desplazar chat:', err);
+      // Ignorar
     }
   }
 
@@ -279,47 +348,5 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.chatbotService.clearAction();
     this.actionData = null;
     this.chatbotService.initializeWebSocketConnection();
-  }
-
-  // Método para obtener la clase CSS según el estado
-  getStatusClass(estado: string): string {
-    switch (estado) {
-      case 'PENDIENTE':
-        return 'badge-warning';
-      case 'PAGADO':
-        return 'badge-success';
-      case 'VENCIDO':
-        return 'badge-danger';
-      default:
-        return 'badge-secondary';
-    }
-  }
-
-  // Método para determinar el tipo de acción
-  getActionTitle(type: string): string {
-    switch (type) {
-      case 'QUERY':
-        return 'Resultados de Consulta';
-      case 'REGISTER_SALE':
-        return 'Venta Registrada';
-      case 'CREATE_USER':
-        return 'Usuario Creado';
-      default:
-        return 'Información';
-    }
-  }
-
-  // Método para obtener ícono según tipo de acción
-  getActionIcon(type: string): string {
-    switch (type) {
-      case 'QUERY':
-        return 'fa-table';
-      case 'REGISTER_SALE':
-        return 'fa-shopping-cart';
-      case 'CREATE_USER':
-        return 'fa-user-plus';
-      default:
-        return 'fa-info-circle';
-    }
   }
 }

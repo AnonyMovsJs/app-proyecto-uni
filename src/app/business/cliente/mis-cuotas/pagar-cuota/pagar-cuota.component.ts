@@ -189,21 +189,81 @@ export class PagarCuotaComponent implements OnInit {
     }
   }
 
+  archivoSeleccionado: File | null = null;
+  previewUrl: string | null = null;
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.archivoSeleccionado = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit(): void {
     if (this.pagoForm.invalid) {
       return;
     }
 
+    const metodo = this.pagoForm.value.metodoPago;
+
+    if (metodo === 'yape' && !this.archivoSeleccionado) {
+      Swal.fire({
+        title: 'Comprobante requerido',
+        text: 'Por favor adjunta la captura de tu comprobante de Yape.',
+        icon: 'warning',
+        confirmButtonColor: '#9b59b6',
+      });
+      return;
+    }
+
     this.submitting = true;
 
-    // IMPORTANTE: Corregido el formato del objeto pago para coincidir con lo que espera el backend
+    if (metodo === 'yape' && this.archivoSeleccionado) {
+      this.pagoService.registrarPagoYape(this.cuotaId, this.archivoSeleccionado).subscribe({
+        next: () => {
+          this.submitting = false;
+          Swal.fire({
+            title: '¡Comprobante Enviado!',
+            text: 'Tu comprobante de Yape fue recibido y está en revisión. Se te notificará una vez validado.',
+            icon: 'info',
+            confirmButtonColor: '#9b59b6',
+            confirmButtonText: 'Entendido',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const targetVentaId = this.cuota.ventaId || (this.venta ? this.venta.id : null);
+              if (targetVentaId) {
+                this.router.navigate(['/cliente/detalle-compra', targetVentaId]);
+              } else {
+                this.router.navigate(['/cliente/mis-compras']);
+              }
+            }
+          });
+        },
+        error: (err: any) => {
+          this.submitting = false;
+          Swal.fire({
+            title: 'Error al enviar comprobante',
+            text: err.error?.error || 'No se pudo subir tu comprobante. Intenta nuevamente.',
+            icon: 'error',
+            confirmButtonColor: '#e74c3c',
+          });
+        }
+      });
+      return;
+    }
+
+    // Flujo normal para otros métodos
     const pago = {
-      cuotaId: this.cuotaId, // Cambiado de cuota_id a cuotaId
+      cuotaId: this.cuotaId,
       monto: this.pagoForm.value.monto,
-      // Eliminado el campo metodoPago que no está en tu servicio original
+      metodoPago: metodo,
     };
 
-    // Simulación de demora en el pago para mejor experiencia de usuario
     setTimeout(() => {
       this.pagoService.registrarPago(pago).subscribe({
         next: (response) => {
@@ -222,10 +282,7 @@ export class PagarCuotaComponent implements OnInit {
         },
         error: (error: Error) => {
           this.submitting = false;
-          this.error =
-            'Error al procesar el pago. Por favor, intente nuevamente.';
-          console.error('Error al registrar pago', error);
-
+          this.error = 'Error al procesar el pago. Por favor, intente nuevamente.';
           Swal.fire({
             title: 'Error',
             text: 'No se pudo procesar el pago. Por favor, intenta nuevamente.',
@@ -234,7 +291,7 @@ export class PagarCuotaComponent implements OnInit {
           });
         },
       });
-    }, 1500);
+    }, 1200);
   }
 
   // Método para obtener clase de ícono según método de pago

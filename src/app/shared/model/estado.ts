@@ -2,4 +2,6 @@ export enum Estado {
   PENDIENTE = 'PENDIENTE',
   VENCIDO = 'VENCIDO',
   PAGADO = 'PAGADO',
+  EN_REVISION = 'EN_REVISION',
+  RECHAZADO = 'RECHAZADO',
 }

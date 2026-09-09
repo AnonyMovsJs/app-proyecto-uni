@@ -70,19 +70,57 @@
       </div>
     </li>
 
-    <!-- Notifications Dropdown Menu (similar styling to Messages) -->
+    <!-- Notifications Dropdown Menu (Dinámico) -->
     <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#">
+      <a class="nav-link position-relative" data-toggle="dropdown" href="#" role="button">
         <i class="far fa-bell text-light"></i>
-        <span class="badge badge-warning navbar-badge">15</span>
+        <span *ngIf="noLeidasCount > 0" class="badge badge-danger navbar-badge font-weight-bold" style="font-size: 0.75rem;">
+          {{ noLeidasCount }}
+        </span>
       </a>
-      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
-        style="background: #34495e !important; border: 1px solid rgba(255,255,255,0.1) !important;">
-        <span class="dropdown-item dropdown-header" style="color: #ecf0f1 !important;">15 Notificaciones</span>
-        <div class="dropdown-divider" style="border-color: rgba(255,255,255,0.1) !important;"></div>
-        <!-- Notifications items with similar styling... -->
-        <a href="#" class="dropdown-item dropdown-footer" style="color: #3498db !important;">Ver Todas las
-          Notificaciones</a>
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right shadow-lg"
+        style="background: #243342 !important; border: 1px solid rgba(255,255,255,0.15) !important; min-width: 320px;">
+        <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom" style="border-color: rgba(255,255,255,0.1) !important;">
+          <span class="font-weight-bold text-white small">
+            {{ noLeidasCount > 0 ? noLeidasCount + ' No Leída(s)' : 'Notificaciones' }}
+          </span>
+          <button *ngIf="noLeidasCount > 0" class="btn btn-link btn-xs text-info p-0" (click)="marcarTodasComoLeidas()">
+            Marcar leídas
+          </button>
+        </div>
+
+        <div style="max-height: 320px; overflow-y: auto;">
+          <a *ngFor="let notif of notificaciones" href="javascript:void(0)" class="dropdown-item py-2 px-3 border-bottom"
+            [style.background]="notif.leida ? 'transparent' : 'rgba(37, 117, 252, 0.12)'"
+            style="border-color: rgba(255,255,255,0.07) !important; white-space: normal;"
+            (click)="abrirDetalle(notif)">
+            <div class="d-flex align-items-start">
+              <i class="fas fa-exclamation-circle text-warning mt-1 mr-2" *ngIf="notif.diasRetraso > 0 && notif.diasRetraso <= 30"></i>
+              <i class="fas fa-exclamation-triangle text-danger mt-1 mr-2" *ngIf="notif.diasRetraso > 30"></i>
+              <i class="fas fa-bell text-info mt-1 mr-2" *ngIf="notif.diasRetraso === 0"></i>
+              <div class="flex-grow-1">
+                <div class="d-flex justify-content-between">
+                  <strong class="text-white small">{{ notif.titulo }}</strong>
+                  <span *ngIf="!notif.leida" class="badge badge-primary" style="font-size: 0.6rem;">NUEVA</span>
+                </div>
+                <p class="mb-1 text-white small text-truncate" style="max-width: 250px; color: #ffffff !important;">{{ notif.mensaje }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-danger small font-weight-bold">S/. {{ notif.montoDeuda | number:'1.2-2' }}</span>
+                  <span class="text-white" style="font-size: 0.75rem; color: #ffffff !important; opacity: 0.85;">{{ notif.fechaEnvio | date:'short' }}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <div *ngIf="notificaciones.length === 0" class="p-4 text-center">
+            <i class="far fa-bell-slash fa-2x mb-2 d-block text-white" style="opacity: 0.6;"></i>
+            <span class="small text-white" style="color: #ffffff !important;">No tienes notificaciones de cobranza pendientes</span>
+          </div>
+        </div>
+
+        <a *ngIf="isAdmin" routerLink="/admin/cobranzas" class="dropdown-item dropdown-footer text-center text-info small py-2" style="background: rgba(0,0,0,0.15) !important;">
+          <i class="fas fa-hand-holding-usd mr-1"></i> Ir a Control de Cobranzas
+        </a>
       </div>
     </li>
 

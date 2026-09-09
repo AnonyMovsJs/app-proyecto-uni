@@ -64,6 +64,33 @@
               </a>
             </li>
             }
+
+            @if (admin) {
+            <li class="nav-item">
+              <a routerLink="/admin/cobranzas" class="nav-link text-light" routerLinkActive="active">
+                <i class="fa fa-hand-holding-usd mr-2 text-danger"></i>
+                <p>Control de Cobranzas</p>
+              </a>
+            </li>
+            }
+
+            @if (admin) {
+            <li class="nav-item">
+              <a routerLink="/admin/pagos" class="nav-link text-light" routerLinkActive="active">
+                <i class="fa fa-money-check-alt mr-2 text-warning"></i>
+                <p>Validar Pagos (Yape)</p>
+              </a>
+            </li>
+            }
+
+            @if (admin) {
+            <li class="nav-item">
+              <a routerLink="/admin/evaluacion-ia" class="nav-link text-light" routerLinkActive="active">
+                <i class="fas fa-brain mr-2 text-info"></i>
+                <p>Evaluación con IA</p>
+              </a>
+            </li>
+            }
           </ul>
         </li>     }
 

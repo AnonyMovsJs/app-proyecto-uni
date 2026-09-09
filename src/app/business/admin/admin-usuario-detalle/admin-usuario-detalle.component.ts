@@ -41,6 +41,27 @@ export class AdminUsuarioDetalleComponent implements OnInit {
   error = '';
   activeTab = 'perfil'; // 'perfil', 'compras', 'creditos', 'pagos'
 
+  modalComprobanteVisible = false;
+  comprobanteSeleccionadoUrl = '';
+  pagoSeleccionado: any = null;
+
+  verFotoComprobante(pago: any): void {
+    if (typeof pago === 'string') {
+      this.comprobanteSeleccionadoUrl = pago;
+      this.pagoSeleccionado = null;
+    } else {
+      this.comprobanteSeleccionadoUrl = pago.comprobanteUrl;
+      this.pagoSeleccionado = pago;
+    }
+    this.modalComprobanteVisible = true;
+  }
+
+  cerrarModalComprobante(): void {
+    this.modalComprobanteVisible = false;
+    this.comprobanteSeleccionadoUrl = '';
+    this.pagoSeleccionado = null;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -56,6 +77,12 @@ export class AdminUsuarioDetalleComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.userId = +params['id'];
       this.cargarDatosUsuario();
+    });
+
+    this.route.queryParams.subscribe((queryParams) => {
+      if (queryParams['tab']) {
+        this.setActiveTab(queryParams['tab']);
+      }
     });
   }
 

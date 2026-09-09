@@ -18,6 +18,7 @@ export class NuevaVentaComponent implements OnInit {
   tiposVenta = [
     { id: 'CONTADO', nombre: 'Contado' },
     { id: 'CREDITO', nombre: 'Crédito' },
+    { id: 'FIADO', nombre: 'Fiado' },
   ];
   loading = false;
   error = '';
@@ -44,6 +45,9 @@ export class NuevaVentaComponent implements OnInit {
         interes: [0],
         numeroCuotas: [1, [Validators.required, Validators.min(1)]],
       }),
+      fiado: this.fb.group({
+        plazoDias: [30, [Validators.required, Validators.min(1)]],
+      }),
     });
   }
 
@@ -61,6 +65,10 @@ export class NuevaVentaComponent implements OnInit {
 
   get esCredito(): boolean {
     return this.ventaForm.get('tipoVenta')?.value === 'CREDITO';
+  }
+
+  get esFiado(): boolean {
+    return this.ventaForm.get('tipoVenta')?.value === 'FIADO';
   }
 
   agregarDetalle(): void {
@@ -114,7 +122,7 @@ export class NuevaVentaComponent implements OnInit {
     this.ventaService.crearVenta(venta).subscribe({
       next : (response) => {
         this.loading = false;
-        this.router.navigate(['/admin/dashboard']);
+        this.router.navigate(['/admin/ventas']);
         Swal.fire('Registrado!','Venta registrado con éxito','success')
       },
       error : (error) => {
@@ -137,6 +145,12 @@ export class NuevaVentaComponent implements OnInit {
 
     if (formValue.tipoVenta === 'CREDITO') {
       venta['creditoDTO'] = formValue.credito;
+    } else if (formValue.tipoVenta === 'FIADO') {
+      venta['creditoDTO'] = {
+        interes: 0,
+        numeroCuotas: 1,
+        plazoDias: formValue.fiado?.plazoDias || 30,
+      };
     }
 
     return venta;

@@ -1,0 +1,120 @@
+.kpi-card {
+  border-radius: 0.85rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.card-purple {
+  background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%) !important;
+}
+
+.card-blue {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+}
+
+.card-orange {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+}
+
+.card-red {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.kpi-icon-box {
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.table-container-card {
+  background: #182234 !important;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table-dark {
+  background-color: transparent !important;
+}
+
+.table-dark th {
+  background-color: #141c2b !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.table-dark td {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  background-color: transparent;
+}
+
+.table-dark tr:hover td {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Avatar circular para clientes */
+.avatar-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.avatar-red {
+  background: linear-gradient(135deg, #ef4444, #991b1b);
+  border: 2px solid rgba(239, 68, 68, 0.4);
+}
+
+.avatar-orange {
+  background: linear-gradient(135deg, #f59e0b, #b45309);
+  border: 2px solid rgba(245, 158, 11, 0.4);
+}
+
+.avatar-blue {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border: 2px solid rgba(59, 130, 246, 0.4);
+}
+
+/* Badges estilizados para Días de Retraso */
+.badge-retraso {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-critico {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.badge-mora {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.badge-al-dia {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}

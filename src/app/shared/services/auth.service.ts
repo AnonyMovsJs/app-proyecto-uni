@@ -86,7 +86,7 @@ export class AuthService {
 
 
   checkAdmin(isAdmin: boolean) {
-    this._user.idAdmin = isAdmin;
+    this._user.isAdmin = isAdmin;
     sessionStorage.setItem('login', JSON.stringify(this._user));
   }
 

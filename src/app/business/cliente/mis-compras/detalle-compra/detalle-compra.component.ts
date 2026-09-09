@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { VentaService } from '../../../../shared/services/venta.service';
 import { CreditoService } from '../../../../shared/services/credito.service';
-import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../shared/services/auth.service';
+import { CommonModule, Location } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -26,9 +27,24 @@ export class DetalleCompraComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private ventaService: VentaService,
-    private creditoService: CreditoService
+    private creditoService: CreditoService,
+    public authService: AuthService,
+    private location: Location
   ) {}
+
+  volver(): void {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      if (this.authService.isAdmin()) {
+        this.router.navigate(['/admin/ventas']);
+      } else {
+        this.router.navigate(['/cliente/mis-compras']);
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -60,8 +76,8 @@ export class DetalleCompraComponent implements OnInit {
       next: (detalles) => {
         this.detalles = detalles;
 
-        // Si es venta a crédito, cargar información del crédito
-        if (this.venta.tipoVenta === 'CREDITO') {
+        // Si es venta a crédito o fiado, cargar información del crédito
+        if (this.venta.tipoVenta === 'CREDITO' || this.venta.tipoVenta === 'FIADO') {
           this.cargarCredito();
         } else {
           this.loading = false;
@@ -82,9 +98,9 @@ export class DetalleCompraComponent implements OnInit {
         this.cargarCuotas();
       },
       error: (error) => {
-        this.error = 'Error al cargar información del crédito';
+        // En caso de que no tenga entidad crédito asociada
         this.loading = false;
-        console.error('Error al cargar crédito', error);
+        console.warn('No se encontró crédito asociado a esta venta', error);
       },
     });
   }
@@ -108,6 +124,8 @@ export class DetalleCompraComponent implements OnInit {
     switch (estado) {
       case 'PAGADO':
         return '#2ecc71'; // Verde
+      case 'EN_REVISION':
+        return '#9b59b6'; // Morado Yape
       case 'PENDIENTE':
         return '#f39c12'; // Naranja
       case 'VENCIDO':
@@ -118,14 +136,11 @@ export class DetalleCompraComponent implements OnInit {
   }
 
   calcularProgresoCredito(): number {
-    if (!this.cuotas || this.cuotas.length === 0) {
-      return 0;
-    }
-
-    const cuotasPagadas = this.cuotas.filter(
-      (c) => c.estado === 'PAGADO'
-    ).length;
-    return (cuotasPagadas / this.cuotas.length) * 100;
+    const total = this.credito ? Number(this.credito.montoTotal) : Number(this.venta?.montoTotal || 0);
+    if (!total || total <= 0) return 0;
+    const pagado = this.calcularTotalPagado();
+    const porcentaje = (pagado / total) * 100;
+    return Math.min(100, Math.max(0, Math.round(porcentaje * 10) / 10));
   }
 
   // Método para obtener el color de la barra de progreso según el porcentaje
@@ -147,21 +162,31 @@ export class DetalleCompraComponent implements OnInit {
 
   // Calcular el total pagado hasta el momento
   calcularTotalPagado(): number {
-    if (!this.cuotas || this.cuotas.length === 0) {
-      return 0;
+    if (this.venta?.tipoVenta === 'CONTADO' || this.venta?.estado === 'PAGADO') {
+      return Number(this.venta?.montoTotal || 0);
     }
-
-    return this.cuotas
-      .filter((c) => c.estado === 'PAGADO')
-      .reduce((total, cuota) => total + Number(cuota.monto), 0);
+    const total = this.credito ? Number(this.credito.montoTotal) : Number(this.venta?.montoTotal || 0);
+    if (!this.cuotas || this.cuotas.length === 0) {
+      return Number(this.venta?.totalPagado || 0);
+    }
+    const pendiente = this.cuotas
+      .filter((c) => c.estado !== 'PAGADO')
+      .reduce((sum, c) => sum + Number(c.monto), 0);
+    const pagado = total - pendiente;
+    return Math.max(0, pagado);
   }
 
   // Calcular el total pendiente por pagar
   calcularTotalPendiente(): number {
-    if (!this.cuotas || this.cuotas.length === 0 || !this.credito) {
+    if (this.venta?.tipoVenta === 'CONTADO' || this.venta?.estado === 'PAGADO') {
       return 0;
     }
-
-    return Number(this.credito.montoTotal) - this.calcularTotalPagado();
+    if (!this.cuotas || this.cuotas.length === 0) {
+      if (this.venta?.saldoPendiente !== undefined) return Number(this.venta.saldoPendiente);
+      return Number(this.venta?.montoTotal || 0) - Number(this.venta?.totalPagado || 0);
+    }
+    return this.cuotas
+      .filter((c) => c.estado !== 'PAGADO')
+      .reduce((sum, c) => sum + Number(c.monto), 0);
   }
 }

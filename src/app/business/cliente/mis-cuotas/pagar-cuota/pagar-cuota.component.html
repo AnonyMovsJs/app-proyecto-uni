@@ -83,7 +83,7 @@
               <span style="font-size: 22px; font-weight: 700; color: white;">{{ cuota.numeroCuota }}</span>
             </div>
             <div>
-              <p class="mb-0 text-light opacity-75" style="font-size: 0.9rem;">de {{ credito.numero_cuotas }} cuotas</p>
+              <p class="mb-0 text-light opacity-75" style="font-size: 0.9rem;">de {{ credito.numeroCuotas || credito.numero_cuotas || '?' }} cuotas</p>
               <span class="badge py-2 px-3"
                 [style.background-color]="cuota.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
                 style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -189,6 +189,31 @@
               </div>
 
               <input type="hidden" formControlName="metodoPago">
+            </div>
+
+            <!-- Subida de comprobante cuando se selecciona Yape -->
+            <div *ngIf="pagoForm.get('metodoPago')?.value === 'yape'" class="p-3 rounded mb-4"
+              style="background: rgba(113, 39, 186, 0.15); border: 1px dashed #9b59b6; border-radius: 0.75rem;">
+              <h6 class="text-white mb-2"><i class="fas fa-qrcode mr-2" style="color: #9b59b6;"></i>Adjuntar Comprobante de Yape</h6>
+              <p class="small text-light opacity-75 mb-3">
+                Transfiere a nuestro número oficial de Yape y sube la captura de pantalla para que el dueño lo valide.
+              </p>
+
+              <div class="custom-file mb-3">
+                <input type="file" class="custom-file-input" id="comprobanteYape" accept="image/*"
+                  (change)="onFileSelected($event)">
+                <label class="custom-file-label text-truncate" for="comprobanteYape"
+                  style="background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.2);">
+                  {{ archivoSeleccionado ? archivoSeleccionado.name : 'Seleccionar captura de Yape...' }}
+                </label>
+              </div>
+
+              <!-- Vista previa de la captura -->
+              <div *ngIf="previewUrl" class="text-center mt-2">
+                <p class="small text-light mb-1">Vista previa del comprobante:</p>
+                <img [src]="previewUrl" alt="Comprobante Yape"
+                  style="max-height: 220px; max-width: 100%; border-radius: 0.5rem; border: 2px solid #9b59b6; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+              </div>
             </div>
 
             <!-- Resumen de pago -->

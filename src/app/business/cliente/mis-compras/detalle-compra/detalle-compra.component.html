@@ -10,12 +10,12 @@
             <p class="text-light mt-2 mb-0 opacity-75">Información completa de tu compra y pagos</p>
           </div>
           <div class="mt-3 mt-md-0">
-            <a routerLink="/cliente/mis-compras" class="btn"
+            <button (click)="volver()" class="btn"
               style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.2s ease;"
               onmouseover="this.style.background='rgba(79, 195, 247, 0.3)';"
               onmouseout="this.style.background='rgba(79, 195, 247, 0.2)';">
-              <i class="fas fa-arrow-left mr-2"></i> Volver a Mis Compras
-            </a>
+              <i class="fas fa-arrow-left mr-2"></i> Volver
+            </button>
           </div>
         </div>
       </div>
@@ -81,11 +81,11 @@
                 <p class="small mb-1 text-light opacity-75">Tipo de Compra</p>
                 <h6 class="mb-0 d-flex align-items-center">
                   <span class="badge py-2 px-3 mr-2"
-                    [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : '#3498db'"
+                    [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : venta.tipoVenta === 'FIADO' ? '#e67e22' : '#3498db'"
                     style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                     <i
-                      [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : 'fas fa-credit-card mr-1'"></i>
-                    {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : 'Crédito' }}
+                      [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-1' : 'fas fa-credit-card mr-1'"></i>
+                    {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : venta.tipoVenta === 'FIADO' ? 'Fiado (Cuenta Corriente)' : 'Crédito' }}
                   </span>
                 </h6>
               </div>
@@ -190,33 +190,33 @@
         </div>
       </div>
 
-      <!-- Información del Crédito (si aplica) -->
-      <div *ngIf="venta.tipoVenta === 'CREDITO' && credito" class="card border-0 mb-4"
+      <!-- Información del Crédito o Fiado (si aplica) -->
+      <div *ngIf="(venta.tipoVenta === 'CREDITO' || venta.tipoVenta === 'FIADO') && credito" class="card border-0 mb-4"
         style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
         <div class="card-header d-flex align-items-center py-3"
           style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-          <i class="fas fa-credit-card mr-2" style="color: #4fc3f7;"></i>
-          <h5 class="mb-0 text-white">Información del Crédito</h5>
+          <i [class]="venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-2' : 'fas fa-credit-card mr-2'" style="color: #4fc3f7;"></i>
+          <h5 class="mb-0 text-white">{{ venta.tipoVenta === 'FIADO' ? 'Información del Fiado en Cuenta Corriente' : 'Información del Crédito' }}</h5>
         </div>
         <div class="card-body text-white">
           <div class="row">
             <div class="col-md-4 mb-3">
               <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Monto Total con Interés</p>
+                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Monto Total Fiado' : 'Monto Total con Interés' }}</p>
                 <h5 class="mb-0 font-weight-bold" style="color: #4fc3f7;">S/. {{ credito.montoTotal | number:'1.2-2' }}
                 </h5>
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Interés Aplicado</p>
-                <h6 class="mb-0">{{ credito.interes }}%</h6>
+                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Recargo / Interés' : 'Interés Aplicado' }}</p>
+                <h6 class="mb-0">{{ venta.tipoVenta === 'FIADO' ? '0% (Sin interés)' : (credito.interes + '%') }}</h6>
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Número de Cuotas</p>
-                <h6 class="mb-0">{{ credito.numeroCuotas }} cuotas</h6>
+                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Modalidad' : 'Número de Cuotas' }}</p>
+                <h6 class="mb-0">{{ venta.tipoVenta === 'FIADO' ? 'Cuenta Corriente (Abono Libre)' : ((credito.numeroCuotas || credito.numero_cuotas || cuotas.length) + ' cuotas') }}</h6>
               </div>
             </div>
           </div>
@@ -224,7 +224,7 @@
           <div class="row mt-3">
             <div class="col-md-4 mb-3">
               <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Estado del Crédito</p>
+                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Estado del Fiado' : 'Estado del Crédito' }}</p>
                 <h6 class="mb-0">
                   <span class="badge py-2 px-3" [style.background-color]="
                       credito.estado === 'PAGADO' ? '#2ecc71' :
@@ -311,13 +311,13 @@
         </div>
       </div>
 
-      <!-- Cuotas (si aplica) -->
-      <div *ngIf="venta.tipoVenta === 'CREDITO' && credito" class="card border-0 mb-4"
+      <!-- Cuotas o Deuda Fiada (si aplica) -->
+      <div *ngIf="(venta.tipoVenta === 'CREDITO' || venta.tipoVenta === 'FIADO') && credito" class="card border-0 mb-4"
         style="background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
         <div class="card-header d-flex align-items-center py-3"
           style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
           <i class="fas fa-calendar-alt mr-2" style="color: #4fc3f7;"></i>
-          <h5 class="mb-0 text-white">Cuotas</h5>
+          <h5 class="mb-0 text-white">{{ venta.tipoVenta === 'FIADO' ? 'Saldo Deudor de esta Compra' : 'Cuotas' }}</h5>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -353,11 +353,14 @@
                   onmouseout="this.style.backgroundColor='transparent';">
                   <td class="py-3 px-4 text-white" style="background: transparent !important;">
                     <div class="d-flex align-items-center">
-                      <div
+                      <div *ngIf="venta.tipoVenta !== 'FIADO'"
                         style="width: 32px; height: 32px; border-radius: 50%; background: rgba(79, 195, 247, 0.15); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
                         {{ cuota.numeroCuota }}
                       </div>
-                      <span class="ml-2 text-light opacity-75">de {{ credito.numeroCuotas }}</span>
+                      <span *ngIf="venta.tipoVenta !== 'FIADO'" class="ml-2 text-light opacity-75">de {{ credito.numeroCuotas || credito.numero_cuotas || cuotas.length }}</span>
+                      <span *ngIf="venta.tipoVenta === 'FIADO'" class="badge py-1 px-2" style="background-color: #e67e22; font-size: 0.8rem; font-weight: 600;">
+                        <i class="fas fa-book-open mr-1"></i> Saldo Fiado
+                      </span>
                     </div>
                   </td>
                   <td class="py-3 text-white font-weight-bold" style="background: transparent !important;">S/. {{
@@ -379,12 +382,17 @@
                       style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                       <i [class]="
                         cuota.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
+                        cuota.estado === 'EN_REVISION' ? 'fas fa-search mr-1' :
                         cuota.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-exclamation-circle mr-1'"></i>
-                      {{ cuota.estado }}
+                      {{ cuota.estado === 'EN_REVISION' ? 'En Revisión (Yape)' : cuota.estado }}
                     </span>
                   </td>
                   <td class="py-3" style="background: transparent !important;">
-                    <button *ngIf="cuota.estado !== 'PAGADO'" class="btn btn-sm"
+                    <span *ngIf="cuota.estado === 'EN_REVISION'" class="badge py-2 px-3"
+                      style="background-color: rgba(155, 89, 182, 0.2); color: #9b59b6; font-weight: 500; border-radius: 6px;">
+                      <i class="fas fa-hourglass-half mr-1"></i> Comprobante en espera
+                    </span>
+                    <button *ngIf="cuota.estado !== 'PAGADO' && cuota.estado !== 'EN_REVISION'" class="btn btn-sm"
                       style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease;"
                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';"
