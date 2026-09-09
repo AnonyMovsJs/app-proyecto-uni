@@ -1,9 +1,9 @@
-<!-- user-table.component.html -->
+﻿<!-- user-table.component.html -->
 <div class="row">
   <!-- Barra de búsqueda con animación -->
   <div class="col-12 mb-4 text-white">
     <div class="input-search-container"
-      style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
+      style="background: #FFFFFF; border-radius: 0.75rem; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
       <div class="input-group ">
         <span class="input-group-text" style="background: rgba(255,255,255,0.1); border: none; color: white;">
           <i class="fas fa-search"></i>
@@ -30,7 +30,7 @@
   <!-- Vista desktop - Tabla de usuarios -->
   <div *ngIf="!loading" class="col-12 d-none d-md-block">
     <div class="table-responsive custom-table-container"
-      style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
+      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
       <table class="table table-hover custom-table mb-0">
         <thead>
           <tr style="background: rgba(0,0,0,0.2) !important;">
@@ -94,7 +94,7 @@
     </div>
 
     <div *ngIf="filteredUsers.length === 0 && !loading" class="text-center mt-4 p-5"
-      style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
       <i class="fas fa-users text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
       <h4 class="text-light">No se encontraron usuarios</h4>
       <p class="text-muted">Intenta con otros términos de búsqueda o crea un nuevo usuario</p>
@@ -104,7 +104,7 @@
   <!-- Vista móvil - Cards de usuarios -->
   <div *ngIf="!loading" class="col-12 d-md-none">
     <div *ngFor="let user of filteredUsers" class="card mb-3 animate-card" (click)="showUserDetails(user)"
-      style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: none; color: white; cursor: pointer; transition: all 0.3s ease;">
+      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: none; color: white; cursor: pointer; transition: all 0.3s ease;">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="d-flex align-items-center">
@@ -152,7 +152,7 @@
     </div>
 
     <div *ngIf="filteredUsers.length === 0 && !loading" class="text-center mt-4 p-5"
-      style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
       <i class="fas fa-users text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
       <h4 class="text-light">No se encontraron usuarios</h4>
       <p class="text-muted">Intenta con otros términos de búsqueda o crea un nuevo usuario</p>
@@ -167,13 +167,13 @@
 </div>
 
 <div #userCanvas class="user-details-offcanvas" [class.show]="showOffcanvas"
-  style="position: fixed; top: 0; right: 0; width: 400px; height: 100%; background: linear-gradient(to bottom, #2c3e50, #1a252f);
+  style="position: fixed; top: 0; right: 0; width: 400px; height: 100%; background: #FFFFFF;
   z-index: 1050; overflow-y: auto; box-shadow: -5px 0 15px rgba(0,0,0,0.3); transform: translateX(100%); transition: transform 0.3s ease;">
 
   <div *ngIf="selectedUser && showOffcanvas">
     <!-- Header -->
     <div class="p-4 border-bottom"
-      style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-color: rgba(255,255,255,0.1);">
+      style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%); border-color: rgba(255,255,255,0.1);">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0 text-white">Detalles del Usuario</h5>
         <button class="btn text-white" style="background: none; border: none; opacity: 0.7;" (click)="closeOffcanvas()">
@@ -393,7 +393,7 @@
 <style>
   /* Estilos para la tabla personalizada */
   .custom-table-container {
-    background: linear-gradient(to bottom, #2c3e50, #1a252f) !important;
+    background: #FFFFFF !important;
   }
 
   .custom-table {

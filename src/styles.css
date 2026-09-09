@@ -1,3 +1,239 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   COMERCIAL REYES - SISTEMA DE CRÉDITOS Y COBRANZAS
+   PALETA OPCIÓN G: ESPRESSO & CREMA NOBLE + SIDEBAR D3
+   ========================================================================== */
 
+:root {
+  /* Tonos Principales (Espresso & Caoba) */
+  --cr-primary: #2C1810;
+  --cr-primary-hover: #3D2217;
+  --cr-primary-dark: #1E0F0A;
+  --cr-primary-light: #4A281B;
 
+  /* Acentos Nobles (Oro / Bronce Envejecido) */
+  --cr-gold: #C59B6D;
+  --cr-gold-light: #DFC29E;
+  --cr-gold-dark: #9E7448;
+  --cr-gold-subtle: rgba(197, 155, 109, 0.15);
+
+  /* Fondos Cálidos (Crema / Lino / Pergamino) */
+  --cr-bg-page: #F5F1EB;
+  --cr-bg-surface: #FFFFFF;
+  --cr-bg-sidebar: #22130C;
+  --cr-bg-card: #FFFFFF;
+  --cr-bg-muted: #EFE9E0;
+
+  /* Bordes Suaves y Contrastes */
+  --cr-border: #E5DDD3;
+  --cr-border-focus: #C59B6D;
+
+  /* Textos de Alto Contraste (Lectura Descansada Adultos Mayores) */
+  --cr-text-main: #241A15;
+  --cr-text-muted: #66564E;
+  --cr-text-light: #94837B;
+  --cr-text-gold: #C59B6D;
+
+  /* Semáforos Financieros Claros */
+  --cr-success-bg: #EAF5EC;
+  --cr-success-text: #166534;
+  --cr-success-border: #BBF7D0;
+
+  --cr-danger-bg: #FEECEB;
+  --cr-danger-text: #991B1B;
+  --cr-danger-border: #FECACA;
+
+  --cr-warning-bg: #FEF7EA;
+  --cr-warning-text: #9A5B13;
+  --cr-warning-border: #FDE68A;
+
+  --cr-info-bg: #EBF3FA;
+  --cr-info-text: #1E4E8C;
+  --cr-info-border: #BFDBFE;
+
+  /* Tipografías */
+  --cr-font-title: 'Lora', Georgia, serif;
+  --cr-font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Resets y Base */
+html, body {
+  font-family: var(--cr-font-body) !important;
+  background-color: var(--cr-bg-page) !important;
+  color: var(--cr-text-main) !important;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tipografía de Títulos */
+h1, h2, h3, .card-title, .brand-text, .display-4, .display-5 {
+  font-family: var(--cr-font-title) !important;
+  letter-spacing: -0.01em;
+}
+
+/* Contenedor Principal y Layout */
+.wrapper, .content-wrapper {
+  background-color: var(--cr-bg-page) !important;
+  color: var(--cr-text-main) !important;
+}
+
+/* Tarjetas Nobles */
+.card {
+  background-color: var(--cr-bg-card) !important;
+  border: 1px solid var(--cr-border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.04) !important;
+  color: var(--cr-text-main) !important;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.07) !important;
+}
+
+.card-header {
+  background-color: #FAF7F2 !important;
+  border-bottom: 1px solid var(--cr-border) !important;
+  padding: 16px 22px !important;
+  color: var(--cr-primary) !important;
+  font-weight: 700;
+}
+
+.card-footer {
+  background-color: #FAF7F2 !important;
+  border-top: 1px solid var(--cr-border) !important;
+}
+
+/* Tablas Cálidas y de Alta Legibilidad */
+.table {
+  color: var(--cr-text-main) !important;
+  background-color: transparent !important;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: #F7F2EB !important;
+  color: var(--cr-text-muted) !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  border-bottom: 1.5px solid var(--cr-border) !important;
+  border-top: none !important;
+  padding: 14px 16px !important;
+}
+
+.table tbody td {
+  padding: 16px !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid #ECE4DA !important;
+  border-top: none !important;
+  font-size: 0.98rem !important;
+  color: var(--cr-text-main) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(245, 241, 235, 0.4) !important;
+}
+
+.table tbody tr:hover {
+  background-color: #F8F4EE !important;
+}
+
+/* Badges y Chips Financieros */
+.badge {
+  font-family: var(--cr-font-body) !important;
+  font-weight: 700 !important;
+  padding: 6px 12px !important;
+  border-radius: 30px !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.3px;
+}
+
+.badge-success, .badge.bg-success {
+  background-color: var(--cr-success-bg) !important;
+  color: var(--cr-success-text) !important;
+  border: 1px solid var(--cr-success-border) !important;
+}
+
+.badge-danger, .badge.bg-danger {
+  background-color: var(--cr-danger-bg) !important;
+  color: var(--cr-danger-text) !important;
+  border: 1px solid var(--cr-danger-border) !important;
+}
+
+.badge-warning, .badge.bg-warning {
+  background-color: var(--cr-warning-bg) !important;
+  color: var(--cr-warning-text) !important;
+  border: 1px solid var(--cr-warning-border) !important;
+}
+
+.badge-info, .badge.bg-info {
+  background-color: var(--cr-info-bg) !important;
+  color: var(--cr-info-text) !important;
+  border: 1px solid var(--cr-info-border) !important;
+}
+
+/* Botones Premium */
+.btn-primary {
+  background: var(--cr-primary) !important;
+  border-color: var(--cr-primary) !important;
+  color: #F7EAD9 !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.2) !important;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background: var(--cr-primary-hover) !important;
+  border-color: var(--cr-primary-hover) !important;
+  color: #FFF !important;
+  transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+  background: transparent !important;
+  border: 1.5px solid var(--cr-primary) !important;
+  color: var(--cr-primary) !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+}
+
+.btn-outline-primary:hover {
+  background: var(--cr-primary) !important;
+  color: #F7EAD9 !important;
+}
+
+.btn-gold {
+  background: var(--cr-gold) !important;
+  border-color: var(--cr-gold) !important;
+  color: #24130C !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(197, 155, 109, 0.3) !important;
+}
+
+.btn-gold:hover {
+  background: var(--cr-gold-light) !important;
+  color: #1E0F0A !important;
+}
+
+/* Campos de Formulario */
+.form-control, .form-select {
+  border: 1.5px solid var(--cr-border) !important;
+  border-radius: 10px !important;
+  background-color: #FFFFFF !important;
+  color: var(--cr-text-main) !important;
+  padding: 10px 14px !important;
+  font-size: 1rem !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--cr-gold) !important;
+  box-shadow: 0 0 0 3px rgba(197, 155, 109, 0.2) !important;
+  outline: none !important;
+}

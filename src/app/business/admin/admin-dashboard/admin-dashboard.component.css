@@ -1,0 +1,185 @@
+﻿/* ==========================================================================
+   ADMIN DASHBOARD (OPCIÓN G) - COMERCIAL REYES
+   ========================================================================== */
+
+/* Hero Banner */
+.cr-hero-banner {
+  background: linear-gradient(135deg, #28140B 0%, #180B06 100%);
+  border-radius: 16px;
+  border-bottom: 3px solid #C59B6D;
+  padding: 30px 36px;
+  box-shadow: 0 8px 24px rgba(24, 11, 6, 0.15);
+  color: #FFFFFF;
+}
+
+.cr-hero-title {
+  font-family: var(--cr-font-title);
+  font-size: 30px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+}
+
+.cr-hero-sub {
+  color: #E2D2C3;
+  font-size: 15px;
+}
+
+.cr-btn-refresh {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid #C59B6D;
+  color: #F7EAD9;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cr-btn-refresh:hover {
+  background: #C59B6D;
+  color: #180B06;
+}
+
+/* KPI Cards */
+.cr-kpi-card {
+  background: #FFFFFF;
+  border-radius: 14px;
+  border: 1px solid #EADBCE;
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.03);
+  padding: 24px 22px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cr-kpi-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: #2C1810;
+}
+
+.cr-kpi-card.gold::before { background: #C59B6D; }
+.cr-kpi-card.amber::before { background: #B45309; }
+.cr-kpi-card.green::before { background: #166534; }
+
+.cr-kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.08);
+}
+
+.cr-kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cr-kpi-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #78645A;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.cr-kpi-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #FAF4EB;
+  border: 1px solid #EADBCE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C59B6D;
+  font-size: 18px;
+}
+
+.cr-kpi-number {
+  font-family: var(--cr-font-title);
+  font-size: 40px;
+  font-weight: 700;
+  color: #241A15;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.cr-kpi-link {
+  font-size: 13px;
+  font-weight: 700;
+  color: #8C5D30;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid #F5EEE6;
+  padding-top: 12px;
+}
+
+.cr-kpi-link:hover {
+  color: #2C1810;
+  text-decoration: underline;
+}
+
+/* Sales Table Panel */
+.cr-table-panel {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #EADBCE;
+  box-shadow: 0 4px 18px rgba(44, 24, 16, 0.03);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.cr-table-header {
+  background: #FAF7F2;
+  border-bottom: 1.5px solid #EADBCE;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cr-table-header h4 {
+  font-family: var(--cr-font-title);
+  font-size: 22px;
+  font-weight: 700;
+  color: #2C1810;
+  margin: 0;
+}
+
+/* Chart Cards */
+.cr-chart-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #EADBCE;
+  box-shadow: 0 4px 18px rgba(44, 24, 16, 0.03);
+  overflow: hidden;
+  height: 100%;
+}
+
+.cr-chart-header {
+  background: #FAF7F2;
+  border-bottom: 1.5px solid #EADBCE;
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cr-chart-header h5 {
+  font-family: var(--cr-font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: #2C1810;
+  margin: 0;
+}

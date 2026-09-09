@@ -13,6 +13,7 @@ import { Notificacion } from '../../model/notificacion';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
   currentUser: any = null;

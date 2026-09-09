@@ -1,0 +1,87 @@
+﻿/* ==========================================================================
+   HEADER ROYALE (OPCIÓN G) - COMERCIAL REYES
+   ========================================================================== */
+
+.cr-header {
+  background: #FFFFFF !important;
+  border-bottom: 1.5px solid #EADBCE !important;
+  box-shadow: 0 2px 12px rgba(44, 24, 16, 0.04) !important;
+  height: 68px !important;
+  padding: 0 24px !important;
+}
+
+.cr-header .nav-link {
+  color: #3D2920 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  padding: 10px 14px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.cr-header .nav-link:hover {
+  background-color: #FAF5EE !important;
+  color: #C59B6D !important;
+}
+
+.cr-header-date {
+  background: #F8F4EE;
+  color: #69564D;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #EADBCE;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Dropdowns */
+.cr-dropdown-menu {
+  background: #FFFFFF !important;
+  border: 1px solid #EADBCE !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(44, 24, 16, 0.12) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.cr-dropdown-header {
+  background: #FAF5EE !important;
+  border-bottom: 1px solid #EADBCE !important;
+  padding: 12px 16px !important;
+  color: #2C1810 !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.cr-notif-item {
+  border-bottom: 1px solid #F3ECE2 !important;
+  color: #2C1810 !important;
+  padding: 12px 16px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.cr-notif-item:hover {
+  background-color: #FBF8F4 !important;
+}
+
+.cr-notif-title {
+  font-weight: 700 !important;
+  color: #2C1810 !important;
+  font-size: 14px !important;
+}
+
+.cr-notif-msg {
+  color: #6E5C53 !important;
+  font-size: 13px !important;
+}
+
+.cr-badge-bell {
+  background: #991B1B !important;
+  color: #FFF !important;
+  font-size: 11px !important;
+  padding: 3px 6px !important;
+  border-radius: 10px !important;
+}

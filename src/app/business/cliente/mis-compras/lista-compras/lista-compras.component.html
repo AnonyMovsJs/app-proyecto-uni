@@ -1,9 +1,9 @@
-<div class="container-fluid">
+﻿<div class="container-fluid">
   <!-- Header Section con degradado elegante -->
   <div class="row mb-4">
     <div class="col-12">
       <div class="jumbotron text-white p-4"
-        style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #4fc3f7;">
+        style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #C59B6D;">
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <h1 class="display-5 font-weight-bold mb-0">Mis Compras</h1>
@@ -98,7 +98,7 @@
       <div class="row">
         <div class="col-md-4 mb-2">
           <div class="p-3 rounded text-white d-flex justify-content-between align-items-center"
-            style="background: rgba(30, 60, 114, 0.4); border-left: 4px solid #4fc3f7;">
+            style="background: rgba(30, 60, 114, 0.4); border-left: 4px solid #C59B6D;">
             <div>
               <span class="small text-white-50 text-uppercase d-block">Monto Comprado</span>
               <h5 class="mb-0 font-weight-bold" style="color: #4fc3f7;">
@@ -140,7 +140,7 @@
   <div *ngIf="!loading && !error" class="row">
     <div class="col-12 d-none d-md-block">
       <div class="table-responsive custom-table-container"
-        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
         <table class="table table-hover custom-table mb-0">
           <thead>
             <tr style="background: rgba(0,0,0,0.2) !important;">
@@ -225,7 +225,7 @@
 
       <!-- Mensaje si no hay compras -->
       <div *ngIf="ventas.length === 0" class="text-center mt-4 p-5"
-        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
         <i class="fas fa-shopping-cart text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
         <h4 class="text-light">No tienes compras registradas</h4>
         <p class="text-muted">Aquí se mostrarán tus compras cuando realices alguna</p>
@@ -240,7 +240,7 @@
     <div class="col-12 d-md-none">
       <div *ngFor="let venta of ventasFiltradas" class="card mb-3 animate-card"
         [routerLink]="['/cliente/detalle-compra', venta.id]"
-        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: none; color: white; cursor: pointer; transition: all 0.3s ease; animation: fadeIn 0.5s ease;">
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: none; color: white; cursor: pointer; transition: all 0.3s ease; animation: fadeIn 0.5s ease;">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
@@ -300,7 +300,7 @@
 
       <!-- Mensaje si no hay compras (móvil) -->
       <div *ngIf="ventas.length === 0" class="text-center mt-4 p-4"
-        style="background: linear-gradient(to bottom, #2c3e50, #1a252f); border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
         <i class="fas fa-shopping-cart text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
         <h5 class="text-light">No tienes compras registradas</h5>
         <p class="text-muted small">Aquí se mostrarán tus compras cuando realices alguna</p>
@@ -316,7 +316,7 @@
 <style>
   /* Estilos para la tabla personalizada */
   .custom-table-container {
-    background: linear-gradient(to bottom, #2c3e50, #1a252f) !important;
+    background: #FFFFFF !important;
   }
 
   .custom-table {

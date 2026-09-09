@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-sidebar',
   imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent implements OnInit {
   userProfile: any;

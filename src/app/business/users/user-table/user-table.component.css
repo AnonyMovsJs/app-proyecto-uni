@@ -1,4 +1,4 @@
-/* Estilos para la tabla personalizada */
+﻿/* Estilos para la tabla personalizada */
 :host ::ng-deep .table {
   background-color: transparent !important;
   color: white !important;
@@ -83,7 +83,7 @@
   right: 0;
   width: 400px;
   height: 100%;
-  background: linear-gradient(to bottom, #2c3e50, #1a252f);
+  background: #FFFFFF;
   z-index: 1050;
   overflow-y: auto;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
