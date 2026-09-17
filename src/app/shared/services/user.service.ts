@@ -45,8 +45,14 @@ export class UserService {
     const cached = localStorage.getItem(`dni_cache_${dni}`);
     if (cached) {
       try {
-        return of(JSON.parse(cached));
-      } catch (_) {}
+        const parsed = JSON.parse(cached);
+        // Solo reutilizar la caché si contiene la información oficial completa de SUNAT
+        if (parsed && parsed.success && parsed.sunat) {
+          return of(parsed);
+        }
+      } catch (_) {
+        localStorage.removeItem(`dni_cache_${dni}`);
+      }
     }
 
     return this.http.get<any>(`${this.url}/consulta-dni/${dni}`).pipe(
