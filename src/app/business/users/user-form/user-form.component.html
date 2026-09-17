@@ -26,39 +26,48 @@
   <div class="row justify-content-center">
     <div class="col-lg-8">
       <div class="card"
-        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease; border: none; color: white;">
-        <div class="card-header" style="background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05);">
-          <h5 class="mb-0">
-            <i class="fas" [ngClass]="isEditMode ? 'fa-user-edit' : 'fa-user-plus'" class="mr-2"></i>
-            {{ isEditMode ? 'Formulario de Edición' : 'Formulario de Registro' }}
+        style="background: #FFFFFF; border-radius: 12px; box-shadow: 0 8px 24px rgba(44, 24, 16, 0.12); border: 1px solid #E5DDD3; overflow: hidden;">
+        <div class="card-header d-flex justify-content-between align-items-center py-3 px-4"
+          style="background: linear-gradient(135deg, #2C1810 0%, #361E14 100%); border-bottom: 2px solid #C59B6D;">
+          <h5 class="mb-0 text-white font-weight-bold" style="font-size: 1.05rem; letter-spacing: 0.3px;">
+            <i class="fas" [ngClass]="isEditMode ? 'fa-user-edit' : 'fa-user-plus'" class="mr-2" style="color: #FAD082;"></i>
+            {{ isEditMode ? 'Formulario de Edición' : 'Formulario de Registro de Cliente' }}
           </h5>
+
+          <!-- Botón notorio y dinámico en la esquina superior derecha -->
+          <button *ngIf="!isEditMode" type="button" class="btn btn-consultar-dni-top"
+            (click)="abrirModalConsulta()" title="Consultar identidad en RENIEC">
+            <i class="fas fa-search mr-2"></i>
+            <span>Consultar DNI / RENIEC</span>
+            <span class="badge ml-2" style="background: rgba(24, 11, 6, 0.25); color: #180B06; font-size: 0.7rem; font-weight: 800; border-radius: 4px;">AUTO</span>
+          </button>
         </div>
 
         <!-- Loading indicator -->
         <div *ngIf="loading" class="card-body text-center py-5">
-          <div class="spinner-border text-light" role="status">
+          <div class="spinner-border text-warning" role="status">
             <span class="sr-only">Cargando...</span>
           </div>
-          <p class="text-light mt-3">{{ isEditMode ? 'Cargando datos del cliente...' : 'Procesando...' }}</p>
+          <p class="mt-3 font-weight-bold" style="color: #2C1810;">{{ isEditMode ? 'Cargando datos del cliente...' : 'Procesando...' }}</p>
         </div>
 
         <!-- Formulario -->
-        <div *ngIf="!loading" class="card-body">
+        <div *ngIf="!loading" class="card-body p-4" style="background: #FAF7F2;">
           <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
             <!-- Primera fila: Nombre y Apellido -->
             <div class="row mb-3">
               <div class="col-md-6 mb-3 mb-md-0">
-                <label class="form-label text-muted">Nombre</label>
+                <label class="form-label" style="color: #2C1810; font-weight: 600; font-size: 0.88rem;">Nombre (*)</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      style="background: #FAF7F2; border: 1.5px solid #C59B6D; border-right: none; color: #66564E;">
                       <i class="fas fa-user"></i>
                     </span>
                   </div>
                   <input type="text" class="form-control" formControlName="name" placeholder="Ingrese su nombre"
                     [ngClass]="{'is-invalid': hasError('name')}"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    style="background: #FFFFFF; border: 1.5px solid #C59B6D; color: #180B06 !important; font-weight: 500;">
                 </div>
                 <div *ngIf="hasError('name')" class="text-danger mt-1">
                   {{ getFieldErrorMessage('name') }}
@@ -69,17 +78,17 @@
               </div>
 
               <div class="col-md-6">
-                <label class="form-label text-muted">Apellido</label>
+                <label class="form-label" style="color: #2C1810; font-weight: 600; font-size: 0.88rem;">Apellido (*)</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      style="background: #FAF7F2; border: 1.5px solid #C59B6D; border-right: none; color: #66564E;">
                       <i class="fas fa-user"></i>
                     </span>
                   </div>
                   <input type="text" class="form-control" formControlName="lastname" placeholder="Ingrese su apellido"
                     [ngClass]="{'is-invalid': hasError('lastname')}"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    style="background: #FFFFFF; border: 1.5px solid #C59B6D; color: #180B06 !important; font-weight: 500;">
                 </div>
                 <div *ngIf="hasError('lastname')" class="text-danger mt-1">
                   {{ getFieldErrorMessage('lastname') }}
@@ -94,24 +103,19 @@
             <div class="row mb-3">
               <div class="col-md-6 mb-3 mb-md-0">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <label class="form-label text-muted mb-0">DNI (*)</label>
-                  <!-- Botón Consultar RENIEC / API -->
-                  <button type="button" class="btn btn-sm font-weight-bold"
-                    (click)="abrirModalConsulta()"
-                    style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 6px; padding: 2px 10px; font-size: 0.8rem;">
-                    <i class="fas fa-search mr-1" style="color: #C59B6D;"></i> Consultar DNI
-                  </button>
+                  <label class="form-label mb-0" style="color: #2C1810; font-weight: 600; font-size: 0.88rem;">DNI (*)</label>
+                  <small class="text-muted" style="font-size: 0.75rem;">(O use el botón superior para autocompletar)</small>
                 </div>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      style="background: #FAF7F2; border: 1.5px solid #C59B6D; border-right: none; color: #66564E;">
                       <i class="fas fa-id-card"></i>
                     </span>
                   </div>
-                  <input type="text" class="form-control" formControlName="dni" placeholder="Ingrese su DNI (8 dígitos)"
+                  <input type="text" maxlength="8" class="form-control" formControlName="dni" placeholder="Ej: 12345678"
                     [ngClass]="{'is-invalid': hasError('dni')}"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    style="background: #FFFFFF; border: 1.5px solid #C59B6D; color: #180B06 !important; font-weight: 600; letter-spacing: 1px;">
                 </div>
                 <div *ngIf="hasError('dni')" class="text-danger mt-1">
                   {{ getFieldErrorMessage('dni') }}
@@ -122,17 +126,17 @@
               </div>
 
               <div class="col-md-6">
-                <label class="form-label text-muted">Teléfono <span class="small font-weight-normal text-white-50">(Opcional)</span></label>
+                <label class="form-label" style="color: #2C1810; font-weight: 600; font-size: 0.88rem;">Teléfono <span class="small font-weight-normal text-muted">(Opcional)</span></label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      style="background: #FAF7F2; border: 1.5px solid #C59B6D; border-right: none; color: #66564E;">
                       <i class="fas fa-phone"></i>
                     </span>
                   </div>
                   <input type="text" class="form-control" formControlName="phone"
                     placeholder="Ej: 987654321 (opcional)" [ngClass]="{'is-invalid': hasError('phone')}"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    style="background: #FFFFFF; border: 1.5px solid #C59B6D; color: #180B06 !important; font-weight: 500;">
                 </div>
                 <div *ngIf="hasError('phone')" class="text-danger mt-1">
                   {{ getFieldErrorMessage('phone') }}
@@ -173,17 +177,17 @@
             <!-- Tercera fila: Dirección -->
             <div class="row mb-3">
               <div class="col-12">
-                <label class="form-label text-muted">Dirección <span class="small font-weight-normal text-white-50">(Opcional)</span></label>
+                <label class="form-label" style="color: #2C1810; font-weight: 600; font-size: 0.88rem;">Dirección <span class="small font-weight-normal text-muted">(Opcional)</span></label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none;">
+                      style="background: #FAF7F2; border: 1.5px solid #C59B6D; border-right: none; color: #66564E;">
                       <i class="fas fa-map-marker-alt"></i>
                     </span>
                   </div>
                   <input type="text" class="form-control" formControlName="address" placeholder="Ingrese su dirección"
                     [ngClass]="{'is-invalid': hasError('address')}"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    style="background: #FFFFFF; border: 1.5px solid #C59B6D; color: #180B06 !important; font-weight: 500;">
                 </div>
                 <div *ngIf="hasError('address')" class="text-danger mt-1">
                   {{ getFieldErrorMessage('address') }}
@@ -329,8 +333,8 @@
             </div>
             <input type="text" maxlength="8" class="form-control"
               [(ngModel)]="dniBusqueda" (keyup.enter)="ejecutarConsultaDni()"
-              placeholder="Ej: 70916758"
-              style="border: 1px solid #C59B6D; font-size: 1.1rem; font-weight: bold; letter-spacing: 2px; color: #2C1810; background: #FFFFFF;">
+              placeholder="Ej: 12345678"
+              style="border: 1.5px solid #C59B6D; font-size: 1.15rem; font-weight: bold; letter-spacing: 2px; color: #180B06 !important; background: #FFFFFF;">
           </div>
         </div>
 
@@ -394,6 +398,33 @@
     border-bottom: 2px solid #C59B6D;
   }
 
+  /* Botón dinámico en la esquina superior derecha del card */
+  .btn-consultar-dni-top {
+    background: linear-gradient(135deg, #FAD082 0%, #C59B6D 50%, #B38654 100%);
+    color: #180B06 !important;
+    font-weight: 700;
+    font-size: 0.84rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid #FFE2A8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .btn-consultar-dni-top:hover {
+    background: linear-gradient(135deg, #FFE8B8 0%, #FAD082 100%);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(250, 208, 130, 0.45);
+    color: #000 !important;
+  }
+
+  .btn-consultar-dni-top:active {
+    transform: translateY(0) scale(0.98);
+  }
+
   /* Animaciones para formulario */
   @keyframes fadeIn {
     from {
@@ -407,18 +438,29 @@
     }
   }
 
+  /* Inputs legibles con texto oscuro de alto contraste */
+  .form-control {
+    color: #180B06 !important;
+    background-color: #FFFFFF !important;
+  }
+
+  .form-control::placeholder {
+    color: #8C7A6B !important;
+    opacity: 0.85;
+  }
+
   /* Estilos para inputs con foco */
   .form-control:focus {
-    background: rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25) !important;
-    border-color: rgba(79, 195, 247, 0.5) !important;
-    color: white !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 0 0 0.2rem rgba(197, 155, 109, 0.25) !important;
+    border-color: #C59B6D !important;
+    color: #180B06 !important;
   }
 
   /* Estilos para inputs disabled */
   .form-control:disabled {
-    background: rgba(0, 0, 0, 0.2) !important;
-    color: rgba(255, 255, 255, 0.5) !important;
+    background: #EFE8DF !important;
+    color: #66564E !important;
   }
 
   /* Estilos para botones */
