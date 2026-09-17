@@ -97,8 +97,24 @@ export class UserFormComponent implements OnInit {
             lastname: apellidos,
           });
 
-          // Verificar si tiene condición de persona con negocio / RUC 10
-          this.verificarCondicionTributaria(dni);
+          // Cargar datos oficiales de SUNAT devueltos directamente por el backend
+          if (res.sunat) {
+            this.infoSunat = {
+              dni: dni,
+              tieneRuc: res.sunat.tiene_ruc,
+              rucReferencial: res.sunat.ruc,
+              razonSocial: res.sunat.razon_social || `${nombres} ${apellidos}`,
+              condicion: res.sunat.condicion || (res.sunat.tiene_ruc ? 'HABIDO' : 'SIN RUC 10'),
+              estadoTributario: res.sunat.estado || (res.sunat.tiene_ruc ? 'ACTIVO' : 'NO REGISTRADO'),
+              deudaCoactiva: res.sunat.deuda_coactiva != null ? res.sunat.deuda_coactiva : 0.00,
+              esBuenContribuyente: res.sunat.es_buen_contribuyente || 'NO'
+            };
+
+            // Autocompletar dirección si SUNAT la tiene registrada
+            if (res.sunat.direccion && !this.userForm.get('address')?.value) {
+              this.userForm.patchValue({ address: res.sunat.direccion });
+            }
+          }
 
           this.cerrarModalConsulta();
 
@@ -108,14 +124,15 @@ export class UserFormComponent implements OnInit {
               <div class="text-left p-2" style="font-size: 0.95rem; color: #2C1810;">
                 <p class="mb-1"><strong>Titular:</strong> ${nombres} ${apellidos}</p>
                 <p class="mb-1"><strong>DNI:</strong> ${dni}</p>
-                <p class="mb-0 text-success"><i class="fas fa-check-circle mr-1"></i> Validado oficialmente por RENIEC</p>
+                <p class="mb-1 text-success"><i class="fas fa-check-circle mr-1"></i> Validado en RENIEC</p>
+                ${res.sunat?.tiene_ruc ? `<p class="mb-0 text-primary"><i class="fas fa-briefcase mr-1"></i> RUC 10: ${res.sunat.ruc} (${res.sunat.condicion} / ${res.sunat.estado})</p>` : '<p class="mb-0 text-muted"><i class="fas fa-info-circle mr-1"></i> Sin RUC 10 comercial registrado</p>'}
               </div>
             `,
             icon: 'success',
             confirmButtonColor: '#27ae60',
             background: '#FFFFFF',
             color: '#2C1810',
-            timer: 3500,
+            timer: 4000,
           });
         } else {
           Swal.fire({
@@ -143,19 +160,6 @@ export class UserFormComponent implements OnInit {
     });
   }
 
-  verificarCondicionTributaria(dni: string): void {
-    // RUC 10 persona natural en Perú
-    // Verificamos si tiene RUC registrado consultando con RUC base
-    const rucTentativo = `10${dni}`;
-    // Usamos el estado referencial: si es persona natural no morosa
-    this.infoSunat = {
-      dni: dni,
-      rucReferencial: `${rucTentativo}X`,
-      condicion: 'HABIDO / ACTIVO',
-      deudaCoactiva: 0.00,
-      estadoTributario: 'SIN DEUDA COACTIVA REGISTRADA'
-    };
-  }
 
   evaluarConIa(): void {
     const nombre = `${this.userForm.get('name')?.value || 'Cliente'} ${this.userForm.get('lastname')?.value || ''}`.trim();
