@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Pago } from '../model/pago';
 
 @Injectable({
@@ -9,17 +10,30 @@ import { Pago } from '../model/pago';
 export class PagoService {
   private readonly API_URL = 'http://localhost:8080/api/pagos';
 
+  // Emisor para refrescar notificaciones y listas cuando se registre o valide un pago
+  private pagoActualizadoSubject = new Subject<void>();
+  public pagoActualizado$ = this.pagoActualizadoSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
-  registrarPago(pago: any): Observable<Pago> {
-    return this.http.post<Pago>(this.API_URL, pago);
+  notificarCambio(): void {
+    this.pagoActualizadoSubject.next();
   }
 
-  registrarPagoYape(cuotaId: number, archivo: File): Observable<Pago> {
+  registrarPago(pago: any): Observable<Pago> {
+    return this.http.post<Pago>(this.API_URL, pago).pipe(
+      tap(() => this.notificarCambio())
+    );
+  }
+
+  registrarPagoYape(cuotaId: number, archivo: File, metodoPago: string = 'YAPE'): Observable<Pago> {
     const formData = new FormData();
     formData.append('cuotaId', cuotaId.toString());
     formData.append('comprobante', archivo);
-    return this.http.post<Pago>(`${this.API_URL}/yape`, formData);
+    formData.append('metodoPago', (metodoPago || 'YAPE').toUpperCase());
+    return this.http.post<Pago>(`${this.API_URL}/yape`, formData).pipe(
+      tap(() => this.notificarCambio())
+    );
   }
 
   registrarAbonoFiado(clienteId: number, monto: number, archivo: File, tipoAbono: string = 'FIADO'): Observable<Pago> {
@@ -28,11 +42,15 @@ export class PagoService {
     formData.append('monto', monto.toString());
     formData.append('comprobante', archivo);
     formData.append('tipoAbono', tipoAbono);
-    return this.http.post<Pago>(`${this.API_URL}/yape/fiado`, formData);
+    return this.http.post<Pago>(`${this.API_URL}/yape/fiado`, formData).pipe(
+      tap(() => this.notificarCambio())
+    );
   }
 
   validarPago(pagoId: number, estado: 'APROBADO' | 'RECHAZADO', motivoRechazo?: string): Observable<Pago> {
-    return this.http.patch<Pago>(`${this.API_URL}/${pagoId}/validar`, { estado, motivoRechazo });
+    return this.http.patch<Pago>(`${this.API_URL}/${pagoId}/validar`, { estado, motivoRechazo }).pipe(
+      tap(() => this.notificarCambio())
+    );
   }
 
   listarPagosPendientes(): Observable<Pago[]> {

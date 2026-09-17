@@ -1,34 +1,46 @@
-.kpi-card {
-  border-radius: 0.85rem;
-  transition: all 0.3s ease;
+/* ==========================================================================
+   CONTROL DE COBRANZAS - COMERCIAL REYES (ESPRESSO & CREMA NOBLE)
+   ========================================================================== */
+
+.cobranzas-kpi {
+  background: #FFFFFF;
+  border-radius: 14px;
+  border: 1px solid #E5DDD3;
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.05);
+  padding: 22px;
+  position: relative;
+  transition: all 0.25s ease;
   overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.kpi-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3) !important;
+.cobranzas-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.10);
 }
 
-.card-purple {
-  background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%) !important;
+.kpi-danger {
+  border-left: 5px solid #DC2626;
 }
 
-.card-blue {
-  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+.kpi-warning {
+  border-left: 5px solid #D97706;
 }
 
-.card-orange {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+.kpi-info {
+  border-left: 5px solid #2563EB;
 }
 
-.card-red {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+.kpi-critical {
+  border-left: 5px solid #991B1B;
 }
 
 .kpi-icon-box {
   width: 44px;
   height: 44px;
-  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -37,84 +49,52 @@
 }
 
 .table-container-card {
-  background: #182234 !important;
+  background: #FFFFFF !important;
   border-radius: 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.table-dark {
-  background-color: transparent !important;
-}
-
-.table-dark th {
-  background-color: #141c2b !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.table-dark td {
-  border-color: rgba(255, 255, 255, 0.05) !important;
-  background-color: transparent;
-}
-
-.table-dark tr:hover td {
-  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid #E5DDD3;
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.05);
 }
 
 /* Avatar circular para clientes */
 .avatar-circle {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 0.9rem;
-  color: #fff;
+  color: #F7EAD9;
+  background: #2C1810;
+  border: 2px solid #C59B6D;
   flex-shrink: 0;
-}
-
-.avatar-red {
-  background: linear-gradient(135deg, #ef4444, #991b1b);
-  border: 2px solid rgba(239, 68, 68, 0.4);
-}
-
-.avatar-orange {
-  background: linear-gradient(135deg, #f59e0b, #b45309);
-  border: 2px solid rgba(245, 158, 11, 0.4);
-}
-
-.avatar-blue {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border: 2px solid rgba(59, 130, 246, 0.4);
 }
 
 /* Badges estilizados para Días de Retraso */
 .badge-retraso {
   display: inline-flex;
   align-items: center;
-  padding: 0.4rem 0.8rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .badge-critico {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background-color: #FEECEB;
+  color: #991B1B;
+  border: 1px solid #FECACA;
 }
 
 .badge-mora {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  background-color: #FEF7EA;
+  color: #9A5B13;
+  border: 1px solid #FDE68A;
 }
 
 .badge-al-dia {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  background-color: #DCFCE7;
+  color: #166534;
+  border: 1px solid #BBF7D0;
 }

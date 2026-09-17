@@ -1,35 +1,111 @@
-<div class="container vh-100 d-flex justify-content-center align-items-center">
-  <div class="card" style="min-width: 320px; max-width: 400px; width: 100%;">
-    <div class="card-header">
-      <h3>Login</h3>
-      <div class="d-flex justify-content-end social_icon">
-        <span><i class="fab fa-facebook-square"></i></span>
-        <span><i class="fab fa-google-plus-square"></i></span>
-        <span><i class="fab fa-twitter-square"></i></span>
+<div class="login-wrapper">
+  <!-- Fondo con halos de luz cálida -->
+  <div class="login-backdrop-glow"></div>
+
+  <div class="login-container">
+    <div class="login-card">
+      <!-- Encabezado de Marca Espresso & Oro -->
+      <div class="login-brand-header">
+        <div class="brand-badge">
+          <i class="fas fa-store-alt"></i>
+        </div>
+        <h1 class="brand-title">Comercial Reyes</h1>
+        <p class="brand-subtitle">SISTEMA INTEGRADO DE CRÉDITOS Y COBRANZAS</p>
       </div>
-    </div>
-    <div class="card-body">
-      <form (ngSubmit)="onSubmit()">
+
+      <!-- Cuerpo del Formulario -->
+      <div class="login-body">
+        <div class="login-welcome">
+          <h2 class="welcome-title">Bienvenido</h2>
+          <p class="welcome-desc">Ingresa tus credenciales para acceder a la plataforma</p>
+        </div>
+
         @if (errorMensagge) {
-        <div class="text-danger">error de campos no pueden estar vacios</div>
+        <div class="login-alert-error" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          <span>Por favor completa tu correo y contraseña.</span>
+        </div>
         }
-        <div class="input-group form-group my-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-user"></i></span>
+
+        <form (ngSubmit)="onSubmit()" class="login-form">
+          <!-- Campo Email -->
+          <div class="form-group mb-3">
+            <label for="login-email" class="form-label">
+              <i class="far fa-envelope me-1"></i> Correo Electrónico
+            </label>
+            <div class="input-container">
+              <input
+                id="login-email"
+                type="email"
+                class="form-control login-input"
+                name="email"
+                placeholder="usuario@comercialreyes.com"
+                [(ngModel)]="user.email"
+                [disabled]="isLoading"
+                required
+                autocomplete="username"
+              />
+            </div>
           </div>
-          <input type="text" class="form-control" name="email" placeholder="Email" [(ngModel)]="user.email" />
-        </div>
-        <div class="input-group form-group my-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-key"></i></span>
+
+          <!-- Campo Contraseña con botón Ver/Ocultar -->
+          <div class="form-group mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label for="login-password" class="form-label mb-0">
+                <i class="fas fa-lock me-1"></i> Contraseña
+              </label>
+            </div>
+            <div class="input-container password-input-container">
+              <input
+                id="login-password"
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control login-input"
+                name="password"
+                placeholder="••••••••••••"
+                [(ngModel)]="user.password"
+                [disabled]="isLoading"
+                required
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                class="password-toggle-btn"
+                (click)="togglePasswordVisibility()"
+                tabindex="-1"
+                [title]="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
+              >
+                <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
           </div>
-          <input type="password" class="form-control" name="password" placeholder="Password"
-            [(ngModel)]="user.password" />
+
+          <!-- Botón de Ingreso -->
+          <button
+            type="submit"
+            class="btn login-submit-btn"
+            [disabled]="isLoading"
+          >
+            @if (isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              <span>Validando Credenciales...</span>
+            } @else {
+              <span>Ingresar al Sistema</span>
+              <i class="fas fa-arrow-right ms-2"></i>
+            }
+          </button>
+        </form>
+
+        <!-- Indicador de Seguridad 2FA -->
+        <div class="login-security-notice">
+          <i class="fas fa-shield-alt text-gold me-1"></i>
+          <span>Acceso seguro protegido por doble factor <strong>(2FA SMS / WhatsApp)</strong></span>
         </div>
-        <div class="form-group my-3 text-end">
-          <input type="submit" value="Login" class="btn btn-primary login_btn" />
-        </div>
-      </form>
+      </div>
+
+      <!-- Pie de Tarjeta -->
+      <div class="login-footer">
+        <small>© 2026 Comercial Reyes &bull; Universidad Nacional de Ingeniería</small>
+      </div>
     </div>
   </div>
 </div>

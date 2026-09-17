@@ -1,20 +1,18 @@
-﻿<div class="container-fluid">
+<div class="container-fluid">
   <!-- Header principal -->
   <div class="row mb-4">
     <div class="col-12">
       <div class="p-4 rounded"
-        style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-radius: 0.75rem; border-left: 4px solid #C59B6D;">
+        style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; box-shadow: 0 8px 24px rgba(0,0,0,0.18); border-radius: 0.75rem; border-left: 4px solid #C59B6D;">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
           <div>
-            <h1 class="text-white font-weight-bold mb-0">Detalle de Compra</h1>
-            <p class="text-light mt-2 mb-0 opacity-75">Información completa de tu compra y pagos</p>
+            <h1 class="text-white mb-0" style="font-family: 'Lora', serif; font-weight: 700; font-size: 2rem;">Detalle de la Cuenta</h1>
+            <p class="mt-2 mb-0" style="color: #E2D2C3;">Información completa de los productos y cronograma de pagos</p>
           </div>
           <div class="mt-3 mt-md-0">
-            <button (click)="volver()" class="btn"
-              style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.2s ease;"
-              onmouseover="this.style.background='rgba(79, 195, 247, 0.3)';"
-              onmouseout="this.style.background='rgba(79, 195, 247, 0.2)';">
-              <i class="fas fa-arrow-left mr-2"></i> Volver
+            <button (click)="volver()" class="btn px-4 py-2"
+              style="background: #2C1810; color: #F7EAD9; border: 1px solid #C59B6D; border-radius: 8px; font-weight: 700;">
+              <i class="fas fa-arrow-left mr-2" style="color: #FAD082;"></i> Volver
             </button>
           </div>
         </div>
@@ -25,10 +23,9 @@
   <!-- Loading Indicator -->
   <div *ngIf="loading" class="row">
     <div class="col-12 text-center py-5">
-      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
-      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
-      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
-      <p class="text-light mt-3">Cargando detalle de la compra...</p>
+      <div class="spinner-grow text-warning mx-1" style="width: 1.2rem; height: 1.2rem;"></div>
+      <div class="spinner-grow text-dark mx-1" style="width: 1.2rem; height: 1.2rem;"></div>
+      <p class="mt-3 font-weight-bold" style="color: #66564E;">Cargando detalle de la compra...</p>
     </div>
   </div>
 
@@ -36,11 +33,11 @@
   <div *ngIf="error" class="row mb-4">
     <div class="col-12">
       <div class="alert"
-        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        style="background-color: #FEECEB; color: #DC2626; border-left: 4px solid #DC2626; border-radius: 0.5rem; padding: 1rem;">
         <div class="d-flex align-items-center">
-          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <i class="fas fa-exclamation-circle mr-3 fa-2x"></i>
           <div>
-            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
+            <h5 class="mb-1 font-weight-bold">Error al cargar datos</h5>
             <p class="mb-0">{{ error }}</p>
           </div>
         </div>
@@ -53,51 +50,54 @@
     <div class="col-12">
       <!-- Información General -->
       <div class="card border-0 mb-4"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-        <div class="card-header d-flex align-items-center py-3"
-          style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-          <i class="fas fa-info-circle mr-2" style="color: #4fc3f7;"></i>
-          <h5 class="mb-0 text-white">Información General</h5>
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E5DDD3;">
+        <div class="card-header d-flex align-items-center py-3 px-4"
+          style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; border-radius: 0.75rem 0.75rem 0 0; border-bottom: 2px solid #C59B6D;">
+          <i class="fas fa-info-circle mr-2" style="color: #FAD082;"></i>
+          <h5 class="mb-0 font-weight-bold" style="color: #FFFFFF !important; font-family: 'Lora', serif; letter-spacing: 0.4px;">Información General de la Operación</h5>
         </div>
-        <div class="card-body text-white">
+        <div class="card-body p-4">
           <div class="row">
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Fecha de Compra</p>
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E; letter-spacing: 0.04em;">Fecha de Compra</p>
                 <div class="d-flex align-items-center">
-                  <div
-                    style="width: 40px; height: 40px; border-radius: 8px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 10px;">
-                    <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                  <div class="mr-2 text-center"
+                    style="width: 42px; height: 42px; border-radius: 8px; background: #FFFFFF; border: 1px solid #E5DDD3; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <span style="font-size: 10px; color: #C59B6D; text-transform: uppercase; font-weight: 700;">{{
                       venta.fechaVenta | date:'MMM' }}</span>
-                    <span style="font-size: 14px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                    <span style="font-size: 15px; font-weight: 800; color: #2C1810;">{{ venta.fechaVenta | date:'dd'
                       }}</span>
                   </div>
-                  <span>{{ venta.fechaVenta | date:'yyyy' }}</span>
+                  <span class="font-weight-bold" style="color: #241A15;">{{ venta.fechaVenta | date:'yyyy' }}</span>
                 </div>
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Tipo de Compra</p>
-                <h6 class="mb-0 d-flex align-items-center">
-                  <span class="badge py-2 px-3 mr-2"
-                    [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : venta.tipoVenta === 'FIADO' ? '#e67e22' : '#3498db'"
-                    style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <i
-                      [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-1' : 'fas fa-credit-card mr-1'"></i>
-                    {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : venta.tipoVenta === 'FIADO' ? 'Fiado (Cuenta Corriente)' : 'Crédito' }}
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E; letter-spacing: 0.04em;">Tipo de Compra</p>
+                <h6 class="mb-0 mt-2">
+                  <span class="badge py-2 px-3"
+                    [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#DCFCE7' : venta.tipoVenta === 'FIADO' ? '#FEF7EA' : '#EFF6FF'"
+                    [style.color]="venta.tipoVenta === 'CONTADO' ? '#166534' : venta.tipoVenta === 'FIADO' ? '#9A5B13' : '#1D4ED8'"
+                    style="font-weight: 700; border-radius: 6px; font-size: 0.85rem;">
+                    <i [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-1' : 'fas fa-credit-card mr-1'"></i>
+                    {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : venta.tipoVenta === 'FIADO' ? 'Fiado (Cuenta Corriente)' : 'Crédito en Cuotas' }}
                   </span>
                 </h6>
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Estado</p>
-                <h6 class="mb-0">
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E; letter-spacing: 0.04em;">Estado de Pago</p>
+                <h6 class="mb-0 mt-2">
                   <span class="badge py-2 px-3" [style.background-color]="
-                      venta.estado === 'PAGADO' ? '#2ecc71' :
-                      venta.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
-                    style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                      venta.estado === 'PAGADO' ? '#DCFCE7' :
+                      venta.estado === 'PENDIENTE' ? '#FEF7EA' : '#FEECEB'"
+                    [style.color]="
+                      venta.estado === 'PAGADO' ? '#166534' :
+                      venta.estado === 'PENDIENTE' ? '#9A5B13' : '#991B1B'"
+                    style="font-weight: 700; border-radius: 6px; font-size: 0.85rem;">
                     <i [class]="
                       venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
                       venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-times-circle mr-1'"></i>
@@ -108,18 +108,18 @@
             </div>
           </div>
 
-          <div class="row mt-3">
+          <div class="row mt-2">
             <div class="col-md-8 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Descripción</p>
-                <h6 class="mb-0">{{ venta.descripcion }}</h6>
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E; letter-spacing: 0.04em;">Descripción</p>
+                <h6 class="mb-0 font-weight-bold" style="color: #241A15;">{{ venta.descripcion }}</h6>
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Monto Total</p>
-                <h5 class="mb-0 font-weight-bold" style="color: #4fc3f7;">S/. {{ venta.montoTotal | number:'1.2-2' }}
-                </h5>
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E; letter-spacing: 0.04em;">Monto Total</p>
+                <h4 class="mb-0 font-weight-bold" style="color: #166534; font-family: 'Lora', serif;">S/. {{ venta.montoTotal | number:'1.2-2' }}
+                </h4>
               </div>
             </div>
           </div>
@@ -128,61 +128,54 @@
 
       <!-- Productos Comprados -->
       <div class="card border-0 mb-4"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-        <div class="card-header d-flex align-items-center py-3"
-          style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-          <i class="fas fa-shopping-basket mr-2" style="color: #4fc3f7;"></i>
-          <h5 class="mb-0 text-white">Productos Comprados</h5>
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E5DDD3;">
+        <div class="card-header d-flex align-items-center py-3 px-4"
+          style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; border-radius: 0.75rem 0.75rem 0 0; border-bottom: 2px solid #C59B6D;">
+          <i class="fas fa-shopping-basket mr-2" style="color: #FAD082;"></i>
+          <h5 class="mb-0 font-weight-bold" style="color: #FFFFFF !important; font-family: 'Lora', serif; letter-spacing: 0.4px;">Artículos Adquiridos</h5>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table mb-0 text-white" style="background-color: transparent !important;">
+            <table class="table mb-0" style="color: #241A15;">
               <thead>
-                <tr style="background: rgba(0, 0, 0, 0.2);">
-                  <th class="py-3 px-4 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Producto
-                  </th>
-                  <th class="py-3 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Cantidad
-                  </th>
-                  <th class="py-3 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Precio Unitario
-                  </th>
-                  <th class="py-3 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Subtotal
-                  </th>
+                <tr style="background: #F5F1EB;">
+                  <th class="py-3 px-4" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Producto</th>
+                  <th class="py-3 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Cantidad</th>
+                  <th class="py-3 text-right" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Precio Unitario</th>
+                  <th class="py-3 pr-4 text-right" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Subtotal</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let detalle of detalles"
-                  style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s ease; background: transparent !important;"
-                  onmouseover="this.style.backgroundColor='rgba(255,255,255,0.07)';"
-                  onmouseout="this.style.backgroundColor='transparent';">
-                  <td class="py-3 px-4 text-white" style="background: transparent !important;">{{ detalle.nombreProducto
-                    }}</td>
-                  <td class="py-3 text-white" style="background: transparent !important;">
-                    <span class="badge"
-                      style="background-color: rgba(52, 152, 219, 0.3); color: white; font-size: 0.9rem; font-weight: 500; padding: 0.35rem 0.6rem; border-radius: 4px;">
-                      {{ detalle.cantidad }}
+                <tr *ngFor="let detalle of detalles" style="border-bottom: 1px solid #F0E8DF;">
+                  <td class="py-3 px-4 font-weight-bold" style="color: #241A15;">{{ detalle.nombreProducto || detalle.nombre_producto || 'Artículo' }}</td>
+                  <td class="py-3 text-center">
+                    <span class="badge" style="background-color: #F5F1EB; color: #2C1810; border: 1px solid #E5DDD3; font-size: 0.85rem; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
+                      {{ detalle.cantidad || 1 }}
                     </span>
                   </td>
-                  <td class="py-3 text-white" style="background: transparent !important;">S/. {{ detalle.precioUnitario
-                    | number:'1.2-2' }}</td>
-                  <td class="py-3 text-white font-weight-bold" style="background: transparent !important;">S/. {{
-                    detalle.subtotal | number:'1.2-2' }}</td>
+                  <td class="py-3 text-right" style="color: #66564E;">S/. {{ (detalle.precioUnitario || detalle.precio_unitario || detalle.subtotal || 0) | number:'1.2-2' }}</td>
+                  <td class="py-3 pr-4 text-right font-weight-bold" style="color: #166534;">S/. {{ (detalle.subtotal || ((detalle.precioUnitario || detalle.precio_unitario || 0) * (detalle.cantidad || 1))) | number:'1.2-2' }}</td>
+                </tr>
+                <tr *ngIf="!detalles || detalles.length === 0" style="border-bottom: 1px solid #F0E8DF;">
+                  <td class="py-3 px-4 font-weight-bold" style="color: #241A15;">
+                    <div class="d-flex align-items-center">
+                      <i class="fas fa-box-open mr-2" style="color: #C59B6D;"></i>
+                      <span>{{ venta?.descripcion || 'Consumo Registrado' }}</span>
+                    </div>
+                  </td>
+                  <td class="py-3 text-center">
+                    <span class="badge" style="background-color: #F5F1EB; color: #2C1810; border: 1px solid #E5DDD3; font-size: 0.85rem; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
+                      1
+                    </span>
+                  </td>
+                  <td class="py-3 text-right" style="color: #66564E;">S/. {{ (venta?.montoTotal || 0) | number:'1.2-2' }}</td>
+                  <td class="py-3 pr-4 text-right font-weight-bold" style="color: #166534;">S/. {{ (venta?.montoTotal || 0) | number:'1.2-2' }}</td>
                 </tr>
               </tbody>
               <tfoot>
-                <tr style="background: rgba(0, 0, 0, 0.2) !important;">
-                  <td colspan="3" class="text-right py-3 pr-4 text-white font-weight-bold"
-                    style="background: transparent !important;">Total:</td>
-                  <td class="py-3 text-white font-weight-bold"
-                    style="background: transparent !important; color: #4fc3f7 !important; font-size: 1.1rem;">S/. {{
-                    venta.montoTotal | number:'1.2-2' }}</td>
+                <tr style="background: #F5F1EB;">
+                  <td colspan="3" class="text-right py-3 pr-4 font-weight-bold" style="color: #2C1810; font-family: 'Lora', serif; font-size: 1.1rem;">Total Compra:</td>
+                  <td class="py-3 pr-4 text-right font-weight-bold" style="color: #166534; font-size: 1.25rem;">S/. {{ venta.montoTotal | number:'1.2-2' }}</td>
                 </tr>
               </tfoot>
             </table>
@@ -192,116 +185,63 @@
 
       <!-- Información del Crédito o Fiado (si aplica) -->
       <div *ngIf="(venta.tipoVenta === 'CREDITO' || venta.tipoVenta === 'FIADO') && credito" class="card border-0 mb-4"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-        <div class="card-header d-flex align-items-center py-3"
-          style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-          <i [class]="venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-2' : 'fas fa-credit-card mr-2'" style="color: #4fc3f7;"></i>
-          <h5 class="mb-0 text-white">{{ venta.tipoVenta === 'FIADO' ? 'Información del Fiado en Cuenta Corriente' : 'Información del Crédito' }}</h5>
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E5DDD3;">
+        <div class="card-header d-flex align-items-center py-3 px-4"
+          style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; border-radius: 0.75rem 0.75rem 0 0; border-bottom: 2px solid #C59B6D;">
+          <i [class]="venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-2' : 'fas fa-credit-card mr-2'" style="color: #FAD082;"></i>
+          <h5 class="mb-0 font-weight-bold" style="color: #FFFFFF !important; font-family: 'Lora', serif; letter-spacing: 0.4px;">{{ venta.tipoVenta === 'FIADO' ? 'Información del Fiado en Cuenta Corriente' : 'Información del Financiamiento' }}</h5>
         </div>
-        <div class="card-body text-white">
+        <div class="card-body p-4">
           <div class="row">
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Monto Total Fiado' : 'Monto Total con Interés' }}</p>
-                <h5 class="mb-0 font-weight-bold" style="color: #4fc3f7;">S/. {{ credito.montoTotal | number:'1.2-2' }}
-                </h5>
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E;">{{ venta.tipoVenta === 'FIADO' ? 'Monto Total Fiado' : 'Monto Total Financiado' }}</p>
+                <h4 class="mb-0 font-weight-bold" style="color: #2C1810; font-family: 'Lora', serif;">S/. {{ credito.montoTotal | number:'1.2-2' }}</h4>
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Recargo / Interés' : 'Interés Aplicado' }}</p>
-                <h6 class="mb-0">{{ venta.tipoVenta === 'FIADO' ? '0% (Sin interés)' : (credito.interes + '%') }}</h6>
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E;">{{ venta.tipoVenta === 'FIADO' ? 'Recargo / Interés' : 'Tasa de Interés' }}</p>
+                <h5 class="mb-0 font-weight-bold" style="color: #2C1810;">{{ venta.tipoVenta === 'FIADO' ? '0% (Sin interés)' : (credito.interes + '%') }}</h5>
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Modalidad' : 'Número de Cuotas' }}</p>
-                <h6 class="mb-0">{{ venta.tipoVenta === 'FIADO' ? 'Cuenta Corriente (Abono Libre)' : ((credito.numeroCuotas || credito.numero_cuotas || cuotas.length) + ' cuotas') }}</h6>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-3">
-            <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">{{ venta.tipoVenta === 'FIADO' ? 'Estado del Fiado' : 'Estado del Crédito' }}</p>
-                <h6 class="mb-0">
-                  <span class="badge py-2 px-3" [style.background-color]="
-                      credito.estado === 'PAGADO' ? '#2ecc71' :
-                      credito.estado === 'ACTIVO' ? '#3498db' : '#e74c3c'"
-                    style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <i [class]="
-                      credito.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
-                      credito.estado === 'ACTIVO' ? 'fas fa-hourglass-half mr-1' : 'fas fa-times-circle mr-1'"></i>
-                    {{ credito.estado }}
-                  </span>
-                </h6>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Fecha Inicio</p>
-                <div class="d-flex align-items-center">
-                  <div
-                    style="width: 40px; height: 40px; border-radius: 8px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 10px;">
-                    <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
-                      credito.fechaInicio | date:'MMM' }}</span>
-                    <span style="font-size: 14px; font-weight: 700; color: white;">{{ credito.fechaInicio | date:'dd'
-                      }}</span>
-                  </div>
-                  <span>{{ credito.fechaInicio | date:'yyyy' }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                <p class="small mb-1 text-light opacity-75">Fecha Fin</p>
-                <div class="d-flex align-items-center">
-                  <div
-                    style="width: 40px; height: 40px; border-radius: 8px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 10px;">
-                    <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
-                      credito.fechaFin | date:'MMM' }}</span>
-                    <span style="font-size: 14px; font-weight: 700; color: white;">{{ credito.fechaFin | date:'dd'
-                      }}</span>
-                  </div>
-                  <span>{{ credito.fechaFin | date:'yyyy' }}</span>
-                </div>
+              <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #66564E;">{{ venta.tipoVenta === 'FIADO' ? 'Modalidad' : 'Número de Cuotas' }}</p>
+                <h5 class="mb-0 font-weight-bold" style="color: #2C1810;">{{ venta.tipoVenta === 'FIADO' ? 'Cuenta Rotativa' : ((credito.numeroCuotas || credito.numero_cuotas || cuotas.length) + ' cuotas') }}</h5>
               </div>
             </div>
           </div>
 
           <!-- Resumen de pagos -->
-          <div class="row mt-3">
+          <div class="row mt-2">
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(46, 204, 113, 0.15);">
-                <p class="small mb-1" style="color: #2ecc71;">Total Pagado</p>
-                <h5 class="mb-0 font-weight-bold" style="color: #2ecc71;">S/. {{ calcularTotalPagado() | number:'1.2-2'
-                  }}</h5>
+              <div class="p-3 rounded" style="background: #DCFCE7; border: 1px solid #BBF7D0;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #166534;">Total Pagado</p>
+                <h4 class="mb-0 font-weight-bold" style="color: #14532D; font-family: 'Lora', serif;">S/. {{ calcularTotalPagado() | number:'1.2-2' }}</h4>
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(243, 156, 18, 0.15);">
-                <p class="small mb-1" style="color: #f39c12;">Total Pendiente</p>
-                <h5 class="mb-0 font-weight-bold" style="color: #f39c12;">S/. {{ calcularTotalPendiente() |
-                  number:'1.2-2' }}</h5>
+              <div class="p-3 rounded" style="background: #FEF7EA; border: 1px solid #FDE68A;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #9A5B13;">Total Pendiente</p>
+                <h4 class="mb-0 font-weight-bold" style="color: #78350F; font-family: 'Lora', serif;">S/. {{ calcularTotalPendiente() | number:'1.2-2' }}</h4>
               </div>
             </div>
             <div class="col-md-4 mb-3">
-              <div class="p-3 rounded" style="background: rgba(52, 152, 219, 0.15);">
-                <p class="small mb-1" style="color: #3498db;">Monto Total</p>
-                <h5 class="mb-0 font-weight-bold" style="color: #3498db;">S/. {{ credito.montoTotal | number:'1.2-2' }}
-                </h5>
+              <div class="p-3 rounded" style="background: #EFF6FF; border: 1px solid #BFDBFE;">
+                <p class="small mb-1 font-weight-bold text-uppercase" style="color: #1D4ED8;">Total Operación</p>
+                <h4 class="mb-0 font-weight-bold" style="color: #1E3A8A; font-family: 'Lora', serif;">S/. {{ credito.montoTotal | number:'1.2-2' }}</h4>
               </div>
             </div>
           </div>
 
           <!-- Progreso de Pago -->
-          <div class="mt-4 p-4 rounded" style="background: rgba(0,0,0,0.2);">
+          <div class="mt-3 p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="mb-0">Progreso de Pago</h6>
-              <h6 class="mb-0">{{ calcularProgresoCredito() | number:'1.0-0' }}% completado</h6>
+              <span class="font-weight-bold" style="color: #2C1810;">Progreso de Amortización</span>
+              <span class="font-weight-bold" style="color: #166534;">{{ calcularProgresoCredito() | number:'1.0-0' }}% completado</span>
             </div>
-            <div class="progress" style="height: 10px; border-radius: 5px; background: rgba(0,0,0,0.3);">
+            <div class="progress" style="height: 12px; border-radius: 6px; background: #E5DDD3;">
               <div class="progress-bar" role="progressbar" [style.width.%]="calcularProgresoCredito()"
                 [style.background-color]="obtenerColorProgreso(calcularProgresoCredito())"
                 aria-valuenow="calcularProgresoCredito()" aria-valuemin="0" aria-valuemax="100">
@@ -313,73 +253,48 @@
 
       <!-- Cuotas o Deuda Fiada (si aplica) -->
       <div *ngIf="(venta.tipoVenta === 'CREDITO' || venta.tipoVenta === 'FIADO') && credito" class="card border-0 mb-4"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-        <div class="card-header d-flex align-items-center py-3"
-          style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-          <i class="fas fa-calendar-alt mr-2" style="color: #4fc3f7;"></i>
-          <h5 class="mb-0 text-white">{{ venta.tipoVenta === 'FIADO' ? 'Saldo Deudor de esta Compra' : 'Cuotas' }}</h5>
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E5DDD3;">
+        <div class="card-header d-flex align-items-center py-3 px-4"
+          style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; border-radius: 0.75rem 0.75rem 0 0; border-bottom: 2px solid #C59B6D;">
+          <i class="fas fa-calendar-alt mr-2" style="color: #FAD082;"></i>
+          <h5 class="mb-0 font-weight-bold" style="color: #FFFFFF !important; font-family: 'Lora', serif; letter-spacing: 0.4px;">{{ venta.tipoVenta === 'FIADO' ? 'Saldo Deudor de esta Compra' : 'Cronograma de Cuotas' }}</h5>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table mb-0 text-white" style="background-color: transparent !important;">
+            <table class="table mb-0" style="color: #241A15;">
               <thead>
-                <tr style="background: rgba(0, 0, 0, 0.2);">
-                  <th class="py-3 px-4 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    N° Cuota
-                  </th>
-                  <th class="py-3 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Monto
-                  </th>
-                  <th class="py-3 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Fecha Vencimiento
-                  </th>
-                  <th class="py-3 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Estado
-                  </th>
-                  <th class="py-3 text-white"
-                    style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                    Acciones
-                  </th>
+                <tr style="background: #F5F1EB;">
+                  <th class="py-3 px-4" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">N° Cuota</th>
+                  <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Monto</th>
+                  <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Fecha Vencimiento</th>
+                  <th class="py-3 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Estado</th>
+                  <th *ngIf="authService.isAdmin()" class="py-3 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let cuota of cuotas"
-                  style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s ease; background: transparent !important;"
-                  onmouseover="this.style.backgroundColor='rgba(255,255,255,0.07)';"
-                  onmouseout="this.style.backgroundColor='transparent';">
-                  <td class="py-3 px-4 text-white" style="background: transparent !important;">
+                <tr *ngFor="let cuota of cuotas" style="border-bottom: 1px solid #F0E8DF;">
+                  <td class="py-3 px-4">
                     <div class="d-flex align-items-center">
                       <div *ngIf="venta.tipoVenta !== 'FIADO'"
-                        style="width: 32px; height: 32px; border-radius: 50%; background: rgba(79, 195, 247, 0.15); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                        style="width: 32px; height: 32px; border-radius: 50%; background: #2C1810; display: flex; align-items: center; justify-content: center; color: #F7EAD9; font-weight: 700; font-size: 13px;">
                         {{ cuota.numeroCuota }}
                       </div>
-                      <span *ngIf="venta.tipoVenta !== 'FIADO'" class="ml-2 text-light opacity-75">de {{ credito.numeroCuotas || credito.numero_cuotas || cuotas.length }}</span>
-                      <span *ngIf="venta.tipoVenta === 'FIADO'" class="badge py-1 px-2" style="background-color: #e67e22; font-size: 0.8rem; font-weight: 600;">
+                      <span *ngIf="venta.tipoVenta !== 'FIADO'" class="ml-2 font-weight-bold" style="color: #66564E;">de {{ credito.numeroCuotas || credito.numero_cuotas || cuotas.length }}</span>
+                      <span *ngIf="venta.tipoVenta === 'FIADO'" class="badge py-1 px-2" style="background-color: #FEF7EA; color: #9A5B13; border: 1px solid #F59E0B; font-weight: 700;">
                         <i class="fas fa-book-open mr-1"></i> Saldo Fiado
                       </span>
                     </div>
                   </td>
-                  <td class="py-3 text-white font-weight-bold" style="background: transparent !important;">S/. {{
-                    cuota.monto | number:'1.2-2' }}</td>
-                  <td class="py-3 text-white" style="background: transparent !important;">
+                  <td class="py-3 font-weight-bold" style="color: #166534; font-size: 1.05rem;">S/. {{ cuota.monto | number:'1.2-2' }}</td>
+                  <td class="py-3" style="color: #241A15;">
                     <div class="d-flex align-items-center">
-                      <div
-                        style="width: 36px; height: 36px; border-radius: 8px; background: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 10px;">
-                        <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
-                          cuota.fechaVencimiento | date:'MMM' }}</span>
-                        <span style="font-size: 14px; font-weight: 700; color: white;">{{ cuota.fechaVencimiento |
-                          date:'dd' }}</span>
-                      </div>
-                      <span>{{ cuota.fechaVencimiento | date:'yyyy' }}</span>
+                      <i class="fas fa-calendar-day mr-2" style="color: #C59B6D;"></i>
+                      <span>{{ cuota.fechaVencimiento | date:'dd/MM/yyyy' }}</span>
                     </div>
                   </td>
-                  <td class="py-3" style="background: transparent !important;">
+                  <td class="py-3 text-center">
                     <span class="badge py-2 px-3" [style.background-color]="obtenerColorEstadoCuota(cuota.estado)"
-                      style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                      style="font-weight: 700; border-radius: 6px;">
                       <i [class]="
                         cuota.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
                         cuota.estado === 'EN_REVISION' ? 'fas fa-search mr-1' :
@@ -387,20 +302,15 @@
                       {{ cuota.estado === 'EN_REVISION' ? 'En Revisión (Yape)' : cuota.estado }}
                     </span>
                   </td>
-                  <td class="py-3" style="background: transparent !important;">
-                    <span *ngIf="cuota.estado === 'EN_REVISION'" class="badge py-2 px-3"
-                      style="background-color: rgba(155, 89, 182, 0.2); color: #9b59b6; font-weight: 500; border-radius: 6px;">
-                      <i class="fas fa-hourglass-half mr-1"></i> Comprobante en espera
-                    </span>
-                    <button *ngIf="cuota.estado !== 'PAGADO' && cuota.estado !== 'EN_REVISION'" class="btn btn-sm"
-                      style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease;"
-                      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
-                      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';"
-                      [routerLink]="['/cliente/pagar-cuota', cuota.id]">
-                      <i class="fas fa-money-bill-wave mr-1"></i> Pagar
+                  <td *ngIf="authService.isAdmin()" class="py-3 text-center">
+                    <button *ngIf="cuota.estado !== 'PAGADO'" class="btn btn-sm font-weight-bold"
+                      (click)="editarFechaVencimiento(cuota)"
+                      style="background: #FEF7EA; color: #9A5B13; border: 1px solid #FDE68A; border-radius: 6px; padding: 4px 10px; font-size: 0.82rem;"
+                      title="Aplazar o modificar fecha de vencimiento">
+                      <i class="fas fa-calendar-alt mr-1"></i> Aplazar
                     </button>
                     <span *ngIf="cuota.estado === 'PAGADO'" class="badge py-2 px-3"
-                      style="background-color: rgba(46, 204, 113, 0.15); color: #2ecc71; font-weight: 500; border-radius: 6px;">
+                      style="background-color: #DCFCE7; color: #166534; font-weight: 700; border: 1px solid #86EFAC; border-radius: 6px;">
                       <i class="fas fa-check-circle mr-1"></i> Pagado
                     </span>
                   </td>
@@ -413,59 +323,3 @@
     </div>
   </div>
 </div>
-
-<!-- Estilos adicionales para garantizar que se sobrescriba Bootstrap -->
-<style>
-  /* Anular todos los fondos de tabla de Bootstrap */
-  .table {
-    background-color: transparent !important;
-  }
-
-  .table thead th,
-  .table tbody td,
-  .table tfoot td {
-    background-color: transparent !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
-  }
-
-  .table-striped tbody tr:nth-of-type(odd),
-  .table-striped tbody tr:nth-of-type(even) {
-    background-color: transparent !important;
-  }
-
-  /* Animaciones generales */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .card {
-    animation: fadeIn 0.5s ease forwards;
-  }
-
-  /* Estilos para scrollbars */
-  .table-responsive::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .table-responsive::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-  }
-
-  .table-responsive::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
-  }
-
-  .table-responsive::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
-  }
-</style>

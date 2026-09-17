@@ -28,4 +28,8 @@ export class CreditoService {
   obtenerCuotasPorCredito(creditoId: number): Observable<Cuota[]> {
     return this.http.get<Cuota[]>(`${this.API_URL}/${creditoId}/cuotas`);
   }
+
+  actualizarFechaVencimientoCuota(cuotaId: number, fechaVencimiento: string): Observable<any> {
+    return this.http.patch<any>(`${this.API_URL}/cuota/${cuotaId}/fecha-vencimiento`, { fechaVencimiento });
+  }
 }

@@ -1,4 +1,4 @@
-﻿<div class="container-fluid">
+<div class="container-fluid">
   <!-- Header Section con degradado elegante -->
   <div class="row mb-4">
     <div class="col-12">
@@ -39,49 +39,120 @@
   <!-- Contenido principal -->
   <div class="row">
     <div class="col-12">
-      <div class="card border-0 text-white mb-4"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
+      <div class="card border-0 mb-4"
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid #E5DDD3;">
         <div class="card-body p-4">
           <form [formGroup]="ventaForm" (ngSubmit)="onSubmit()">
             <div class="row mb-4">
-              <div class="col-md-6 mb-3 mb-md-0">
-                <label for="cliente" class="form-label text-light opacity-75">Cliente:</label>
+              <div class="col-md-6 mb-3 mb-md-0 position-relative">
+                <label for="buscarCliente" class="form-label font-weight-bold" style="color: #2C1810;">
+                  Cliente: <span class="text-danger">*</span>
+                </label>
+
+                <!-- Input interactivo para buscar tipeando por Nombre, Apellido o DNI -->
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
-                      <i class="fas fa-user"></i>
+                      style="background: #F5F1EB; border: 1px solid #E5DDD3; border-right: none; color: #66564E;">
+                      <i class="fas fa-search"></i>
                     </span>
                   </div>
-                  <select id="cliente" formControlName="clienteId" class="form-control"
+                  <input type="text"
+                    id="buscarCliente"
+                    class="form-control"
+                    [value]="filtroCliente"
+                    (input)="onInputCliente($event)"
+                    (focus)="onFocusCliente()"
+                    (blur)="cerrarDropdown()"
+                    autocomplete="off"
+                    placeholder="Escribe el nombre, apellido o DNI del cliente..."
                     [ngClass]="{'is-invalid': ventaForm.get('clienteId')?.invalid && ventaForm.get('clienteId')?.touched}"
-                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
-                    <option value="" disabled>Seleccione un cliente</option>
-                    <option *ngFor="let cliente of clientes" [value]="cliente.id">
-                      {{ cliente.name }} {{ cliente.lastname }}
-                    </option>
-                  </select>
+                    style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; height: 42px; font-weight: 500;" />
+
+                  <div class="input-group-append" *ngIf="filtroCliente">
+                    <button class="btn" type="button" (click)="limpiarCliente($event)"
+                      style="border: 1px solid #E5DDD3; border-left: none; background: #FAF7F2; color: #8C7B72;"
+                      title="Borrar y buscar otro cliente">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="input-group-append" *ngIf="!filtroCliente">
+                    <span class="input-group-text" (click)="onFocusCliente()"
+                      style="background: #FAF7F2; border: 1px solid #E5DDD3; border-left: none; color: #8C7B72; cursor: pointer;">
+                      <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+                    </span>
+                  </div>
                 </div>
-                <div class="text-danger mt-1 small"
+
+                <!-- Campo oculto sincronizado con el control reactivo del formulario -->
+                <input type="hidden" formControlName="clienteId" />
+
+                <!-- Badge informativo del cliente seleccionado -->
+                <div *ngIf="clienteSeleccionado" class="mt-2 d-flex align-items-center justify-content-between p-2 rounded"
+                  style="background: #F0FDF4; border: 1px solid #BBF7D0; font-size: 0.86rem;">
+                  <div class="d-flex align-items-center text-truncate mr-2">
+                    <i class="fas fa-check-circle text-success mr-2"></i>
+                    <span class="font-weight-bold" style="color: #166534;">
+                      {{ clienteSeleccionado.name }} {{ clienteSeleccionado.lastname }}
+                    </span>
+                    <span class="mx-2 text-muted">|</span>
+                    <span style="color: #15803D;">DNI: <strong>{{ clienteSeleccionado.dni || 'Sin DNI' }}</strong></span>
+                    <span *ngIf="clienteSeleccionado.phone" class="ml-2 text-muted">· Cel: {{ clienteSeleccionado.phone }}</span>
+                  </div>
+                  <span class="badge badge-success px-2 py-1 flex-shrink-0">Seleccionado</span>
+                </div>
+
+                <!-- Lista desplegable con resultados de búsqueda -->
+                <div *ngIf="mostrarDropdownClientes" class="custom-client-dropdown shadow-lg rounded"
+                  style="position: absolute; top: 76px; left: 15px; right: 15px; z-index: 1050; background: #FFFFFF; border: 1px solid #C59B6D; max-height: 250px; overflow-y: auto;">
+
+                  <div *ngIf="clientesFiltrados.length === 0" class="p-3 text-center text-muted small">
+                    <i class="fas fa-user-slash mr-1"></i> No se encontraron clientes para "<strong>{{ filtroCliente }}</strong>"
+                  </div>
+
+                  <div *ngFor="let c of clientesFiltrados"
+                    (mousedown)="seleccionarCliente(c)"
+                    class="client-option-item p-2 px-3 d-flex align-items-center justify-content-between cursor-pointer"
+                    [style.background]="clienteSeleccionado?.id === c.id ? '#FEF7EA' : 'transparent'"
+                    style="border-bottom: 1px solid #F5F1EB; transition: background 0.15s ease;">
+                    <div class="d-flex align-items-center">
+                      <div class="rounded-circle d-flex align-items-center justify-content-center mr-3 font-weight-bold"
+                        style="width: 32px; height: 32px; background: #FAF4EB; color: #8C532B; border: 1px solid #E5DDD3; font-size: 0.82rem;">
+                        {{ (c.name ? c.name.charAt(0) : 'C') + (c.lastname ? c.lastname.charAt(0) : '') }}
+                      </div>
+                      <div>
+                        <div class="font-weight-bold" style="color: #2C1810; font-size: 0.9rem;">
+                          {{ c.name }} {{ c.lastname }}
+                        </div>
+                        <div class="small" style="color: #8C7B72;">
+                          <span class="mr-2"><i class="fas fa-id-card mr-1"></i>DNI: {{ c.dni || 'Sin DNI' }}</span>
+                          <span *ngIf="c.phone"><i class="fas fa-phone mr-1"></i>{{ c.phone }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <i *ngIf="clienteSeleccionado?.id === c.id" class="fas fa-check text-warning font-weight-bold"></i>
+                  </div>
+                </div>
+
+                <div class="text-danger mt-1 small font-weight-bold"
                   *ngIf="ventaForm.get('clienteId')?.invalid && ventaForm.get('clienteId')?.touched">
                   Debe seleccionar un cliente
                 </div>
               </div>
 
               <div class="col-md-6">
-                <label for="tipoVenta" class="form-label text-light opacity-75">Tipo de Venta:</label>
+                <label for="tipoVenta" class="form-label font-weight-bold" style="color: #2C1810;">Tipo de Venta:</label>
                 <div class="d-flex">
-                  <div class="custom-radio-group" style="display: flex; width: 100%;">
-                    <div *ngFor="let tipo of tiposVenta" class="flex-fill mx-1"
-                      style="transition: all 0.3s ease; cursor: pointer;"
-                      [style.opacity]="ventaForm.get('tipoVenta')?.value === tipo.id ? '1' : '0.6'">
-                      <div class="custom-radio py-2 text-center"
-                        [style.background]="ventaForm.get('tipoVenta')?.value === tipo.id ? (tipo.id === 'CONTADO' ? 'rgba(46, 204, 113, 0.15)' : tipo.id === 'FIADO' ? 'rgba(230, 126, 34, 0.15)' : 'rgba(52, 152, 219, 0.15)') : 'rgba(0,0,0,0.2)'"
-                        [style.border-color]="ventaForm.get('tipoVenta')?.value === tipo.id ? (tipo.id === 'CONTADO' ? '#2ecc71' : tipo.id === 'FIADO' ? '#e67e22' : '#3498db') : 'rgba(255,255,255,0.1)'"
-                        style="border: 1px solid; border-radius: 0.5rem; height: 100%;"
-                        (click)="ventaForm.get('tipoVenta')?.setValue(tipo.id)">
-                        <i [class]="tipo.id === 'CONTADO' ? 'fas fa-money-bill-wave mr-2' : tipo.id === 'FIADO' ? 'fas fa-book-open mr-2' : 'fas fa-credit-card mr-2'"
-                          [style.color]="tipo.id === 'CONTADO' ? '#2ecc71' : tipo.id === 'FIADO' ? '#e67e22' : '#3498db'"></i>
+                  <div class="custom-radio-group" style="display: flex; width: 100%; gap: 8px;">
+                    <div *ngFor="let tipo of tiposVenta" class="flex-fill"
+                      style="transition: all 0.2s ease; cursor: pointer;"
+                      (click)="ventaForm.get('tipoVenta')?.setValue(tipo.id)">
+                      <div class="py-2 px-2 text-center"
+                        [style.background]="ventaForm.get('tipoVenta')?.value === tipo.id ? (tipo.id === 'CONTADO' ? '#DCFCE7' : tipo.id === 'FIADO' ? '#FEF7EA' : '#EFF6FF') : '#F5F1EB'"
+                        [style.border]="ventaForm.get('tipoVenta')?.value === tipo.id ? (tipo.id === 'CONTADO' ? '2px solid #166534' : tipo.id === 'FIADO' ? '2px solid #D97706' : '2px solid #2563EB') : '1px solid #E5DDD3'"
+                        [style.color]="ventaForm.get('tipoVenta')?.value === tipo.id ? (tipo.id === 'CONTADO' ? '#166534' : tipo.id === 'FIADO' ? '#9A5B13' : '#1D4ED8') : '#66564E'"
+                        style="border-radius: 8px; font-weight: 700; font-size: 0.9rem;">
+                        <i [class]="tipo.id === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : tipo.id === 'FIADO' ? 'fas fa-book-open mr-1' : 'fas fa-credit-card mr-1'"></i>
                         {{ tipo.nombre }}
                       </div>
                     </div>
@@ -90,40 +161,146 @@
               </div>
             </div>
 
+            <!-- Panel Inteligente: Selección de Cuenta (Existente vs Nueva) para Ventas Fiadas o a Crédito -->
+            <div *ngIf="clienteSeleccionado && (esFiado || esCredito) && cuentasActivas.length > 0"
+                 class="card mb-4 border-0 shadow-sm"
+                 style="background: #FFFDF9; border: 1px solid #F3DFC1; border-radius: 10px; animation: fadeIn 0.3s ease;">
+              <div class="card-header py-3 px-4 d-flex align-items-center justify-content-between"
+                   style="background: #FDF4E7; border-bottom: 1px solid #F3DFC1; border-radius: 10px 10px 0 0;">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-layer-group mr-2" style="color: #C2410C; font-size: 1.1rem;"></i>
+                  <div>
+                    <h6 class="mb-0 font-weight-bold" style="color: #9A5B13;">
+                      Destino de la Venta: Cuenta Existente o Nueva
+                    </h6>
+                    <small style="color: #8C6239;">El cliente tiene {{ cuentasActivas.length }} cuenta(s) activa(s). Puedes acumular estos productos a una cuenta existente o crear una nueva.</small>
+                  </div>
+                </div>
+                <span class="badge badge-warning px-2 py-1 font-weight-bold" style="background: #FEF7EA; color: #9A5B13; border: 1px solid #F59E0B;">
+                  {{ cuentasActivas.length }} Cuenta(s) Activa(s)
+                </span>
+              </div>
+
+              <div class="card-body p-4">
+                <!-- Selector Modo: Nueva vs Existente -->
+                <div class="btn-group w-100 mb-3" role="group">
+                  <button type="button" class="btn py-2 font-weight-bold"
+                          [style.background]="modoCuenta === 'EXISTENTE' ? '#2C1810' : '#F5F1EB'"
+                          [style.color]="modoCuenta === 'EXISTENTE' ? '#F7EAD9' : '#66564E'"
+                          [style.border]="modoCuenta === 'EXISTENTE' ? '1px solid #2C1810' : '1px solid #E5DDD3'"
+                          style="border-radius: 8px 0 0 8px;"
+                          (click)="setModoCuenta('EXISTENTE')">
+                    <i class="fas fa-plus-circle mr-1 text-warning"></i>
+                    Cuenta Existente
+                  </button>
+                  <button type="button" class="btn py-2 font-weight-bold"
+                          [style.background]="modoCuenta === 'NUEVA' ? '#2C1810' : '#F5F1EB'"
+                          [style.color]="modoCuenta === 'NUEVA' ? '#F7EAD9' : '#66564E'"
+                          [style.border]="modoCuenta === 'NUEVA' ? '1px solid #2C1810' : '1px solid #E5DDD3'"
+                          style="border-radius: 0 8px 8px 0;"
+                          (click)="setModoCuenta('NUEVA')">
+                    <i class="fas fa-file-invoice mr-1 text-info"></i>
+                    Cuenta Nueva
+                  </button>
+                </div>
+
+                <!-- Si el usuario eligió Sumar a Cuenta Existente -->
+                <div *ngIf="modoCuenta === 'EXISTENTE'" class="mt-3">
+                  <label class="form-label font-weight-bold" style="color: #2C1810;">
+                    Seleccione la cuenta donde se acumulará esta compra:
+                  </label>
+
+                  <div class="row">
+                    <div *ngFor="let cuenta of cuentasActivas" class="col-md-6 mb-3">
+                      <div class="card h-100 p-3 cursor-pointer"
+                           (click)="seleccionarCuentaExistente(cuenta)"
+                           [style.background]="cuentaSeleccionada?.id === cuenta.id ? '#FEF7EA' : '#FFFFFF'"
+                           [style.border]="cuentaSeleccionada?.id === cuenta.id ? '2px solid #D97706' : '1px solid #E5DDD3'"
+                           style="border-radius: 8px; transition: all 0.2s ease;">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                          <div>
+                            <span class="badge px-2 py-1 font-weight-bold mr-2"
+                                  [style.background]="cuenta.tipoVenta === 'FIADO' ? '#FEF7EA' : '#EFF6FF'"
+                                  [style.color]="cuenta.tipoVenta === 'FIADO' ? '#9A5B13' : '#1D4ED8'"
+                                  [style.border]="cuenta.tipoVenta === 'FIADO' ? '1px solid #F59E0B' : '1px solid #BFDBFE'">
+                              {{ cuenta.tipoVenta || 'CRÉDITO' }}
+                            </span>
+                            <span class="font-weight-bold" style="color: #2C1810;">
+                              Cuenta / Crédito #{{ cuenta.id }}
+                            </span>
+                          </div>
+                          <i *ngIf="cuentaSeleccionada?.id === cuenta.id" class="fas fa-check-circle text-success" style="font-size: 1.2rem;"></i>
+                        </div>
+
+                        <p class="small text-muted mb-2 text-truncate">
+                          {{ cuenta.descripcionVenta || 'Venta anterior' }}
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top" style="border-color: #F0E8DF !important;">
+                          <div>
+                            <small class="text-muted d-block" style="font-size: 0.72rem;">TOTAL ACTUAL</small>
+                            <span class="font-weight-bold" style="color: #166534;">S/. {{ cuenta.montoTotal | number:'1.2-2' }}</span>
+                          </div>
+                          <div class="text-right">
+                            <small class="text-muted d-block" style="font-size: 0.72rem;">VENCE</small>
+                            <span class="font-weight-bold" style="color: #9A5B13;">{{ cuenta.fechaFin || 'Sin fecha' }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Ajuste / Prórroga de Fecha de Vencimiento de la Cuenta -->
+                  <div *ngIf="cuentaSeleccionada" class="p-3 mt-2 rounded" style="background: #F5EBE1; border: 1px solid #E3D1C2;">
+                    <div class="row align-items-center">
+                      <div class="col-md-7 mb-2 mb-md-0">
+                        <label class="form-label font-weight-bold mb-1" style="color: #2C1810;">
+                          <i class="fas fa-calendar-alt mr-1 text-warning"></i>
+                          Fecha de Vencimiento de esta Cuenta:
+                        </label>
+                        <p class="small text-muted mb-0">
+                          Fecha anterior registrada: <strong>{{ cuentaSeleccionada.fechaFin || 'No fijada' }}</strong>. Puedes dejarla así o darle más días de plazo al cliente.
+                        </p>
+                      </div>
+                      <div class="col-md-5">
+                        <input type="date" class="form-control" [(ngModel)]="nuevaFechaVencimiento" [ngModelOptions]="{standalone: true}"
+                               style="background: #FFFFFF; border: 1px solid #C59B6D; color: #241A15; font-weight: 600; height: 40px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="form-group mb-4">
-              <label for="descripcion" class="form-label text-light opacity-75">Descripción de la venta:</label>
+              <label for="descripcion" class="form-label font-weight-bold" style="color: #2C1810;">
+                Descripción de la venta: <span class="text-muted small font-weight-normal">(Opcional)</span>
+              </label>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text"
-                    style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                    style="background: #F5F1EB; border: 1px solid #E5DDD3; border-right: none; color: #66564E;">
                     <i class="fas fa-file-alt"></i>
                   </span>
                 </div>
                 <input type="text" id="descripcion" formControlName="descripcion" class="form-control"
-                  placeholder="Descripción breve de la venta"
-                  [ngClass]="{'is-invalid': ventaForm.get('descripcion')?.invalid && ventaForm.get('descripcion')?.touched}"
-                  style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
-              </div>
-              <div class="text-danger mt-1 small"
-                *ngIf="ventaForm.get('descripcion')?.invalid && ventaForm.get('descripcion')?.touched">
-                La descripción es requerida
+                  placeholder="Ej. Compra de abarrotes (opcional)"
+                  style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; height: 42px;">
               </div>
             </div>
 
             <!-- Detalles de la Venta con diseño elegante -->
-            <div class="card mb-4"
-              style="background: rgba(0,0,0,0.2); border: none; border-radius: 0.75rem; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
-              <div class="card-header d-flex justify-content-between align-items-center"
-                style="background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-                <h5 class="mb-0 text-white">
-                  <i class="fas fa-shopping-cart mr-2" style="color: #4fc3f7;"></i>
-                  Detalles de la Venta
+            <div class="card mb-4 border-0"
+              style="background: #FFFFFF; border-radius: 0.75rem; border: 1px solid #E5DDD3;">
+              <div class="card-header d-flex justify-content-between align-items-center py-3"
+                style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; border-radius: 0.75rem 0.75rem 0 0; border-bottom: 2px solid #C59B6D;">
+                <h5 class="mb-0 font-weight-bold" style="color: #FFFFFF !important; font-family: 'Plus Jakarta Sans', sans-serif;">
+                  <i class="fas fa-shopping-basket mr-2" style="color: #FAD082;"></i>
+                  Productos de la Venta
                 </h5>
-                <button type="button" class="btn" (click)="agregarDetalle()"
-                  style="background: rgba(79, 195, 247, 0.15); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.3s ease;"
-                  onmouseover="this.style.background='rgba(79, 195, 247, 0.25)';"
-                  onmouseout="this.style.background='rgba(79, 195, 247, 0.15)';">
-                  <i class="fas fa-plus mr-2"></i>
+                <button type="button" class="btn btn-sm" (click)="agregarDetalle()"
+                  style="background: rgba(255,255,255,0.12); color: #FFFFFF !important; border: 1px solid #C59B6D; border-radius: 0.5rem; font-weight: 700; padding: 6px 14px;">
+                  <i class="fas fa-plus mr-1" style="color: #FAD082;"></i>
                   Agregar Producto
                 </button>
               </div>
@@ -131,82 +308,79 @@
                 <div formArrayName="detalles">
                   <div *ngFor="let detalle of detalles.controls; let i = index" [formGroupName]="i"
                     class="p-3 border-bottom"
-                    style="border-color: rgba(255,255,255,0.05) !important; transition: all 0.3s ease;"
-                    [style.background]="i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent'">
-                    <div class="row">
+                    style="border-color: #E5DDD3 !important;"
+                    [style.background]="i % 2 === 0 ? '#FFFFFF' : '#FAF6F0'">
+                    <div class="row align-items-center">
                       <div class="col-md-5 mb-3 mb-md-0">
-                        <label class="form-label text-light opacity-75 small">Nombre del Producto:</label>
+                        <label class="form-label font-weight-bold small" style="color: #2C1810;">Nombre del Producto:</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text"
-                              style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                              style="background: #F5F1EB; border: 1px solid #E5DDD3; border-right: none; color: #66564E;">
                               <i class="fas fa-box"></i>
                             </span>
                           </div>
                           <input type="text" formControlName="nombreProducto" class="form-control"
-                            placeholder="Nombre del producto"
+                            placeholder="Ej. Arroz Costeño 5kg"
                             [ngClass]="{'is-invalid': detalle.get('nombreProducto')?.invalid && detalle.get('nombreProducto')?.touched}"
-                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                            style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15;">
                         </div>
-                        <div class="text-danger mt-1 small"
+                        <div class="text-danger mt-1 small font-weight-bold"
                           *ngIf="detalle.get('nombreProducto')?.invalid && detalle.get('nombreProducto')?.touched">
                           El nombre del producto es requerido
                         </div>
                       </div>
 
                       <div class="col-md-2 mb-3 mb-md-0">
-                        <label class="form-label text-light opacity-75 small">Cantidad:</label>
+                        <label class="form-label font-weight-bold small" style="color: #2C1810;">Cantidad:</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text"
-                              style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                              style="background: #F5F1EB; border: 1px solid #E5DDD3; border-right: none; color: #66564E;">
                               <i class="fas fa-hashtag"></i>
                             </span>
                           </div>
                           <input type="number" formControlName="cantidad" class="form-control" min="1"
                             [ngClass]="{'is-invalid': detalle.get('cantidad')?.invalid && detalle.get('cantidad')?.touched}"
-                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                            style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15;">
                         </div>
-                        <div class="text-danger mt-1 small"
+                        <div class="text-danger mt-1 small font-weight-bold"
                           *ngIf="detalle.get('cantidad')?.invalid && detalle.get('cantidad')?.touched">
-                          La cantidad debe ser mayor a 0
+                          Mínimo 1
                         </div>
                       </div>
 
                       <div class="col-md-3 mb-3 mb-md-0">
-                        <label class="form-label text-light opacity-75 small">Precio Unitario:</label>
+                        <label class="form-label font-weight-bold small" style="color: #2C1810;">Precio Unitario:</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text"
-                              style="background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); border-right: none; color: #4fc3f7;">
+                              style="background: #F5F1EB; border: 1px solid #E5DDD3; border-right: none; color: #66564E;">
                               <i class="fas fa-dollar-sign"></i>
                             </span>
                           </div>
                           <input type="number" formControlName="precioUnitario" class="form-control" step="0.01"
                             min="0.01"
                             [ngClass]="{'is-invalid': detalle.get('precioUnitario')?.invalid && detalle.get('precioUnitario')?.touched}"
-                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                            style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15;">
                         </div>
-                        <div class="text-danger mt-1 small"
+                        <div class="text-danger mt-1 small font-weight-bold"
                           *ngIf="detalle.get('precioUnitario')?.invalid && detalle.get('precioUnitario')?.touched">
-                          El precio unitario debe ser mayor a 0
+                          Mayor a 0
                         </div>
                       </div>
 
                       <div class="col-md-1 mb-3 mb-md-0 d-flex align-items-end">
-                        <div class="input-group">
-                          <div class="p-2"
-                            style="background: rgba(0,0,0,0.2); border-radius: 0.25rem; width: 100%; text-align: center; font-weight: bold; color: #4fc3f7;">
-                            S/. {{ calcularSubtotal(detalle) | number:'1.2-2' }}
-                          </div>
+                        <div class="p-2 text-center font-weight-bold w-100"
+                          style="background: #F5F1EB; border: 1px solid #E5DDD3; border-radius: 6px; color: #166534; font-size: 0.95rem;">
+                          S/. {{ calcularSubtotal(detalle) | number:'1.2-2' }}
                         </div>
                       </div>
 
                       <div class="col-md-1 mb-3 mb-md-0 d-flex align-items-end justify-content-center">
                         <button type="button" class="btn" (click)="eliminarDetalle(i)" [disabled]="detalles.length <= 1"
-                          style="background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 0.5rem; transition: all 0.3s ease;"
-                          onmouseover="this.style.background='rgba(231, 76, 60, 0.25)';"
-                          onmouseout="this.style.background='rgba(231, 76, 60, 0.15)';">
+                          style="background: #FEECEB; color: #DC2626; border: 1px solid #FECACA; border-radius: 0.5rem;"
+                          title="Eliminar producto">
                           <i class="fas fa-trash"></i>
                         </button>
                       </div>
@@ -214,57 +388,57 @@
                   </div>
                 </div>
               </div>
-              <div class="card-footer"
-                style="background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255,255,255,0.05); border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem;">
+              <div class="card-footer py-3"
+                style="background: #F5F1EB; border-top: 2px solid #E5DDD3; border-radius: 0 0 0.75rem 0.75rem;">
                 <div class="d-flex justify-content-end align-items-center">
-                  <h4 class="mb-0 mr-2">Total:</h4>
-                  <div class="p-2"
-                    style="background: rgba(46, 204, 113, 0.15); border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 0.5rem; min-width: 150px; text-align: center; font-weight: bold; color: #2ecc71; font-size: 1.25rem;">
+                  <h4 class="mb-0 mr-3 font-weight-bold" style="color: #2C1810; font-family: 'Lora', serif;">Total Venta:</h4>
+                  <div class="px-4 py-2"
+                    style="background: #DCFCE7; border: 2px solid #86EFAC; border-radius: 0.5rem; min-width: 170px; text-align: center; font-weight: 800; color: #166534; font-size: 1.4rem;">
                     S/. {{ calcularTotal() | number:'1.2-2' }}
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Información del Crédito (condicional) -->
-            <div *ngIf="esCredito" formGroupName="credito" class="card mb-4"
+            <!-- Información del Crédito (condicional, solo para cuentas nuevas) -->
+            <div *ngIf="esCredito && modoCuenta !== 'EXISTENTE'" formGroupName="credito" class="card mb-4"
               style="background: rgba(52, 152, 219, 0.08); border: 1px solid rgba(52, 152, 219, 0.2); border-radius: 0.75rem; box-shadow: 0 3px 10px rgba(0,0,0,0.1); animation: fadeIn 0.5s ease;">
-              <div class="card-header d-flex align-items-center"
-                style="background: rgba(52, 152, 219, 0.15); border-bottom: 1px solid rgba(52, 152, 219, 0.2); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-                <i class="fas fa-credit-card mr-2" style="color: #3498db;"></i>
-                <h5 class="mb-0 text-white">Información del Crédito</h5>
+              <div class="card-header d-flex align-items-center py-3"
+                style="background: #EFF6FF; border-bottom: 1px solid #BFDBFE; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+                <i class="fas fa-credit-card mr-2" style="color: #2563EB;"></i>
+                <h5 class="mb-0 font-weight-bold" style="color: #1D4ED8 !important;">Información del Crédito</h5>
               </div>
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6 mb-3 mb-md-0">
-                    <label for="interes" class="form-label text-light opacity-75">Interés (%):</label>
+                    <label for="interes" class="form-label font-weight-bold" style="color: #2C1810;">Interés (%):</label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"
-                          style="background: rgba(52, 152, 219, 0.15); border: 1px solid rgba(52, 152, 219, 0.3); border-right: none; color: #3498db;">
+                          style="background: #EFF6FF; border: 1px solid #BFDBFE; border-right: none; color: #1D4ED8;">
                           <i class="fas fa-percentage"></i>
                         </span>
                       </div>
                       <input type="number" id="interes" formControlName="interes" class="form-control" min="0"
                         step="0.01"
-                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                        style="background: #FFFFFF; border: 1px solid #BFDBFE; color: #241A15; height: 42px;">
                     </div>
                   </div>
 
                   <div class="col-md-6">
-                    <label for="numeroCuotas" class="form-label text-light opacity-75">Número de Cuotas:</label>
+                    <label for="numeroCuotas" class="form-label font-weight-bold" style="color: #2C1810;">Número de Cuotas:</label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"
-                          style="background: rgba(52, 152, 219, 0.15); border: 1px solid rgba(52, 152, 219, 0.3); border-right: none; color: #3498db;">
+                          style="background: #EFF6FF; border: 1px solid #BFDBFE; border-right: none; color: #1D4ED8;">
                           <i class="fas fa-calculator"></i>
                         </span>
                       </div>
                       <input type="number" id="numeroCuotas" formControlName="numeroCuotas" class="form-control" min="1"
                         [ngClass]="{'is-invalid': ventaForm.get('credito.numeroCuotas')?.invalid && ventaForm.get('credito.numeroCuotas')?.touched}"
-                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                        style="background: #FFFFFF; border: 1px solid #BFDBFE; color: #241A15; height: 42px;">
                     </div>
-                    <div class="text-danger mt-1 small"
+                    <div class="text-danger mt-1 small font-weight-bold"
                       *ngIf="ventaForm.get('credito.numeroCuotas')?.invalid && ventaForm.get('credito.numeroCuotas')?.touched">
                       El número de cuotas debe ser mayor a 0
                     </div>
@@ -272,55 +446,54 @@
                 </div>
 
                 <!-- Información adicional sobre crédito -->
-                <div class="alert mt-3"
-                  style="background: rgba(52, 152, 219, 0.1); border-left: 4px solid #3498db; border-radius: 0.5rem;">
+                <div class="alert mt-3 mb-0"
+                  style="background: #EFF6FF; border-left: 4px solid #1D4ED8; border-radius: 0.5rem;">
                   <div class="d-flex align-items-center">
-                    <i class="fas fa-info-circle mr-3" style="color: #3498db; font-size: 1.25rem;"></i>
-                    <p class="mb-0 small text-light">
-                      Al seleccionar crédito tradicional, se generarán cuotas fijas mensuales con el interés
-                      especificado. El cliente pagará cada cuota de forma estructurada.
+                    <i class="fas fa-info-circle mr-3" style="color: #1D4ED8; font-size: 1.25rem;"></i>
+                    <p class="mb-0 small" style="color: #1E3A8A;">
+                      Se generarán cuotas fijas mensuales con el interés especificado. El cliente pagará cada cuota de forma estructurada.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Información del Fiado (Cuenta Corriente) -->
-            <div *ngIf="esFiado" formGroupName="fiado" class="card mb-4"
-              style="background: rgba(230, 126, 34, 0.08); border: 1px solid rgba(230, 126, 34, 0.2); border-radius: 0.75rem; box-shadow: 0 3px 10px rgba(0,0,0,0.1); animation: fadeIn 0.5s ease;">
-              <div class="card-header d-flex align-items-center"
-                style="background: rgba(230, 126, 34, 0.15); border-bottom: 1px solid rgba(230, 126, 34, 0.2); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-                <i class="fas fa-book-open mr-2" style="color: #e67e22;"></i>
-                <h5 class="mb-0 text-white">Venta al Fiado (Cuenta Corriente / Bodega)</h5>
+            <!-- Información del Fiado (Cuenta Corriente, solo para cuentas nuevas) -->
+            <div *ngIf="esFiado && modoCuenta !== 'EXISTENTE'" formGroupName="fiado" class="card mb-4 border-0"
+              style="background: #FFFFFF; border: 1px solid #FED7AA; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.08);">
+              <div class="card-header d-flex align-items-center py-3"
+                style="background: #FEF3E7; border-bottom: 1px solid #FED7AA; border-radius: 0.75rem 0.75rem 0 0;">
+                <i class="fas fa-book-open mr-2" style="color: #C2410C;"></i>
+                <h5 class="mb-0 font-weight-bold" style="color: #9A5B13;">Venta al Fiado (Cuenta Corriente / Bodega)</h5>
               </div>
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6 mb-3 mb-md-0">
-                    <label for="plazoDias" class="form-label text-light opacity-75">Plazo máximo de tolerancia (días):</label>
+                    <label for="plazoDias" class="form-label font-weight-bold" style="color: #2C1810;">Plazo máximo de tolerancia (días):</label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text"
-                          style="background: rgba(230, 126, 34, 0.15); border: 1px solid rgba(230, 126, 34, 0.3); border-right: none; color: #e67e22;">
+                          style="background: #FEF7EA; border: 1px solid #FED7AA; border-right: none; color: #D97706;">
                           <i class="fas fa-calendar-day"></i>
                         </span>
                       </div>
                       <input type="number" id="plazoDias" formControlName="plazoDias" class="form-control" min="1"
                         placeholder="Ej. 30 días"
-                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                        style="background: #FFFFFF; border: 1px solid #FED7AA; color: #241A15; height: 42px;">
                     </div>
-                    <small class="text-light opacity-75 mt-1 d-block">
+                    <small class="mt-1 d-block" style="color: #66564E;">
                       Días sugeridos para considerar la deuda en vencimiento si no amortiza.
                     </small>
                   </div>
                   <div class="col-md-6 d-flex align-items-center">
-                    <div class="p-3 w-100 rounded" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05);">
-                      <div class="d-flex align-items-center text-light">
-                        <i class="fas fa-percent mr-2 text-success"></i>
-                        <span><strong>Sin Intereses:</strong> 0% recargo.</span>
+                    <div class="p-3 w-100 rounded" style="background: #FAF6F0; border: 1px solid #E5DDD3;">
+                      <div class="d-flex align-items-center mb-1">
+                        <i class="fas fa-check-circle mr-2 text-success"></i>
+                        <span style="color: #2C1810;"><strong>Sin Intereses:</strong> 0% recargo.</span>
                       </div>
-                      <div class="d-flex align-items-center text-light mt-1">
-                        <i class="fas fa-layer-group mr-2 text-info"></i>
-                        <span><strong>Cuenta Rotativa:</strong> El cliente puede acumular y abonar montos libres.</span>
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-sync-alt mr-2 text-primary"></i>
+                        <span style="color: #2C1810;"><strong>Cuenta Rotativa:</strong> El cliente puede abonar montos libres.</span>
                       </div>
                     </div>
                   </div>
@@ -328,11 +501,11 @@
 
                 <!-- Información adicional sobre fiado -->
                 <div class="alert mt-3 mb-0"
-                  style="background: rgba(230, 126, 34, 0.1); border-left: 4px solid #e67e22; border-radius: 0.5rem;">
+                  style="background: #FEF7EA; border-left: 4px solid #D97706; border-radius: 0.5rem;">
                   <div class="d-flex align-items-center">
-                    <i class="fas fa-info-circle mr-3" style="color: #e67e22; font-size: 1.25rem;"></i>
-                    <p class="mb-0 small text-light">
-                      Esta venta se acumulará al saldo deudor pendiente del cliente. El cliente podrá pagar de forma libre o parcial mediante Yape/Efectivo usando amortización FIFO (se liquidarán primero las deudas más antiguas).
+                    <i class="fas fa-info-circle mr-3" style="color: #D97706; font-size: 1.25rem;"></i>
+                    <p class="mb-0 small" style="color: #9A5B13;">
+                      Esta venta se acumulará al saldo deudor pendiente del cliente. El cliente podrá pagar de forma libre o parcial mediante Yape/Efectivo usando amortización FIFO.
                     </p>
                   </div>
                 </div>
@@ -340,21 +513,17 @@
             </div>
 
             <!-- Botones de acción -->
-            <div class="d-flex justify-content-center mt-4">
-              <a routerLink="/admin/ventas" class="btn mr-3"
-                style="background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 0.5rem; padding: 0.5rem 1.5rem; transition: all 0.3s ease;"
-                onmouseover="this.style.background='rgba(231, 76, 60, 0.25)';"
-                onmouseout="this.style.background='rgba(231, 76, 60, 0.15)';">
+            <div class="d-flex justify-content-center mt-4" style="gap: 16px;">
+              <a routerLink="/admin/ventas" class="btn px-4 py-2"
+                style="background: #F5F1EB; color: #66564E; border: 1px solid #E5DDD3; border-radius: 8px; font-weight: 700;">
                 <i class="fas fa-times mr-2"></i> Cancelar
               </a>
 
-              <button type="submit" class="btn" [disabled]="ventaForm.invalid || loading"
-                style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none; border-radius: 0.5rem; padding: 0.5rem 2rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.25s ease;"
-                [style.opacity]="ventaForm.invalid || loading ? '0.6' : '1'"
-                onmouseover="if(!this.disabled) this.style.transform='translateY(-2px)'; if(!this.disabled) this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)';"
-                onmouseout="if(!this.disabled) this.style.transform='translateY(0)'; if(!this.disabled) this.style.boxShadow='0 2px 5px rgba(0,0,0,0.2)';">
+              <button type="submit" class="btn px-5 py-2 font-weight-bold" [disabled]="ventaForm.invalid || loading"
+                style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%); color: #F7EAD9; border: 1px solid #C59B6D; border-radius: 8px; font-size: 1.05rem; box-shadow: 0 4px 14px rgba(44, 24, 16, 0.25);"
+                [style.opacity]="ventaForm.invalid || loading ? '0.6' : '1'">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-2" role="status"></span>
-                <i *ngIf="!loading" class="fas fa-check-circle mr-2"></i>
+                <i *ngIf="!loading" class="fas fa-check-circle mr-2" style="color: #FAD082;"></i>
                 Registrar Venta
               </button>
             </div>
@@ -367,43 +536,17 @@
 </div>
 
 <style>
-  /* Animaciones para elementos */
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-
-  /* Estilos para los inputs cuando tienen foco */
-  .form-control:focus,
-  .input-group-text:focus {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: white !important;
-    border-color: #4fc3f7 !important;
-    box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25) !important;
+  .form-control:focus {
+    border-color: #C59B6D !important;
+    box-shadow: 0 0 0 0.2rem rgba(197, 155, 109, 0.2) !important;
   }
-
-  /* Ajustes para el formulario */
   select option {
-    background: #2c3e50;
-    color: white;
-  }
-
-  /* Ajustes responsivos */
-  @media (max-width: 768px) {
-    .card-header h5 {
-      font-size: 1rem;
-    }
-
-    .card-header button {
-      font-size: 0.85rem;
-      padding: 0.375rem 0.75rem;
-    }
+    background: #FFFFFF;
+    color: #241A15;
   }
 </style>
+

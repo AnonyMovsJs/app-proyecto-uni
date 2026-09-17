@@ -1,95 +1,100 @@
 <div class="evaluacion-ia-container animate__animated animate__fadeIn">
 
   <!-- ENCABEZADO PRINCIPAL -->
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom border-light border-opacity-10 gap-3">
-    <div>
-      <div class="d-flex align-items-center gap-2">
-        <h2 class="text-white font-weight-bold mb-0" style="font-size: 1.75rem; letter-spacing: -0.5px;">
-          An&aacute;lisis de Riesgo Crediticio con IA
-        </h2>
-        <span class="badge bg-gradient-info text-white px-2 py-1 ml-2 font-weight-normal text-xs" style="background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);">
-          <i class="fas fa-microchip mr-1"></i> Scikit-Learn
-        </span>
-      </div>
-      <p class="text-light opacity-75 mb-0 text-sm mt-1">
-        Motor predictivo de probabilidad de impago y sugerencia autom&aacute;tica de l&iacute;mites de cr&eacute;dito para clientes.
-      </p>
-    </div>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="jumbotron text-white p-4 mb-0"
+        style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); border-left: 5px solid #C59B6D;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <h1 class="mb-0 text-white" style="font-family: 'Lora', serif; font-weight: 700; font-size: 2.1rem;">
+                <i class="fas fa-brain mr-2" style="color: #FAD082;"></i>Análisis de Riesgo Crediticio con IA
+              </h1>
+              <span class="badge px-3 py-1 ml-2 font-weight-bold" style="background: rgba(197, 155, 109, 0.3); color: #FAD082; border: 1px solid #C59B6D; border-radius: 20px;">
+                <i class="fas fa-microchip mr-1"></i> Scikit-Learn
+              </span>
+            </div>
+            <p class="mt-2 mb-0" style="color: #E2D2C3; font-size: 1rem;">
+              Motor predictivo de probabilidad de impago y sugerencia automática de límites de crédito para clientes.
+            </p>
+          </div>
 
-    <!-- BOT&Oacute;N DE ACCI&Oacute;N -->
-    <div>
-      <button class="btn btn-primary btn-md px-4 d-flex align-items-center shadow-lg font-weight-bold futuristic-btn"
-              [disabled]="analizandoConIa"
-              (click)="ejecutarEvaluacionCompleta(true)">
-        <i class="fas fa-brain mr-2" [class.fa-spin]="analizandoConIa"></i>
-        {{ analizandoConIa ? 'Analizando...' : 'Analizar Riesgo Crediticio' }}
-      </button>
+          <!-- BOTÓN DE ACCIÓN -->
+          <div>
+            <button class="btn px-4 py-2 font-weight-bold futuristic-btn"
+                    [disabled]="analizandoConIa"
+                    (click)="ejecutarEvaluacionCompleta(true)"
+                    style="border-radius: 8px; font-size: 1rem;">
+              <i class="fas fa-bolt mr-2" [class.fa-spin]="analizandoConIa" style="color: #FAD082;"></i>
+              {{ analizandoConIa ? 'Analizando...' : 'Iniciar Evaluación IA' }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- OVERLAY DE AN&Aacute;LISIS EN VIVO (ANIMACI&Oacute;N FUTURISTA CIRCULAR) -->
-  <div *ngIf="analizandoConIa" class="ai-scanning-overlay card mb-4 p-4 shadow-lg border-0 text-center">
+  <!-- OVERLAY DE ANÁLISIS EN VIVO -->
+  <div *ngIf="analizandoConIa" class="ai-scanning-overlay card mb-4 p-4 shadow-sm border-0 text-center">
     <div class="d-flex flex-column align-items-center justify-content-center">
-      
-      <!-- C&Iacute;RCULOS DE PULSO RADAR FUTURISTA -->
       <div class="ai-radar-box mb-3">
         <div class="radar-pulse"></div>
         <div class="radar-circle">
-          <i class="fas fa-project-diagram text-info fa-2x"></i>
+          <i class="fas fa-project-diagram fa-2x" style="color: #C59B6D;"></i>
         </div>
       </div>
 
-      <h5 class="text-white font-weight-bold mb-1 tracking-wider">{{ mensajeAnalisis }}</h5>
-      <p class="text-info text-sm mb-3 font-monospace">PROCESANDO VARIABLES PROBABIL&Iacute;STICAS: {{ porcentajeProgreso }}%</p>
+      <h5 class="font-weight-bold mb-1" style="color: #2C1810; font-family: 'Lora', serif;">{{ mensajeAnalisis }}</h5>
+      <p class="font-weight-bold mb-3 small" style="color: #8C5D30;">PROCESANDO VARIABLES: {{ porcentajeProgreso }}%</p>
 
-      <!-- BARRA SLIM FUTURISTA -->
-      <div class="w-50 progress progress-sm" style="height: 6px; background-color: rgba(255,255,255,0.1); border-radius: 10px;">
-        <div class="progress-bar progress-bar-striped progress-bar-animated bg-gradient-info"
+      <div class="w-50 progress" style="height: 8px; background-color: #F5F1EB; border-radius: 10px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated"
              [style.width.%]="porcentajeProgreso"
-             style="background: linear-gradient(90deg, #00c6ff, #0072ff); box-shadow: 0 0 12px #00c6ff;">
+             style="background: linear-gradient(90deg, #C59B6D, #2C1810);">
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- ESTADO PREVIO AL ANALISIS (CUANDO RECIEN SE ENTRA A LA VISTA) -->
-  <div *ngIf="!tieneResultados && !analizandoConIa" class="card mb-4 p-5 shadow-lg border-0 text-center" style="background: rgba(26, 32, 53, 0.7); border-radius: 16px; backdrop-filter: blur(10px);">
+  <!-- ESTADO PREVIO AL ANALISIS -->
+  <div *ngIf="!tieneResultados && !analizandoConIa" class="card mb-4 p-5 border-0 text-center" style="background: #FFFFFF; border-radius: 16px; border: 1px solid #E5DDD3; box-shadow: 0 4px 20px rgba(44, 24, 16, 0.05);">
     <div class="d-flex flex-column align-items-center justify-content-center">
-      <div class="mb-3 p-3 rounded-circle" style="background: rgba(0, 198, 255, 0.1); border: 1px solid rgba(0, 198, 255, 0.3);">
-        <i class="fas fa-brain fa-3x text-info"></i>
+      <div class="mb-3 p-3 rounded-circle" style="background: #FEF7EA; border: 1px solid #FDE68A;">
+        <i class="fas fa-brain fa-3x" style="color: #C59B6D;"></i>
       </div>
-      <h4 class="text-white font-weight-bold mb-2">Modulo de Evaluacion Predictiva Listo</h4>
-      <p class="text-light opacity-75 mb-4" style="max-width: 580px;">
-        Presione el bot&oacute;n superior <strong class="text-info">"Analizar Riesgo Crediticio"</strong> para activar el motor de inferencia de Machine Learning, extraer los datos financieros en tiempo real y calcular el scoring y los l&iacute;mites recomendados.
+      <h3 class="font-weight-bold mb-2" style="color: #2C1810; font-family: 'Lora', serif;">Módulo de Evaluación Predictiva Listo</h3>
+      <p class="mb-4" style="max-width: 580px; color: #66564E;">
+        Presione el botón superior <strong style="color: #2C1810;">"Iniciar Evaluación IA"</strong> para activar el motor de inferencia de Machine Learning, extraer los datos financieros en tiempo real y calcular el scoring y límites sugeridos.
       </p>
-      <button class="btn btn-primary btn-lg px-4 shadow-lg font-weight-bold futuristic-btn" (click)="ejecutarEvaluacionCompleta(true)">
-        <i class="fas fa-play mr-2"></i> Iniciar An&aacute;lisis con IA
+      <button class="btn px-4 py-2 font-weight-bold" (click)="ejecutarEvaluacionCompleta(true)"
+        style="background: #2C1810; color: #F7EAD9; border: 1px solid #C59B6D; border-radius: 8px;">
+        <i class="fas fa-play mr-2" style="color: #FAD082;"></i> Ejecutar Evaluación de Cartera
       </button>
     </div>
   </div>
 
-  <!-- CONTENIDO DE DATOS (CON TRANSICI&Oacute;N SUAVE DE ARRIBA HACIA ABAJO Y DESENFOQUE) -->
+  <!-- CONTENIDO DE DATOS -->
   <div *ngIf="tieneResultados" class="results-fade-wrapper" [class.results-entered]="animarEntradaDatos">
 
     <!-- 4 TARJETAS KPIS SUPERIORES -->
     <div class="row g-3 mb-4">
-      <!-- KPI 1: &Iacute;ndice de Riesgo Crediticio -->
+      <!-- KPI 1: Índice de Riesgo Crediticio -->
       <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card kpi-card h-100 shadow-sm border-0">
+        <div class="card kpi-card h-100 border-0" style="border-left: 4px solid #DC2626 !important;">
           <div class="card-body p-3 d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-between align-items-start">
-              <div class="kpi-icon-box bg-danger bg-opacity-20 text-danger border border-danger border-opacity-25">
+              <div class="kpi-icon-box" style="background: #FEECEB; color: #DC2626;">
                 <i class="fas fa-exclamation-triangle"></i>
               </div>
-              <span class="kpi-tag text-danger bg-danger bg-opacity-10 px-2 py-0.5 rounded">
+              <span class="kpi-tag px-2 py-1 rounded" style="background: #FEECEB; color: #991B1B;">
                 <i class="fas fa-chart-line mr-1"></i> Cartera Mora
               </span>
             </div>
             <div class="mt-3">
-              <span class="kpi-label text-uppercase text-light opacity-75">&Iacute;NDICE DE RIESGO CREDITICIO</span>
-              <div class="kpi-value text-white font-weight-bold">{{ indiceRiesgoGlobal }}%</div>
-              <small class="text-light opacity-75">
+              <span class="kpi-label text-uppercase">ÍNDICE DE RIESGO</span>
+              <div class="kpi-value font-weight-bold" style="color: #991B1B;">{{ indiceRiesgoGlobal }}%</div>
+              <small style="color: #66564E;">
                 Capital en riesgo: <strong class="text-danger">S/. {{ capitalEnRiesgo.toFixed(2) }}</strong>
               </small>
             </div>
@@ -99,20 +104,20 @@
 
       <!-- KPI 2: Clientes de Alto Riesgo -->
       <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card kpi-card h-100 shadow-sm border-0">
+        <div class="card kpi-card h-100 border-0" style="border-left: 4px solid #D97706 !important;">
           <div class="card-body p-3 d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-between align-items-start">
-              <div class="kpi-icon-box bg-warning bg-opacity-20 text-warning border border-warning border-opacity-25">
-                <i class="fas fa-user-times"></i>
+              <div class="kpi-icon-box" style="background: #FEF7EA; color: #D97706;">
+                <i class="fas fa-user-shield"></i>
               </div>
-              <span class="kpi-tag text-light opacity-75 bg-dark bg-opacity-30 px-2 py-0.5 rounded">
-                Este mes
+              <span class="kpi-tag px-2 py-1 rounded" style="background: #FEF7EA; color: #9A5B13;">
+                {{ totalClientesAltoRiesgo }} Observados
               </span>
             </div>
             <div class="mt-3">
-              <span class="kpi-label text-uppercase text-light opacity-75">CLIENTES DE ALTO RIESGO</span>
-              <div class="kpi-value text-white font-weight-bold">{{ totalClientesAltoRiesgo }}</div>
-              <small class="text-warning">Requieren revisi&oacute;n inmediata</small>
+              <span class="kpi-label text-uppercase">CLIENTES EN ALERTA</span>
+              <div class="kpi-value font-weight-bold" style="color: #D97706;">{{ totalClientesAltoRiesgo }}</div>
+              <small style="color: #66564E;">Restricción preventiva de cupo</small>
             </div>
           </div>
         </div>
@@ -120,65 +125,64 @@
 
       <!-- KPI 3: Clientes Confiables -->
       <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card kpi-card h-100 shadow-sm border-0">
+        <div class="card kpi-card h-100 border-0" style="border-left: 4px solid #16A34A !important;">
           <div class="card-body p-3 d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-between align-items-start">
-              <div class="kpi-icon-box bg-success bg-opacity-20 text-success border border-success border-opacity-25">
-                <i class="fas fa-user-check"></i>
+              <div class="kpi-icon-box" style="background: #DCFCE7; color: #16A34A;">
+                <i class="fas fa-check-double"></i>
               </div>
-              <span class="kpi-tag text-success bg-success bg-opacity-10 px-2 py-0.5 rounded">
-                +{{ totalClientesConfiables }}
+              <span class="kpi-tag px-2 py-1 rounded" style="background: #DCFCE7; color: #166534;">
+                Score Excelente
               </span>
             </div>
             <div class="mt-3">
-              <span class="kpi-label text-uppercase text-light opacity-75">CLIENTES CONFIABLES (BAJO RIESGO)</span>
-              <div class="kpi-value text-white font-weight-bold">{{ totalClientesConfiables }}</div>
-              <small class="text-success">Candidatos a aumento de l&iacute;mite</small>
+              <span class="kpi-label text-uppercase">CLIENTES CONFIABLES</span>
+              <div class="kpi-value font-weight-bold" style="color: #16A34A;">{{ totalClientesConfiables }}</div>
+              <small style="color: #166534; font-weight: 600;">Candidatos a ampliación de crédito</small>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- KPI 4: Precisi&oacute;n del Modelo IA -->
+      <!-- KPI 4: Precisión del Modelo IA -->
       <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card kpi-card h-100 shadow-sm border-0">
+        <div class="card kpi-card h-100 border-0" style="border-left: 4px solid #2563EB !important;">
           <div class="card-body p-3 d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-between align-items-start">
-              <div class="kpi-icon-box bg-info bg-opacity-20 text-info border border-info border-opacity-25">
+              <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
                 <i class="fas fa-microchip"></i>
               </div>
-              <span class="kpi-tag text-info bg-info bg-opacity-10 px-2 py-0.5 rounded">
+              <span class="kpi-tag px-2 py-1 rounded" style="background: #EFF6FF; color: #1D4ED8;">
                 AUC 96.5%
               </span>
             </div>
             <div class="mt-3">
-              <span class="kpi-label text-uppercase text-light opacity-75">PRECISI&Oacute;N DEL MODELO IA</span>
-              <div class="kpi-value text-white font-weight-bold">{{ precisionModelo }}%</div>
-              <small class="text-light opacity-75">Basado en 3,000 transacciones hist&oacute;ricas</small>
+              <span class="kpi-label text-uppercase">PRECISIÓN DEL MODELO</span>
+              <div class="kpi-value font-weight-bold" style="color: #1E3A8A;">{{ precisionModelo }}%</div>
+              <small style="color: #66564E;">Basado en histórico de pagos</small>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- FILA CENTRAL: DISTRIBUCI&Oacute;N DE RIESGO + EVALUACI&Oacute;N POR CLIENTE -->
+    <!-- FILA CENTRAL: DISTRIBUCIÓN DE RIESGO + EVALUACIÓN POR CLIENTE -->
     <div class="row g-4 mb-4">
       
-      <!-- COLUMNA IZQUIERDA: DISTRIBUCI&Oacute;N DE RIESGO -->
+      <!-- COLUMNA IZQUIERDA: DISTRIBUCIÓN DE RIESGO -->
       <div class="col-12 col-lg-4">
-        <div class="card panel-card h-100 shadow-sm border-0">
+        <div class="card panel-card h-100 border-0">
           <div class="card-header bg-transparent border-0 pt-3 px-3 pb-0 d-flex align-items-center justify-content-between">
-            <h5 class="text-white font-weight-bold mb-0 text-base d-flex align-items-center">
-              <i class="fas fa-chart-pie mr-2 text-info"></i> Distribuci&oacute;n de Riesgo
+            <h5 class="mb-0 font-weight-bold d-flex align-items-center" style="color: #2C1810; font-family: 'Lora', serif;">
+              <i class="fas fa-chart-pie mr-2" style="color: #C59B6D;"></i> Distribución de Riesgo
             </h5>
-            <span class="badge bg-dark text-light border border-light border-opacity-10">
+            <span class="badge px-3 py-1 font-weight-bold" style="background: #F5F1EB; color: #2C1810; border: 1px solid #E5DDD3;">
               Total: {{ clientesEvaluados.length }}
             </span>
           </div>
 
           <div class="card-body p-3 d-flex flex-column justify-content-center align-items-center">
-            
-            <!-- DONA SVG DIN&Aacute;MICA -->
+            <!-- DONA SVG DINÁMICA -->
             <div class="position-relative d-flex align-items-center justify-content-center my-3" style="width: 170px; height: 170px;">
               <svg viewBox="0 0 36 36" class="circular-chart">
                 <path class="circle-bg"
@@ -190,81 +194,81 @@
                 />
               </svg>
               <div class="text-center position-absolute">
-                <span class="d-block font-weight-bold text-white h3 mb-0">{{ clientesEvaluados.length }}</span>
-                <small class="text-light opacity-75 text-xs text-uppercase">Total Clientes</small>
+                <span class="d-block font-weight-bold h3 mb-0" style="color: #2C1810; font-family: 'Lora', serif;">{{ clientesEvaluados.length }}</span>
+                <small class="text-uppercase font-weight-bold" style="color: #66564E; font-size: 0.75rem;">Clientes</small>
               </div>
             </div>
 
             <!-- LEYENDA -->
-            <div class="w-100 mt-3 px-2">
-              <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom border-light border-opacity-10 cursor-pointer" (click)="setFiltro('Bajo')">
+            <div class="w-100 mt-2 px-2">
+              <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom cursor-pointer" style="border-color: #E5DDD3 !important;" (click)="setFiltro('Bajo')">
                 <div class="d-flex align-items-center">
-                  <span class="dot bg-info mr-2"></span>
-                  <span class="text-light text-sm">Bajo ({{ porcentajeBajo }}%)</span>
+                  <span class="dot mr-2" style="background: #16A34A;"></span>
+                  <span class="font-weight-bold" style="color: #241A15;">Bajo Riesgo ({{ porcentajeBajo }}%)</span>
                 </div>
-                <span class="font-weight-bold text-white">{{ countBajo }}</span>
+                <span class="font-weight-bold" style="color: #16A34A;">{{ countBajo }}</span>
               </div>
 
-              <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom border-light border-opacity-10 cursor-pointer" (click)="setFiltro('Medio')">
+              <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom cursor-pointer" style="border-color: #E5DDD3 !important;" (click)="setFiltro('Medio')">
                 <div class="d-flex align-items-center">
-                  <span class="dot bg-warning mr-2"></span>
-                  <span class="text-light text-sm">Medio ({{ porcentajeMedio }}%)</span>
+                  <span class="dot mr-2" style="background: #D97706;"></span>
+                  <span class="font-weight-bold" style="color: #241A15;">Medio Riesgo ({{ porcentajeMedio }}%)</span>
                 </div>
-                <span class="font-weight-bold text-white">{{ countMedio }}</span>
+                <span class="font-weight-bold" style="color: #D97706;">{{ countMedio }}</span>
               </div>
 
               <div class="d-flex justify-content-between align-items-center cursor-pointer" (click)="setFiltro('Alto')">
                 <div class="d-flex align-items-center">
-                  <span class="dot bg-danger mr-2"></span>
-                  <span class="text-light text-sm">Alto ({{ porcentajeAlto }}%)</span>
+                  <span class="dot mr-2" style="background: #DC2626;"></span>
+                  <span class="font-weight-bold" style="color: #241A15;">Alto Riesgo ({{ porcentajeAlto }}%)</span>
                 </div>
-                <span class="font-weight-bold text-white">{{ countAlto }}</span>
+                <span class="font-weight-bold" style="color: #DC2626;">{{ countAlto }}</span>
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
-      <!-- COLUMNA DERECHA: EVALUACI&Oacute;N CREDITICIA POR CLIENTE CON PAGINACI&Oacute;N -->
+      <!-- COLUMNA DERECHA: EVALUACIÓN CREDITICIA POR CLIENTE CON PAGINACIÓN -->
       <div class="col-12 col-lg-8">
-        <div class="card panel-card h-100 shadow-sm border-0 d-flex flex-column">
+        <div class="card panel-card h-100 border-0 d-flex flex-column">
           <div class="card-header bg-transparent border-0 pt-3 px-3 pb-2 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
-            <h5 class="text-white font-weight-bold mb-0 text-base d-flex align-items-center">
-              <i class="fas fa-list-alt mr-2 text-primary"></i> Evaluaci&oacute;n Crediticia por Cliente
+            <h5 class="mb-0 font-weight-bold d-flex align-items-center" style="color: #2C1810; font-family: 'Lora', serif;">
+              <i class="fas fa-list-alt mr-2" style="color: #C59B6D;"></i> Evaluación por Cliente
             </h5>
 
             <!-- BUSCADOR Y FILTROS -->
             <div class="d-flex gap-2">
               <div class="input-group input-group-sm" style="width: 190px;">
-                <span class="input-group-text bg-dark border-secondary text-light">
+                <span class="input-group-text" style="background: #F5F1EB; border: 1px solid #E5DDD3; color: #66564E; border-right: none;">
                   <i class="fas fa-search"></i>
                 </span>
-                <input type="text" class="form-control bg-dark text-white border-secondary"
+                <input type="text" class="form-control"
+                       style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15;"
                        placeholder="Buscar cliente..."
                        [(ngModel)]="searchTerm"
                        (input)="aplicarFiltros()">
               </div>
 
               <div class="btn-group btn-group-sm">
-                <button class="btn" [class.btn-primary]="filtroRiesgo === 'TODOS'" [class.btn-outline-secondary]="filtroRiesgo !== 'TODOS'" (click)="setFiltro('TODOS')">Todos</button>
-                <button class="btn" [class.btn-danger]="filtroRiesgo === 'Alto'" [class.btn-outline-secondary]="filtroRiesgo !== 'Alto'" (click)="setFiltro('Alto')">Alto</button>
-                <button class="btn" [class.btn-warning]="filtroRiesgo === 'Medio'" [class.btn-outline-secondary]="filtroRiesgo !== 'Medio'" (click)="setFiltro('Medio')">Medio</button>
-                <button class="btn" [class.btn-success]="filtroRiesgo === 'Bajo'" [class.btn-outline-secondary]="filtroRiesgo !== 'Bajo'" (click)="setFiltro('Bajo')">Bajo</button>
+                <button class="btn font-weight-bold" [style.background]="filtroRiesgo === 'TODOS' ? '#2C1810' : '#F5F1EB'" [style.color]="filtroRiesgo === 'TODOS' ? '#F7EAD9' : '#66564E'" [style.border]="filtroRiesgo === 'TODOS' ? '1px solid #2C1810' : '1px solid #E5DDD3'" (click)="setFiltro('TODOS')">Todos</button>
+                <button class="btn font-weight-bold" [style.background]="filtroRiesgo === 'Alto' ? '#FEECEB' : '#F5F1EB'" [style.color]="filtroRiesgo === 'Alto' ? '#991B1B' : '#66564E'" [style.border]="filtroRiesgo === 'Alto' ? '1px solid #FECACA' : '1px solid #E5DDD3'" (click)="setFiltro('Alto')">Alto</button>
+                <button class="btn font-weight-bold" [style.background]="filtroRiesgo === 'Medio' ? '#FEF7EA' : '#F5F1EB'" [style.color]="filtroRiesgo === 'Medio' ? '#9A5B13' : '#66564E'" [style.border]="filtroRiesgo === 'Medio' ? '1px solid #FDE68A' : '1px solid #E5DDD3'" (click)="setFiltro('Medio')">Medio</button>
+                <button class="btn font-weight-bold" [style.background]="filtroRiesgo === 'Bajo' ? '#DCFCE7' : '#F5F1EB'" [style.color]="filtroRiesgo === 'Bajo' ? '#166534' : '#66564E'" [style.border]="filtroRiesgo === 'Bajo' ? '1px solid #BBF7D0' : '1px solid #E5DDD3'" (click)="setFiltro('Bajo')">Bajo</button>
               </div>
             </div>
           </div>
 
           <div class="card-body p-0 flex-grow-1">
             <div class="table-responsive">
-              <table class="table table-dark table-hover mb-0 align-middle custom-table">
+              <table class="table table-hover mb-0 align-middle table-ai">
                 <thead>
-                  <tr class="text-uppercase text-light opacity-75 text-xs">
+                  <tr>
                     <th class="ps-3 py-3">NOMBRE CLIENTE</th>
-                    <th class="py-3">L&Iacute;MITE SUGERIDO IA</th>
-                    <th class="py-3">SCORE CREDITICIO</th>
+                    <th class="py-3">LÍMITE SUGERIDO IA</th>
+                    <th class="py-3">SCORE</th>
                     <th class="py-3">NIVEL RIESGO</th>
-                    <th class="pe-3 py-3">RECOMENDACI&Oacute;N IA</th>
+                    <th class="pe-3 py-3">RECOMENDACIÓN</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -276,33 +280,28 @@
                     <!-- NOMBRE + AVATAR -->
                     <td class="ps-3 py-3">
                       <div class="d-flex align-items-center">
-                        <div class="avatar-circle mr-2"
-                             [ngClass]="{
-                               'avatar-low': c.nivel_riesgo === 'Bajo',
-                               'avatar-med': c.nivel_riesgo === 'Medio',
-                               'avatar-high': c.nivel_riesgo === 'Alto'
-                             }">
+                        <div class="avatar-circle mr-2">
                           {{ getIniciales(c.nombre) }}
                         </div>
                         <div>
-                          <div class="text-white font-weight-bold">{{ c.nombre }}</div>
-                          <small class="text-light opacity-50">{{ c.dni || 'Sin DNI' }}</small>
+                          <div class="font-weight-bold" style="color: #241A15;">{{ c.nombre }}</div>
+                          <small style="color: #66564E;">{{ c.dni || 'Sin DNI' }}</small>
                         </div>
                       </div>
                     </td>
 
-                    <!-- L&Iacute;MITE SUGERIDO EN BLANCO N&Iacute;TIDO PARA 0 O EN VERDE SI TIENE CUPO -->
+                    <!-- LÍMITE SUGERIDO -->
                     <td class="py-3 font-weight-bold">
-                      <span [ngClass]="c.limite_sugerido > 0 ? 'text-success' : 'text-white font-weight-bold'">
+                      <span [style.color]="c.limite_sugerido > 0 ? '#166534' : '#66564E'">
                         S/. {{ c.limite_sugerido.toFixed(2) }}
                       </span>
                     </td>
 
-                    <!-- SCORE CREDITICIO (0-100) + BARRA -->
+                    <!-- SCORE CREDITICIO -->
                     <td class="py-3">
                       <div class="d-flex align-items-center gap-2">
-                        <span class="font-weight-bold text-white mr-2" style="min-width: 25px;">{{ c.score_crediticio }}</span>
-                        <div class="progress flex-grow-1" style="height: 6px; width: 75px; background-color: rgba(255,255,255,0.1);">
+                        <span class="font-weight-bold mr-2" style="color: #241A15; min-width: 25px;">{{ c.score_crediticio }}</span>
+                        <div class="progress flex-grow-1" style="height: 6px; width: 75px; background-color: #E5DDD3;">
                           <div class="progress-bar"
                                [ngClass]="{
                                  'bg-success': c.score_crediticio >= 72,
@@ -317,31 +316,26 @@
 
                     <!-- NIVEL RIESGO -->
                     <td class="py-3">
-                      <span class="badge rounded-pill px-2.5 py-1 text-xs"
-                            [ngClass]="{
-                              'bg-success bg-opacity-25 text-success border border-success': c.nivel_riesgo === 'Bajo',
-                              'bg-warning bg-opacity-25 text-warning border border-warning': c.nivel_riesgo === 'Medio',
-                              'bg-danger bg-opacity-25 text-danger border border-danger': c.nivel_riesgo === 'Alto'
-                            }">
+                      <span class="badge px-3 py-1 font-weight-bold"
+                            [style.background-color]="c.nivel_riesgo === 'Bajo' ? '#DCFCE7' : (c.nivel_riesgo === 'Medio' ? '#FEF7EA' : '#FEECEB')"
+                            [style.color]="c.nivel_riesgo === 'Bajo' ? '#166534' : (c.nivel_riesgo === 'Medio' ? '#9A5B13' : '#991B1B')"
+                            [style.border]="c.nivel_riesgo === 'Bajo' ? '1px solid #BBF7D0' : (c.nivel_riesgo === 'Medio' ? '1px solid #FDE68A' : '1px solid #FECACA')"
+                            style="border-radius: 6px;">
                         {{ c.nivel_riesgo }}
                       </span>
                     </td>
 
-                    <!-- RECOMENDACI&Oacute;N -->
+                    <!-- RECOMENDACIÓN -->
                     <td class="pe-3 py-3">
-                      <span class="font-weight-semibold text-sm"
-                            [ngClass]="{
-                              'text-success': c.nivel_riesgo === 'Bajo',
-                              'text-warning': c.nivel_riesgo === 'Medio',
-                              'text-danger': c.nivel_riesgo === 'Alto'
-                            }">
+                      <span class="font-weight-bold small"
+                            [style.color]="c.nivel_riesgo === 'Bajo' ? '#166534' : (c.nivel_riesgo === 'Medio' ? '#9A5B13' : '#991B1B')">
                         {{ c.recomendacion }}
                       </span>
                     </td>
                   </tr>
 
                   <tr *ngIf="clientesFiltrados.length === 0">
-                    <td colspan="5" class="text-center py-4 text-light opacity-50">
+                    <td colspan="5" class="text-center py-4" style="color: #66564E;">
                       No se encontraron clientes con el filtro seleccionado.
                     </td>
                   </tr>
@@ -350,16 +344,16 @@
             </div>
           </div>
 
-          <!-- BARRA DE PAGINACI&Oacute;N -->
-          <div class="card-footer bg-transparent border-top border-light border-opacity-10 py-2 px-3 d-flex justify-content-between align-items-center" *ngIf="totalPages > 1">
-            <small class="text-light opacity-75">
-              Mostrando p&aacute;gina {{ currentPage }} de {{ totalPages }} ({{ clientesFiltrados.length }} clientes)
+          <!-- BARRA DE PAGINACIÓN -->
+          <div class="card-footer bg-transparent py-2 px-3 d-flex justify-content-between align-items-center" style="border-top: 1px solid #E5DDD3;" *ngIf="totalPages > 1">
+            <small style="color: #66564E; font-weight: 600;">
+              Página {{ currentPage }} de {{ totalPages }} ({{ clientesFiltrados.length }} clientes)
             </small>
             <div class="btn-group btn-group-sm">
-              <button class="btn btn-outline-secondary text-white" [disabled]="currentPage === 1" (click)="cambiarPagina(currentPage - 1)">
+              <button class="btn" style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #2C1810;" [disabled]="currentPage === 1" (click)="cambiarPagina(currentPage - 1)">
                 <i class="fas fa-chevron-left mr-1"></i> Anterior
               </button>
-              <button class="btn btn-outline-secondary text-white" [disabled]="currentPage === totalPages" (click)="cambiarPagina(currentPage + 1)">
+              <button class="btn" style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #2C1810;" [disabled]="currentPage === totalPages" (click)="cambiarPagina(currentPage + 1)">
                 Siguiente <i class="fas fa-chevron-right ml-1"></i>
               </button>
             </div>
@@ -370,66 +364,64 @@
 
     </div>
 
-    <!-- SECCI&Oacute;N INFERIOR: ASISTENTE VIRTUAL IA -->
-    <div class="card assistant-card shadow-lg border-0 mb-4" *ngIf="clienteSeleccionado">
+    <!-- SECCIÓN INFERIOR: ASISTENTE VIRTUAL IA -->
+    <div class="card shadow-sm border-0 mb-4" style="background: #FFFFFF; border: 1px solid #E5DDD3; border-radius: 14px;" *ngIf="clienteSeleccionado">
       <div class="card-body p-4">
         <div class="row align-items-center g-3">
           
-          <!-- Lado Izquierdo: Bot Icon y Pregunta R&aacute;pida -->
+          <!-- Lado Izquierdo: Bot Icon y Pregunta Rápida -->
           <div class="col-12 col-md-4 d-flex align-items-center">
-            <div class="assistant-icon-box mr-3">
-              <i class="fas fa-robot text-info fa-2x"></i>
+            <div class="mr-3 p-3 rounded-circle" style="background: #FEF7EA; border: 1px solid #FDE68A;">
+              <i class="fas fa-robot fa-2x" style="color: #C59B6D;"></i>
             </div>
             <div>
-              <h5 class="text-white font-weight-bold mb-1">Asistente Virtual IA</h5>
-              <p class="text-light opacity-75 fst-italic mb-0 text-sm">
-                "&iquest;Es seguro fiarle S/. {{ montoSimulacion }} a {{ clienteSeleccionado.nombre }}?"
+              <h5 class="font-weight-bold mb-1" style="color: #2C1810; font-family: 'Lora', serif;">Asistente Predictivo IA</h5>
+              <p class="fst-italic mb-0 small" style="color: #66564E;">
+                "¿Es seguro fiarle S/. {{ montoSimulacion }} a {{ clienteSeleccionado.nombre }}?"
               </p>
             </div>
           </div>
 
-          <!-- Lado Derecho: An&aacute;lisis Predictivo Detallado y Botones -->
+          <!-- Lado Derecho: Análisis Predictivo Detallado y Botones -->
           <div class="col-12 col-md-8">
-            <div class="analysis-box p-3 rounded">
+            <div class="p-3 rounded" style="background: #FAF6F0; border: 1px solid #E5DDD3;">
               <div class="d-flex align-items-center mb-2">
-                <span class="live-dot mr-2"></span>
-                <strong class="text-uppercase text-warning text-xs" style="letter-spacing: 1px;">AN&Aacute;LISIS PREDICTIVO EN TIEMPO REAL</strong>
+                <span class="dot mr-2" style="background: #C59B6D;"></span>
+                <strong class="text-uppercase small" style="color: #8C5D30; letter-spacing: 1px;">ANÁLISIS PREDICTIVO EN TIEMPO REAL</strong>
               </div>
 
-              <p class="text-white mb-2 text-sm">
+              <p class="mb-2 small" style="color: #241A15;">
                 {{ clienteSeleccionado.motivo_analisis }}
                 El modelo le asigna un riesgo <strong>{{ clienteSeleccionado.nivel_riesgo }} (Score: {{ clienteSeleccionado.score_crediticio }})</strong>.
               </p>
 
-              <!-- CAJA DE RESULTADO DE SIMULACI&Oacute;N -->
+              <!-- CAJA DE RESULTADO DE SIMULACIÓN -->
               <div *ngIf="resultadoSimulacion"
-                   class="simulation-badge-card p-3 my-2 rounded d-flex align-items-start gap-2 shadow-sm"
-                   [ngClass]="{
-                     'sim-denegado': tipoResultadoSimulacion === 'denegado',
-                     'sim-aprobado': tipoResultadoSimulacion === 'aprobado',
-                     'sim-advertencia': tipoResultadoSimulacion === 'advertencia'
-                   }">
-                <div class="sim-icon mt-0.5">
+                   class="p-3 my-2 rounded d-flex align-items-start gap-2 shadow-sm"
+                   [style.background]="tipoResultadoSimulacion === 'denegado' ? '#FEECEB' : (tipoResultadoSimulacion === 'aprobado' ? '#DCFCE7' : '#FEF7EA')"
+                   [style.border]="tipoResultadoSimulacion === 'denegado' ? '1px solid #FECACA' : (tipoResultadoSimulacion === 'aprobado' ? '1px solid #BBF7D0' : '1px solid #FDE68A')">
+                <div class="sim-icon mt-0.5 mr-2">
                   <i class="fas" [ngClass]="{
                     'fa-times-circle text-danger': tipoResultadoSimulacion === 'denegado',
                     'fa-check-circle text-success': tipoResultadoSimulacion === 'aprobado',
                     'fa-exclamation-triangle text-warning': tipoResultadoSimulacion === 'advertencia'
                   }"></i>
                 </div>
-                <div class="text-sm font-weight-medium text-white flex-grow-1">
+                <div class="small font-weight-bold flex-grow-1" [style.color]="tipoResultadoSimulacion === 'denegado' ? '#991B1B' : (tipoResultadoSimulacion === 'aprobado' ? '#166534' : '#9A5B13')">
                   {{ resultadoSimulacion }}
                 </div>
               </div>
 
-              <!-- CONTROLES DE SIMULACI&Oacute;N -->
+              <!-- CONTROLES DE SIMULACIÓN -->
               <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
                 <div class="input-group input-group-sm" style="max-width: 170px;">
-                  <span class="input-group-text bg-dark border-secondary text-light">S/.</span>
-                  <input type="number" class="form-control bg-dark text-white border-secondary font-weight-bold" [(ngModel)]="montoSimulacion" min="10" max="5000">
+                  <span class="input-group-text" style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #2C1810; font-weight: 700;">S/.</span>
+                  <input type="number" class="form-control font-weight-bold" style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15;" [(ngModel)]="montoSimulacion" min="10" max="5000">
                 </div>
 
-                <button class="btn btn-sm btn-info px-3 shadow-sm font-weight-bold" (click)="simularCredito()">
-                  <i class="fas fa-calculator mr-1"></i> Simular Aprobaci&oacute;n
+                <button class="btn btn-sm px-3 font-weight-bold ml-2" (click)="simularCredito()"
+                  style="background: #2C1810; color: #F7EAD9; border: 1px solid #C59B6D; border-radius: 6px;">
+                  <i class="fas fa-calculator mr-1" style="color: #FAD082;"></i> Simular Aprobación
                 </button>
               </div>
 

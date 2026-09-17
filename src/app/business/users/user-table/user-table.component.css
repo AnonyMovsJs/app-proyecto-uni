@@ -1,72 +1,225 @@
-﻿/* Estilos para la tabla personalizada */
-:host ::ng-deep .table {
-  background-color: transparent !important;
-  color: white !important;
+/* ===================================================
+   USER-TABLE COMPONENT — Espresso & Crema Noble
+   =================================================== */
+
+/* Panel de búsqueda */
+.cr-search-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--cr-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 10px rgba(44, 24, 16, 0.05);
+  animation: fadeIn 0.4s ease;
 }
 
-:host ::ng-deep .table thead th,
-:host ::ng-deep .table tbody td {
-  background-color: transparent !important;
-  color: white !important;
-  border-color: rgba(255, 255, 255, 0.05) !important;
+.cr-search-icon {
+  background: var(--cr-bg-muted);
+  border: 1px solid var(--cr-border);
+  border-right: none;
+  color: var(--cr-text-muted);
+  border-radius: 10px 0 0 10px;
 }
 
-:host ::ng-deep .table-hover tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  color: white !important;
+.cr-search-input {
+  background: #FFFFFF !important;
+  border-left: none !important;
+  color: var(--cr-text-main) !important;
+  padding: 10px 14px !important;
 }
 
-/* Mostrar offcanvas */
-.user-details-offcanvas.show {
-  transform: translateX(0) !important;
-  transition: transform 0.3s ease !important;
+.cr-search-input::placeholder {
+  color: var(--cr-text-light);
 }
 
-/* Mostrar overlay */
-.offcanvas-overlay.active {
-  display: block !important;
+.cr-search-clear {
+  background: var(--cr-bg-muted);
+  border: 1px solid var(--cr-border);
+  border-left: none;
+  color: var(--cr-text-muted);
+  border-radius: 0 10px 10px 0;
+  padding: 0 12px;
 }
 
-/* Animaciones para filas y tarjetas */
-.animate-row:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
+.cr-search-clear:hover {
+  background: var(--cr-border);
+  color: var(--cr-primary);
 }
 
-.animate-card {
-  transition: all 0.3s ease;
+/* Panel de tabla */
+.cr-table-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--cr-border);
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(44, 24, 16, 0.05);
+  overflow: hidden;
+  animation: fadeIn 0.4s ease;
 }
 
-.animate-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+/* Filas de tabla */
+.cr-table-row {
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+.cr-name {
+  font-weight: 600;
+  color: var(--cr-text-main);
+  font-size: 0.95rem;
 }
 
-/* Offcanvas responsive */
-@media (max-width: 767px) {
-  .user-details-offcanvas {
-    width: 100% !important;
-  }
+.cr-address {
+  color: var(--cr-text-light);
+  font-size: 0.82rem;
 }
 
-/* Estilos para el overlay */
+/* Avatares */
+.cr-avatar {
+  border-radius: 50%;
+  background: var(--cr-primary);
+  color: #F7EAD9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.cr-avatar-sm {
+  width: 36px;
+  height: 36px;
+  font-size: 0.8rem;
+}
+
+.cr-avatar-md {
+  width: 46px;
+  height: 46px;
+  font-size: 1rem;
+}
+
+.cr-avatar-lg {
+  width: 60px;
+  height: 60px;
+  font-size: 1.3rem;
+}
+
+/* Botones de acción */
+.cr-btn-edit {
+  background: transparent;
+  border: 1.5px solid var(--cr-primary);
+  color: var(--cr-primary);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cr-btn-edit:hover {
+  background: var(--cr-primary);
+  color: #F7EAD9;
+}
+
+.cr-btn-deactivate {
+  background: var(--cr-danger-bg);
+  border: 1px solid var(--cr-danger-border);
+  color: var(--cr-danger-text);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cr-btn-deactivate:hover {
+  background: #FECACA;
+  color: var(--cr-danger-text);
+}
+
+.cr-btn-activate {
+  background: var(--cr-success-bg);
+  border: 1px solid var(--cr-success-border);
+  color: var(--cr-success-text);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cr-btn-activate:hover {
+  background: #BBF7D0;
+  color: var(--cr-success-text);
+}
+
+/* Badge de estado */
+.cr-status-badge {
+  font-size: 0.8rem;
+}
+
+/* Estado vacío */
+.cr-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--cr-text-light);
+}
+
+.cr-empty-icon {
+  font-size: 2.5rem;
+  opacity: 0.35;
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--cr-text-muted);
+}
+
+.cr-empty-title {
+  color: var(--cr-text-muted);
+  font-weight: 600;
+}
+
+.cr-empty-text {
+  color: var(--cr-text-light);
+  font-size: 0.9rem;
+}
+
+/* Cards móviles */
+.cr-user-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cr-border);
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(44, 24, 16, 0.05);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.cr-user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(44, 24, 16, 0.10);
+}
+
+.cr-text-muted {
+  color: var(--cr-text-muted);
+  font-size: 0.82rem;
+}
+
+.cr-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
+  border-top: 1px solid var(--cr-border);
+  border-bottom: 1px solid var(--cr-border);
+}
+
+.cr-info-row {
+  color: var(--cr-text-muted);
+  display: block;
+  font-size: 0.84rem;
+}
+
+.cr-icon-gold {
+  color: var(--cr-gold);
+}
+
+/* === OFFCANVAS PANEL === */
 .offcanvas-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(36, 26, 21, 0.45);
   z-index: 1049;
   display: none;
   animation: fadeIn 0.3s ease;
@@ -76,17 +229,15 @@
   display: block;
 }
 
-/* Estilos para el offcanvas */
 .user-details-offcanvas {
   position: fixed;
-  top: 0;
-  right: 0;
-  width: 400px;
+  top: 0; right: 0;
+  width: 420px;
   height: 100%;
-  background: #FFFFFF;
+  background: var(--cr-bg-page);
   z-index: 1050;
   overflow-y: auto;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  box-shadow: -4px 0 24px rgba(44, 24, 16, 0.15);
   transform: translateX(100%);
   transition: transform 0.3s ease;
 }
@@ -95,32 +246,185 @@
   transform: translateX(0);
 }
 
-/* Asegurar que todo el texto sea blanco */
-:host ::ng-deep .text-muted {
-  color: rgba(255, 255, 255, 0.7) !important;
+/* Header del canvas */
+.cr-canvas-header {
+  background: linear-gradient(135deg, #2C1810 0%, #180B06 100%);
+  padding: 1.5rem;
+  color: white;
 }
 
-:host ::ng-deep td,
-:host ::ng-deep th,
-:host ::ng-deep p,
-:host ::ng-deep div,
-:host ::ng-deep span,
-:host ::ng-deep h1,
-:host ::ng-deep h2,
-:host ::ng-deep h3,
-:host ::ng-deep h4,
-:host ::ng-deep h5,
-:host ::ng-deep h6 {
-  color: white !important;
+.cr-canvas-title {
+  color: #F7EAD9;
+  font-family: var(--cr-font-title);
+  font-size: 1.1rem;
 }
 
-/* Estilos para que el texto sea legible */
-.opacity-75 {
-  opacity: 0.75 !important;
+.cr-canvas-name {
+  color: white;
+  font-family: var(--cr-font-title);
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
 }
 
-input::placeholder {
-  color: rgb(175, 169, 169);
-  opacity: 1;
-  /* Asegura que el blanco se vea claramente */
+.cr-canvas-close {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.cr-canvas-close:hover {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+/* Cuerpo del canvas */
+.cr-canvas-body {
+  padding: 1.25rem;
+}
+
+/* Secciones */
+.cr-section-title {
+  color: var(--cr-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--cr-gold);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+/* Filas de detalle */
+.cr-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--cr-border);
+  gap: 8px;
+}
+
+.cr-detail-row:last-child {
+  border-bottom: none;
+}
+
+.cr-detail-label {
+  color: var(--cr-text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.cr-detail-value {
+  color: var(--cr-text-main);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: right;
+  flex: 1;
+}
+
+/* Cards financieras */
+.cr-fin-card {
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.cr-fin-danger {
+  background: var(--cr-danger-bg);
+  border: 1px solid var(--cr-danger-border);
+}
+
+.cr-fin-success {
+  background: var(--cr-success-bg);
+  border: 1px solid var(--cr-success-border);
+}
+
+.cr-fin-warning {
+  background: var(--cr-warning-bg);
+  border: 1px solid var(--cr-warning-border);
+}
+
+.cr-fin-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.cr-fin-danger .cr-fin-label { color: var(--cr-danger-text); }
+.cr-fin-success .cr-fin-label { color: var(--cr-success-text); }
+.cr-fin-warning .cr-fin-label { color: var(--cr-warning-text); }
+
+.cr-fin-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.cr-fin-danger .cr-fin-value { color: var(--cr-danger-text); }
+.cr-fin-success .cr-fin-value { color: var(--cr-success-text); }
+.cr-fin-warning .cr-fin-value { color: var(--cr-warning-text); }
+
+/* Items (créditos, ventas) */
+.cr-item-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cr-border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.cr-item-title {
+  color: var(--cr-text-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Sin datos */
+.cr-no-data {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--cr-bg-muted);
+  border-radius: 10px;
+  color: var(--cr-text-light);
+}
+
+.cr-no-data i {
+  font-size: 1.5rem;
+  opacity: 0.4;
+  display: block;
+  color: var(--cr-text-muted);
+}
+
+/* Link dorado */
+.cr-link-gold {
+  color: var(--cr-gold);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.cr-link-gold:hover {
+  color: var(--cr-gold-dark);
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .user-details-offcanvas {
+    width: 100% !important;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

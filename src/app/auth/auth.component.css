@@ -1,88 +1,280 @@
-@import url('https://fonts.googleapis.com/css?family=Numans');
+/* ==========================================================================
+   COMERCIAL REYES - LOGIN COMPONENT (ESPRESSO & CREMA NOBLE)
+   ========================================================================== */
 
-html,
-body {
-  background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100%;
-  font-family: 'Numans', sans-serif;
+:host {
+  display: block;
+  min-height: 100vh;
 }
 
-.container {
-  height: 100%;
-  align-content: center;
+.login-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: radial-gradient(circle at 50% 15%, #3e2417 0%, #24130C 60%, #170b07 100%);
+  overflow: hidden;
 }
 
-.card {
-  height: 260px;
-  margin-top: auto;
-  margin-bottom: auto;
-  width: 400px;
-  background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
-.social_icon span {
-  font-size: 60px;
-  margin-left: 10px;
-  color: #FFC312;
-}
-
-.social_icon span:hover {
-  color: white;
-  cursor: pointer;
-}
-
-.card-header h3 {
-  color: white;
-}
-
-.social_icon {
+/* Halos decorativos de luz ámbar/oro */
+.login-backdrop-glow {
   position: absolute;
-  right: 20px;
-  top: -45px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(197, 155, 109, 0.18) 0%, rgba(54, 30, 20, 0) 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.input-group-prepend span {
-  width: 50px;
-  height: 40px;
-  background-color: #FFC312;
-  color: black;
-  border: 0 !important;
+.login-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
 }
 
-input:focus {
-  outline: 0 0 0 0 !important;
-  box-shadow: 0 0 0 0 !important;
-
+/* Tarjeta Principal */
+.login-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(18, 9, 5, 0.45), 0 0 0 1px rgba(197, 155, 109, 0.2);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.remember {
-  color: white;
+/* Encabezado Espresso Noble */
+.login-brand-header {
+  background: linear-gradient(135deg, #382015 0%, #24130B 100%);
+  padding: 32px 28px 26px;
+  text-align: center;
+  position: relative;
+  border-bottom: 2px solid #C59B6D;
 }
 
-.remember input {
-  width: 20px;
-  height: 20px;
-  margin-left: 15px;
-  margin-right: 5px;
+.brand-badge {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 12px;
+  border-radius: 14px;
+  background: rgba(197, 155, 109, 0.18);
+  border: 1.5px solid rgba(197, 155, 109, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FAD082;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
-.login_btn {
-  color: black;
-  background-color: #FFC312;
-  width: 100px;
+.brand-title {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.85rem;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: 0.5px;
 }
 
-.login_btn:hover {
-  color: black;
-  background-color: white;
+.brand-subtitle {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: #C59B6D;
+  margin: 6px 0 0;
+  text-transform: uppercase;
 }
 
-.links {
-  color: white;
+/* Cuerpo del Formulario */
+.login-body {
+  padding: 32px 30px 24px;
 }
 
-.links a {
-  margin-left: 4px;
+.login-welcome {
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.welcome-title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #241A15;
+  margin: 0 0 4px;
+}
+
+.welcome-desc {
+  font-size: 0.88rem;
+  color: #66564E;
+  margin: 0;
+}
+
+/* Alerta de Error */
+.login-alert-error {
+  display: flex;
+  align-items: center;
+  background-color: #FEECEB;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Inputs y Etiquetas */
+.form-label {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #361E14;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-container {
+  position: relative;
+}
+
+.login-input {
+  width: 100%;
+  background-color: #FAF8F5 !important;
+  border: 1.5px solid #E5DDD3 !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  font-size: 0.95rem !important;
+  color: #241A15 !important;
+  transition: all 0.2s ease;
+}
+
+.login-input::placeholder {
+  color: #A89B93 !important;
+  font-size: 0.9rem;
+}
+
+.login-input:focus {
+  background-color: #FFFFFF !important;
+  border-color: #C59B6D !important;
+  box-shadow: 0 0 0 3px rgba(197, 155, 109, 0.22) !important;
+  outline: none !important;
+}
+
+/* Contenedor Contraseña con Toggle */
+.password-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.password-input-container .login-input {
+  padding-right: 44px !important;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #8C7B72;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+  color: #361E14;
+}
+
+/* Botón de Ingreso */
+.login-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #382015 0%, #24130B 100%) !important;
+  border: 1px solid #C59B6D !important;
+  color: #F7EAD9 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  padding: 13px 20px;
+  border-radius: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(36, 19, 11, 0.35);
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+}
+
+.login-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4A2A1C 0%, #2C180E 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(36, 19, 11, 0.45);
+}
+
+.login-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(36, 19, 11, 0.3);
+}
+
+.login-submit-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Aviso de Seguridad */
+.login-security-notice {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #ECE4DA;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #66564E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.text-gold {
+  color: #C59B6D;
+}
+
+/* Pie de Tarjeta */
+.login-footer {
+  background-color: #FAF7F2;
+  border-top: 1px solid #E5DDD3;
+  padding: 12px 20px;
+  text-align: center;
+  color: #8C7B72;
+  font-size: 0.74rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    border-radius: 16px;
+  }
+  .login-body {
+    padding: 24px 20px 20px;
+  }
+  .login-brand-header {
+    padding: 26px 20px 20px;
+  }
 }

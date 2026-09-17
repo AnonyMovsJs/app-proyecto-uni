@@ -1,18 +1,16 @@
-﻿<!-- user-table.component.html -->
-<div class="row">
-  <!-- Barra de búsqueda con animación -->
-  <div class="col-12 mb-4 text-white">
-    <div class="input-search-container"
-      style="background: #FFFFFF; border-radius: 0.75rem; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
-      <div class="input-group ">
-        <span class="input-group-text" style="background: rgba(255,255,255,0.1); border: none; color: white;">
+<!-- user-table.component.html -->
+<div class="row g-3">
+
+  <!-- Barra de búsqueda -->
+  <div class="col-12">
+    <div class="cr-search-panel">
+      <div class="input-group">
+        <span class="input-group-text cr-search-icon">
           <i class="fas fa-search"></i>
         </span>
-        <input type="text" class="form-control text-white"  placeholder="Buscar por nombre, email o DNI..." [(ngModel)]="searchTerm"
-          (input)="filterUsers()"
-          style="background: rgba(255,255,255,0.05); border: none; color: white; border-radius: 0;">
-        <button class="btn" style="background: rgba(79, 195, 247, 0.2); color: white; border: none;"
-          (click)="searchTerm=''; filterUsers();">
+        <input type="text" class="form-control cr-search-input" placeholder="Buscar por nombre, email o DNI..."
+          [(ngModel)]="searchTerm" (input)="filterUsers()">
+        <button class="btn cr-search-clear" (click)="searchTerm=''; filterUsers();">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -21,68 +19,65 @@
 
   <!-- Indicador de carga -->
   <div *ngIf="loading" class="col-12 text-center py-5">
-    <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
-    <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
-    <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
-    <p class="text-light mt-3">Cargando usuarios...</p>
+    <div class="spinner-grow mx-1" style="width:1rem;height:1rem;color:var(--cr-primary);animation-delay:0s;"></div>
+    <div class="spinner-grow mx-1" style="width:1rem;height:1rem;color:var(--cr-gold);animation-delay:0.2s;"></div>
+    <div class="spinner-grow mx-1" style="width:1rem;height:1rem;color:var(--cr-text-muted);animation-delay:0.4s;"></div>
+    <p class="mt-3" style="color:var(--cr-text-muted);">Cargando clientes...</p>
   </div>
 
   <!-- Vista desktop - Tabla de usuarios -->
   <div *ngIf="!loading" class="col-12 d-none d-md-block">
-    <div class="table-responsive custom-table-container"
-      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); animation: fadeIn 0.5s ease;">
+    <div class="cr-table-panel">
       <table class="table table-hover custom-table mb-0">
         <thead>
-          <tr style="background: rgba(0,0,0,0.2) !important;">
-            <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">ID</th>
-            <th class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">Nombre completo</th>
-            <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">DNI</th>
-            <th class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">Email</th>
-            <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Teléfono</th>
-            <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Estado</th>
-            <th class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">Acciones</th>
+          <tr>
+            <th class="text-center">ID</th>
+            <th>Nombre completo</th>
+            <th class="text-center">DNI</th>
+            <th>Email</th>
+            <th class="text-center">Teléfono</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let user of filteredUsers" (click)="showUserDetails(user)"
-            style="cursor: pointer; transition: all 0.3s ease; border-color: rgba(255,255,255,0.05);"
-            class="animate-row custom-tr">
-            <td class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ user.id }}
-            </td>
-            <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">
+            class="cr-table-row">
+            <td class="text-center">{{ user.id }}</td>
+            <td>
               <div class="d-flex align-items-center">
-                <div class="user-avatar"
-                  style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); display: flex; align-items: center; justify-content: center; margin-right: 10px; font-weight: bold; color: white;">
+                <div class="cr-avatar cr-avatar-sm mr-2">
                   {{ user.name.charAt(0) }}{{ user.lastname.charAt(0) }}
                 </div>
                 <div>
-                  <div style="font-weight: 500;">{{ user.name }} {{ user.lastname }}</div>
-                  <small style="opacity: 0.7;" class="d-none d-lg-block text-white">{{ user.address }}</small>
+                  <div class="cr-name">{{ user.name }} {{ user.lastname }}</div>
+                  <small class="cr-address d-none d-lg-block">{{ user.address }}</small>
                 </div>
               </div>
             </td>
-            <td class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ user.dni }}
-            </td>
-            <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ user.email }}</td>
-            <td class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ user.phone }}
-            </td>
-            <td class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">
-              <span class="badge" [ngClass]="getStatusClass(user.estado)"
-                style="padding: 5px 8px; border-radius: 4px; font-weight: 500;">
+            <td class="text-center">{{ user.dni }}</td>
+            <td>{{ user.email }}</td>
+            <td class="text-center">{{ user.phone }}</td>
+            <td class="text-center">
+              <span class="badge cr-status-badge" [ngClass]="getStatusClass(user.estado)">
                 {{ getStatusText(user.estado) }}
               </span>
             </td>
-            <td class="text-center text-white" style="border-color: rgba(255,255,255,0.05) !important;">
+            <td class="text-center">
               <div class="btn-group">
-                <button class="btn btn-sm"
-                  style="background: rgba(79, 195, 247, 0.15); color: white; border: 1px solid rgba(79, 195, 247, 0.3); margin-right: 5px;"
-                  [routerLink]="['/user/edit', user.id]" (click)="$event.stopPropagation()">
+                <a [routerLink]="['/admin/user', user.id]" class="btn btn-sm mr-1"
+                  style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 4px;"
+                  (click)="$event.stopPropagation()"
+                  title="Ver Perfil Completo del Cliente">
+                  <i class="fas fa-user"></i>
+                </a>
+                <button class="btn btn-sm cr-btn-edit mr-1"
+                  [routerLink]="['/user/edit', user.id]" (click)="$event.stopPropagation()"
+                  title="Editar Cliente">
                   <i class="fas fa-edit"></i>
                 </button>
                 <button class="btn btn-sm"
-                  [style.background]="user.estado ? 'rgba(231, 76, 60, 0.15)' : 'rgba(46, 204, 113, 0.15)'"
-                  [style.color]="user.estado ? '#e74c3c' : '#2ecc71'"
-                  [style.border]="user.estado ? '1px solid rgba(231, 76, 60, 0.3)' : '1px solid rgba(46, 204, 113, 0.3)'"
+                  [ngClass]="user.estado ? 'cr-btn-deactivate' : 'cr-btn-activate'"
                   (click)="deleteUser(user.id, $event)">
                   <i class="fas" [ngClass]="user.estado ? 'fa-user-times' : 'fa-user-check'"></i>
                 </button>
@@ -91,297 +86,241 @@
           </tr>
         </tbody>
       </table>
-    </div>
 
-    <div *ngIf="filteredUsers.length === 0 && !loading" class="text-center mt-4 p-5"
-      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-      <i class="fas fa-users text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
-      <h4 class="text-light">No se encontraron usuarios</h4>
-      <p class="text-muted">Intenta con otros términos de búsqueda o crea un nuevo usuario</p>
+      <div *ngIf="filteredUsers.length === 0 && !loading" class="cr-empty-state">
+        <i class="fas fa-users cr-empty-icon"></i>
+        <h5 class="cr-empty-title">No se encontraron clientes</h5>
+        <p class="cr-empty-text">Intentá con otros términos de búsqueda o creá un nuevo cliente</p>
+      </div>
     </div>
   </div>
 
   <!-- Vista móvil - Cards de usuarios -->
   <div *ngIf="!loading" class="col-12 d-md-none">
-    <div *ngFor="let user of filteredUsers" class="card mb-3 animate-card" (click)="showUserDetails(user)"
-      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: none; color: white; cursor: pointer; transition: all 0.3s ease;">
+    <div *ngFor="let user of filteredUsers" class="cr-user-card mb-3" (click)="showUserDetails(user)">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="d-flex align-items-center">
-            <div class="user-avatar"
-              style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; font-size: 1.2rem;">
+            <div class="cr-avatar cr-avatar-md mr-3">
               {{ user.name.charAt(0) }}{{ user.lastname.charAt(0) }}
             </div>
             <div>
-              <h6 class="mb-0 text-white" style="font-weight: 600;">{{ user.name }} {{ user.lastname }}</h6>
-              <small class="text-white opacity-75">ID: {{ user.id }} | DNI: {{ user.dni }}</small>
+              <h6 class="mb-0 cr-name">{{ user.name }} {{ user.lastname }}</h6>
+              <small class="cr-text-muted">ID: {{ user.id }} | DNI: {{ user.dni }}</small>
             </div>
           </div>
-          <span class="badge" [ngClass]="getStatusClass(user.estado)"
-            style="padding: 5px 8px; border-radius: 4px; font-weight: 500;">
+          <span class="badge cr-status-badge" [ngClass]="getStatusClass(user.estado)">
             {{ getStatusText(user.estado) }}
           </span>
         </div>
 
-        <div class="row mb-2">
-          <div class="col-12">
-            <small class="text-white opacity-75 d-block mb-1"><i class="fas fa-envelope mr-2"></i> {{ user.email
-              }}</small>
-            <small class="text-white opacity-75 d-block mb-1"><i class="fas fa-phone mr-2"></i> {{ user.phone }}</small>
-            <small class="text-white opacity-75 d-block"><i class="fas fa-map-marker-alt mr-2"></i> {{ user.address
-              }}</small>
-          </div>
+        <div class="cr-user-info mb-3">
+          <small class="cr-info-row"><i class="fas fa-envelope mr-2 cr-icon-gold"></i>{{ user.email }}</small>
+          <small class="cr-info-row"><i class="fas fa-phone mr-2 cr-icon-gold"></i>{{ user.phone }}</small>
+          <small class="cr-info-row"><i class="fas fa-map-marker-alt mr-2 cr-icon-gold"></i>{{ user.address }}</small>
         </div>
 
-        <div class="d-flex justify-content-between mt-3">
-          <button class="btn btn-sm"
-            style="background: rgba(79, 195, 247, 0.15); color: white; border: 1px solid rgba(79, 195, 247, 0.3); flex: 1; margin-right: 5px;"
+        <div class="d-flex gap-2">
+          <a [routerLink]="['/admin/user', user.id]" class="btn btn-sm flex-fill font-weight-bold"
+            style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 6px; text-align: center; padding: 6px;"
+            (click)="$event.stopPropagation()">
+            <i class="fas fa-user mr-1"></i> Perfil
+          </a>
+          <button class="btn btn-sm cr-btn-edit flex-fill"
             [routerLink]="['/user/edit', user.id]" (click)="$event.stopPropagation()">
             <i class="fas fa-edit mr-1"></i> Editar
           </button>
-          <button class="btn btn-sm"
-            [style.background]="user.estado ? 'rgba(231, 76, 60, 0.15)' : 'rgba(46, 204, 113, 0.15)'"
-            [style.color]="user.estado ? '#e74c3c' : '#2ecc71'"
-            [style.border]="user.estado ? '1px solid rgba(231, 76, 60, 0.3)' : '1px solid rgba(46, 204, 113, 0.3)'"
-            style="flex: 1;" (click)="deleteUser(user.id, $event)">
-            <i class="fas" [ngClass]="user.estado ? 'fa-user-times' : 'fa-user-check'" class="mr-1"></i>
+          <button class="btn btn-sm flex-fill"
+            [ngClass]="user.estado ? 'cr-btn-deactivate' : 'cr-btn-activate'"
+            (click)="deleteUser(user.id, $event)">
+            <i class="fas mr-1" [ngClass]="user.estado ? 'fa-user-times' : 'fa-user-check'"></i>
             {{ user.estado ? 'Desactivar' : 'Activar' }}
           </button>
         </div>
       </div>
     </div>
 
-    <div *ngIf="filteredUsers.length === 0 && !loading" class="text-center mt-4 p-5"
-      style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-      <i class="fas fa-users text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
-      <h4 class="text-light">No se encontraron usuarios</h4>
-      <p class="text-muted">Intenta con otros términos de búsqueda o crea un nuevo usuario</p>
+    <div *ngIf="filteredUsers.length === 0 && !loading" class="cr-empty-state">
+      <i class="fas fa-users cr-empty-icon"></i>
+      <h5 class="cr-empty-title">No se encontraron clientes</h5>
+      <p class="cr-empty-text">Intentá con otros términos de búsqueda</p>
     </div>
   </div>
 </div>
 
-<!-- Offcanvas para detalles de usuario (CORREGIDO) -->
-<div class="offcanvas-overlay" [class.active]="showOffcanvas"
-  style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1049; display: none; animation: fadeIn 0.3s ease;"
-  (click)="closeOffcanvas()">
-</div>
+<!-- Overlay para offcanvas -->
+<div class="offcanvas-overlay" [class.active]="showOffcanvas" (click)="closeOffcanvas()"></div>
 
-<div #userCanvas class="user-details-offcanvas" [class.show]="showOffcanvas"
-  style="position: fixed; top: 0; right: 0; width: 400px; height: 100%; background: #FFFFFF;
-  z-index: 1050; overflow-y: auto; box-shadow: -5px 0 15px rgba(0,0,0,0.3); transform: translateX(100%); transition: transform 0.3s ease;">
+<!-- Panel lateral de detalles del usuario -->
+<div #userCanvas class="user-details-offcanvas" [class.show]="showOffcanvas">
 
   <div *ngIf="selectedUser && showOffcanvas">
-    <!-- Header -->
-    <div class="p-4 border-bottom"
-      style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%); border-color: rgba(255,255,255,0.1);">
+    <!-- Header del panel -->
+    <div class="cr-canvas-header">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0 text-white">Detalles del Usuario</h5>
-        <button class="btn text-white" style="background: none; border: none; opacity: 0.7;" (click)="closeOffcanvas()">
+        <h5 class="mb-0 cr-canvas-title">Detalles del Cliente</h5>
+        <button class="cr-canvas-close" (click)="closeOffcanvas()">
           <i class="fas fa-times"></i>
         </button>
       </div>
 
       <div class="d-flex align-items-center">
-        <div class="user-avatar"
-          style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+        <div class="cr-avatar cr-avatar-lg mr-3">
           {{ selectedUser.name.charAt(0) }}{{ selectedUser.lastname.charAt(0) }}
         </div>
         <div>
-          <h4 class="mb-1 text-white">{{ selectedUser.name }} {{ selectedUser.lastname }}</h4>
-          <span class="badge" [ngClass]="getStatusClass(selectedUser.estado)"
-            style="padding: 5px 8px; border-radius: 4px; font-weight: 500;">
+          <h4 class="mb-1 cr-canvas-name">{{ selectedUser.name }} {{ selectedUser.lastname }}</h4>
+          <span class="badge cr-status-badge" [ngClass]="getStatusClass(selectedUser.estado)">
             {{ getStatusText(selectedUser.estado) }}
           </span>
         </div>
-
       </div>
     </div>
 
-    <!-- Indicador de carga de detalles -->
+    <!-- Loader detalles -->
     <div *ngIf="loadingUserDetails" class="text-center p-5">
-      <div class="spinner-border text-light" role="status">
+      <div class="spinner-border" style="color:var(--cr-gold);" role="status">
         <span class="sr-only">Cargando...</span>
       </div>
-      <p class="text-light mt-3">Cargando información detallada...</p>
+      <p class="mt-3" style="color:var(--cr-text-muted);">Cargando información detallada...</p>
     </div>
 
-    <!-- Detalles del usuario -->
-    <div *ngIf="!loadingUserDetails" class="p-4">
-      <!-- Información de contacto -->
-      <div class="mb-4">
-        <h6 class="text-white mb-3 border-bottom pb-2" style="border-color: rgba(255,255,255,0.1);">
-          <i class="fas fa-id-card mr-2" style="color: #4fc3f7;"></i>
-          Información de contacto
-        </h6>
+    <!-- Contenido del panel -->
+    <div *ngIf="!loadingUserDetails" class="cr-canvas-body">
 
-        <div class="row mb-2">
-          <div class="col-4 text-white opacity-75">DNI:</div>
-          <div class="col-8 text-white">{{ selectedUser.dni }}</div>
+      <!-- Información de contacto -->
+      <div class="cr-section mb-4">
+        <h6 class="cr-section-title">
+          <i class="fas fa-id-card mr-2"></i> Información de contacto
+        </h6>
+        <div class="cr-detail-row">
+          <span class="cr-detail-label">DNI:</span>
+          <span class="cr-detail-value">{{ selectedUser.dni }}</span>
         </div>
-        <div class="row mb-2">
-          <div class="col-4 text-white opacity-75">Email:</div>
-          <div class="col-8 text-white">{{ selectedUser.email }}</div>
+        <div class="cr-detail-row">
+          <span class="cr-detail-label">Email:</span>
+          <span class="cr-detail-value">{{ selectedUser.email }}</span>
         </div>
-        <div class="row mb-2">
-          <div class="col-4 text-white opacity-75">Teléfono:</div>
-          <div class="col-8 text-white">{{ selectedUser.phone }}</div>
+        <div class="cr-detail-row">
+          <span class="cr-detail-label">Teléfono:</span>
+          <span class="cr-detail-value">{{ selectedUser.phone }}</span>
         </div>
-        <div class="row mb-2">
-          <div class="col-4 text-white opacity-75">Dirección:</div>
-          <div class="col-8 text-white">{{ selectedUser.address }}</div>
+        <div class="cr-detail-row">
+          <span class="cr-detail-label">Dirección:</span>
+          <span class="cr-detail-value">{{ selectedUser.address }}</span>
         </div>
       </div>
 
       <!-- Resumen financiero -->
-      <div class="mb-4">
-        <h6 class="text-white mb-3 border-bottom pb-2" style="border-color: rgba(255,255,255,0.1);">
-          <i class="fas fa-chart-pie mr-2" style="color: #4fc3f7;"></i>
-          Resumen financiero
+      <div class="cr-section mb-4">
+        <h6 class="cr-section-title">
+          <i class="fas fa-chart-pie mr-2"></i> Resumen financiero
         </h6>
-
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <div class="card h-100 text-white"
-              style="background: rgba(231, 76, 60, 0.15); border-radius: 10px; border: 1px solid rgba(231, 76, 60, 0.2);">
-              <div class="card-body p-3">
-                <div class="d-flex align-items-center mb-2">
-                  <i class="fas fa-money-bill-wave mr-2" style="color: #e74c3c;"></i>
-                  <h6 class="mb-0" style="color: #e74c3c;">Deuda Total</h6>
-                </div>
-                <h4 class="mb-0 font-weight-bold text-white">{{ formatCurrency(totalDebt) }}</h4>
-              </div>
+        <div class="row g-2">
+          <div class="col-4">
+            <div class="cr-fin-card cr-fin-danger">
+              <div class="cr-fin-label">Deuda Total</div>
+              <div class="cr-fin-value">{{ formatCurrency(totalDebt) }}</div>
             </div>
           </div>
-
-          <div class="col-md-4 mb-3">
-            <div class="card h-100 text-white"
-              style="background: rgba(46, 204, 113, 0.15); border-radius: 10px; border: 1px solid rgba(46, 204, 113, 0.2);">
-              <div class="card-body p-3">
-                <div class="d-flex align-items-center mb-2">
-                  <i class="fas fa-hand-holding-usd mr-2" style="color: #2ecc71;"></i>
-                  <h6 class="mb-0" style="color: #2ecc71;">Total Pagado</h6>
-                </div>
-                <h4 class="mb-0 font-weight-bold text-white">{{ formatCurrency(totalPaid) }}</h4>
-              </div>
+          <div class="col-4">
+            <div class="cr-fin-card cr-fin-success">
+              <div class="cr-fin-label">Total Pagado</div>
+              <div class="cr-fin-value">{{ formatCurrency(totalPaid) }}</div>
             </div>
           </div>
-
-          <div class="col-md-4 mb-3">
-            <div class="card h-100 text-white"
-              style="background: rgba(243, 156, 18, 0.15); border-radius: 10px; border: 1px solid rgba(243, 156, 18, 0.2);">
-              <div class="card-body p-3">
-                <div class="d-flex align-items-center mb-2">
-                  <i class="fas fa-calendar-alt mr-2" style="color: #f39c12;"></i>
-                  <h6 class="mb-0" style="color: #f39c12;">Pagos Pendientes</h6>
-                </div>
-                <h4 class="mb-0 font-weight-bold text-white">{{ pendingPayments }}</h4>
-              </div>
+          <div class="col-4">
+            <div class="cr-fin-card cr-fin-warning">
+              <div class="cr-fin-label">Pagos Pend.</div>
+              <div class="cr-fin-value">{{ pendingPayments }}</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Créditos -->
-      <div class="mb-4">
-        <h6 class="text-white mb-3 border-bottom pb-2" style="border-color: rgba(255,255,255,0.1);">
-          <i class="fas fa-credit-card mr-2" style="color: #4fc3f7;"></i>
-          Créditos
+      <div class="cr-section mb-4">
+        <h6 class="cr-section-title">
+          <i class="fas fa-credit-card mr-2"></i> Créditos
         </h6>
-
-        <div *ngIf="userCredits.length === 0" class="text-center p-4"
-          style="background: rgba(0,0,0,0.1); border-radius: 10px;">
-          <i class="fas fa-credit-card mb-3" style="font-size: 2rem; opacity: 0.5;"></i>
-          <p class="mb-0 text-white opacity-75">El usuario no tiene créditos registrados</p>
+        <div *ngIf="userCredits.length === 0" class="cr-no-data">
+          <i class="fas fa-credit-card mb-2"></i>
+          <p class="mb-0">Sin créditos registrados</p>
         </div>
-
-        <div *ngFor="let credito of userCredits" class="card mb-3 text-white"
-          style="background: rgba(0,0,0,0.1); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-          <div class="card-body p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="mb-0 text-white">Crédito #{{ credito.id }}</h6>
-              <span class="badge" [ngClass]="getCreditStatusClass(credito.estado)"
-                style="padding: 5px 8px; border-radius: 4px; font-weight: 500;">
-                {{ credito.estado }}
-              </span>
-            </div>
-
-            <div class="row mb-2">
-              <div class="col-6 text-white opacity-75">Monto Total:</div>
-              <div class="col-6 text-white text-right">{{ formatCurrency(credito.montoTotal) }}</div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-6 text-white opacity-75">Interés:</div>
-              <div class="col-6 text-white text-right">{{ credito.interes }}%</div>
-            </div>
-            <div class="row">
-              <div class="col-6 text-white opacity-75">Periodo:</div>
-              <div class="col-6 text-white text-right">
-                {{ formatDate(credito.fechaInicio) }} - {{ formatDate(credito.fechaFin) }}
-              </div>
-            </div>
+        <div *ngFor="let credito of userCredits" class="cr-item-card mb-2">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="cr-item-title">Crédito #{{ credito.id }}</span>
+            <span class="badge cr-status-badge" [ngClass]="getCreditStatusClass(credito.estado)">
+              {{ credito.estado }}
+            </span>
+          </div>
+          <div class="cr-detail-row">
+            <span class="cr-detail-label">Monto Total:</span>
+            <span class="cr-detail-value">{{ formatCurrency(credito.montoTotal) }}</span>
+          </div>
+          <div class="cr-detail-row">
+            <span class="cr-detail-label">Interés:</span>
+            <span class="cr-detail-value">{{ credito.interes }}%</span>
+          </div>
+          <div class="cr-detail-row">
+            <span class="cr-detail-label">Periodo:</span>
+            <span class="cr-detail-value">{{ formatDate(credito.fechaInicio) }} - {{ formatDate(credito.fechaFin) }}</span>
           </div>
         </div>
       </div>
 
       <!-- Ventas recientes -->
-      <div class="mb-4">
-        <h6 class="text-white mb-3 border-bottom pb-2" style="border-color: rgba(255,255,255,0.1);">
-          <i class="fas fa-shopping-cart mr-2" style="color: #4fc3f7;"></i>
-          Ventas recientes
+      <div class="cr-section mb-4">
+        <h6 class="cr-section-title">
+          <i class="fas fa-shopping-cart mr-2"></i> Ventas recientes
         </h6>
-
-        <div *ngIf="userSales.length === 0" class="text-center p-4"
-          style="background: rgba(0,0,0,0.1); border-radius: 10px;">
-          <i class="fas fa-shopping-cart mb-3" style="font-size: 2rem; opacity: 0.5;"></i>
-          <p class="mb-0 text-white opacity-75">El usuario no tiene ventas registradas</p>
+        <div *ngIf="userSales.length === 0" class="cr-no-data">
+          <i class="fas fa-shopping-cart mb-2"></i>
+          <p class="mb-0">Sin ventas registradas</p>
         </div>
-
-        <div *ngFor="let venta of userSales.slice(0, 3)" class="card mb-3 text-white"
-          style="background: rgba(0,0,0,0.1); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-          <div class="card-body p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div>
-                <h6 class="mb-0 text-white">Venta #{{ venta.id }}</h6>
-                <small class="text-white opacity-75">{{ formatDate(venta.fechaVenta) }}</small>
-              </div>
-              <span class="badge" [ngClass]="venta.tipoVenta === 'CONTADO' ? 'badge-success' : 'badge-primary'"
-                style="padding: 5px 8px; border-radius: 4px; font-weight: 500;">
-                {{ venta.tipoVenta }}
-              </span>
+        <div *ngFor="let venta of userSales.slice(0, 3)" class="cr-item-card mb-2">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <div>
+              <span class="cr-item-title">Venta #{{ venta.id }}</span>
+              <small class="d-block cr-address">{{ formatDate(venta.fechaVenta) }}</small>
             </div>
-
-            <div class="row mb-2">
-              <div class="col-6 text-white opacity-75">Descripción:</div>
-              <div class="col-6 text-white text-right">{{ venta.descripcion }}</div>
-            </div>
-            <div class="row">
-              <div class="col-6 text-white opacity-75">Monto:</div>
-              <div class="col-6 text-white text-right font-weight-bold">{{ formatCurrency(venta.montoTotal) }}</div>
-            </div>
+            <span class="badge cr-status-badge" [ngClass]="venta.tipoVenta === 'CONTADO' ? 'badge-success' : 'badge-primary'">
+              {{ venta.tipoVenta }}
+            </span>
+          </div>
+          <div class="cr-detail-row">
+            <span class="cr-detail-label">Descripción:</span>
+            <span class="cr-detail-value">{{ venta.descripcion }}</span>
+          </div>
+          <div class="cr-detail-row">
+            <span class="cr-detail-label">Monto:</span>
+            <span class="cr-detail-value font-weight-bold">{{ formatCurrency(venta.montoTotal) }}</span>
           </div>
         </div>
-
         <div *ngIf="userSales.length > 3" class="text-center mt-2">
-          <a href="#" class="text-info">Ver todas las ventas ({{ userSales.length }})</a>
+          <a href="#" class="cr-link-gold">Ver todas las ventas ({{ userSales.length }})</a>
         </div>
       </div>
 
-      <!-- Opciones -->
-      <div class="row mt-4">
+      <!-- Acciones -->
+      <div class="row g-2 mt-2">
+        <div class="col-12 mb-2">
+          <a [routerLink]="['/admin/user', selectedUser.id]" class="btn btn-block w-100 font-weight-bold"
+            style="background: #2C1810; color: #FAD082; border: 1px solid #C59B6D; border-radius: 8px; padding: 10px;">
+            <i class="fas fa-user-circle mr-2"></i> Ver Perfil Completo del Cliente
+          </a>
+        </div>
         <div class="col-6">
-          <button class="btn btn-block"
-            style="background: rgba(79, 195, 247, 0.15); color: white; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 10px;"
+          <button class="btn cr-btn-edit btn-block w-100"
             [routerLink]="['/user/edit', selectedUser.id]" (click)="$event.stopPropagation()">
-            <i class="fas fa-edit mr-2"></i> Editar Usuario
+            <i class="fas fa-edit mr-2"></i> Editar Cliente
           </button>
         </div>
         <div class="col-6">
-          <button class="btn btn-block"
-            [style.background]="selectedUser.estado ? 'rgba(231, 76, 60, 0.15)' : 'rgba(46, 204, 113, 0.15)'"
-            [style.color]="selectedUser.estado ? '#e74c3c' : '#2ecc71'"
-            [style.border]="selectedUser.estado ? '1px solid rgba(231, 76, 60, 0.3)' : '1px solid rgba(46, 204, 113, 0.3)'"
-            style="border-radius: 10px;" (click)="deleteUser(selectedUser.id, $event)">
-            <i class="fas" [ngClass]="selectedUser.estado ? 'fa-user-times' : 'fa-user-check'" class="mr-2"></i>
+          <button class="btn btn-block w-100"
+            [ngClass]="selectedUser.estado ? 'cr-btn-deactivate' : 'cr-btn-activate'"
+            (click)="deleteUser(selectedUser.id, $event)">
+            <i class="fas mr-2" [ngClass]="selectedUser.estado ? 'fa-user-times' : 'fa-user-check'"></i>
             {{ selectedUser.estado ? 'Desactivar' : 'Activar' }}
           </button>
         </div>
@@ -389,91 +328,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  /* Estilos para la tabla personalizada */
-  .custom-table-container {
-    background: #FFFFFF !important;
-  }
-
-  .custom-table {
-    background-color: transparent !important;
-    color: white !important;
-  }
-
-  .custom-table thead th,
-  .custom-table tbody td,
-  .custom-tr td,
-  .custom-tr th {
-    background-color: transparent !important;
-    color: white !important;
-    border-color: rgba(255, 255, 255, 0.05) !important;
-  }
-
-  /* Mostrar offcanvas */
-  .user-details-offcanvas.show {
-    transform: translateX(0) !important;
-    transition: transform 0.3s ease !important;
-  }
-
-  /* Mostrar overlay */
-  .offcanvas-overlay.active {
-    display: block !important;
-  }
-
-  /* Animaciones para filas y tarjetas */
-  .animate-row:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
-  }
-
-  .animate-card {
-    transition: all 0.3s ease;
-  }
-
-  .animate-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
-  }
-
-  /* Animaciones */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Offcanvas responsive */
-  @media (max-width: 767px) {
-    .user-details-offcanvas {
-      width: 100% !important;
-    }
-  }
-
-  /* Asegurar que todo el texto sea blanco */
-  .text-muted {
-    color: rgba(255, 255, 255, 0.7) !important;
-  }
-
-  td,
-  th,
-  p,
-  div,
-  span,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: white !important;
-  }
-
-  /* Estilos para que el texto sea legible */
-  .opacity-75 {
-    opacity: 0.75 !important;
-  }
-</style>

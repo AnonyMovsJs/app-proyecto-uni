@@ -1,16 +1,15 @@
-﻿<div class="container-fluid">
-  <!-- Header Section con degradado elegante -->
+<div class="container-fluid">
+  <!-- Header Section con degradado suave Espresso & Crema Noble -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="jumbotron text-white p-4"
-        style="background: linear-gradient(135deg, #0082c8 0%, #0082c8 40%, #667db6 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #C59B6D;">
+      <div class="cr-banner p-4">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h1 class="display-5 font-weight-bold mb-0">Panel de Cliente</h1>
-            <p class="lead mt-2 mb-0 opacity-75">Monitorea tus compras y pagos pendientes</p>
+            <h1 class="display-5 cr-title-italic mb-0">Panel de Cliente</h1>
+            <p class="cr-subtitle mt-2 mb-0">Monitorea tus compras y pagos pendientes</p>
           </div>
           <div class="d-none d-md-block">
-            <button class="btn btn-outline-light px-3" (click)="cargarDatos()">
+            <button class="btn btn-outline-light px-3" (click)="cargarDatos()" style="border-radius: 8px; border-color: rgba(255,255,255,0.35);">
               <i class="fas fa-sync-alt mr-2"></i> Actualizar
             </button>
           </div>
@@ -95,99 +94,110 @@
       </div>
     </div>
 
-    <!-- Métricas con tarjetas animadas y datos financieros claros -->
+    <!-- Métricas con tarjetas ejecutivas estilo Mis Compras con alto contraste -->
     <div class="row mb-4">
       <!-- Card 1: Total en Compras -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-0 text-white h-100"
-          style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; border-radius: 0.75rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+        <div class="card h-100 border-0"
+          style="background: #F5F1EB !important; border: 1px solid #E5DDD3 !important; border-radius: 12px; box-shadow: 0 4px 14px rgba(44,24,16,0.06); border-left: 5px solid #C59B6D !important;">
           <div class="card-body py-3 px-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small font-weight-bold text-uppercase">Total Compras</span>
-              <div style="width: 36px; height: 36px; background-color: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-shopping-bag text-white"></i>
+              <span class="small font-weight-bold text-uppercase" style="color: #66564E; letter-spacing: 0.5px;">Total Compras</span>
+              <div style="width: 40px; height: 40px; background-color: #FAF4EB; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #E5DDD3;">
+                <i class="fas fa-shopping-bag" style="color: #C59B6D;"></i>
               </div>
             </div>
-            <h3 class="font-weight-bold mb-1">S/. {{ calcularTotalComprasMonto() | number:'1.2-2' }}</h3>
-            <span class="small text-white-50">{{ ventas.length }} compra(s) registrada(s)</span>
+            <h2 class="font-weight-bold mb-1" style="color: #2C1810 !important; font-size: 2rem; font-family: 'Lora', serif;">S/. {{ calcularTotalComprasMonto() | number:'1.2-2' }}</h2>
+            <span class="small font-weight-bold" style="color: #66564E;">{{ ventas.length }} compra(s) registrada(s)</span>
           </div>
           <div class="card-footer py-2 px-4 d-flex justify-content-between align-items-center"
-            style="background: rgba(0, 0, 0, 0.12); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0 0 0.75rem 0.75rem;">
-            <a routerLink="/cliente/mis-compras" class="text-white small">Ver Compras</a>
-            <i class="fas fa-arrow-right text-white small"></i>
+            style="background: #EFE8DF !important; border-top: 1px solid #E5DDD3 !important; border-radius: 0 0 12px 12px;">
+            <a routerLink="/cliente/mis-compras" class="small font-weight-bold" style="color: #2C1810; text-decoration: none;">Ver Compras</a>
+            <i class="fas fa-arrow-right small" style="color: #C59B6D;"></i>
           </div>
         </div>
       </div>
 
       <!-- Card 2: Monto Ya Pagado -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-0 text-white h-100"
-          style="background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important; border-radius: 0.75rem; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);">
+        <div class="card h-100 border-0"
+          style="background: #DCFCE7 !important; border: 1px solid #BBF7D0 !important; border-radius: 12px; box-shadow: 0 4px 14px rgba(22,101,52,0.06); border-left: 5px solid #166534 !important;">
           <div class="card-body py-3 px-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small font-weight-bold text-uppercase">Total Pagado</span>
-              <div style="width: 36px; height: 36px; background-color: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-check-circle text-white"></i>
+              <span class="small font-weight-bold text-uppercase" style="color: #166534; letter-spacing: 0.5px;">Total Pagado</span>
+              <div style="width: 40px; height: 40px; background-color: #BBF7D0; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #86EFAC;">
+                <i class="fas fa-check-circle" style="color: #166534;"></i>
               </div>
             </div>
-            <h3 class="font-weight-bold mb-1">S/. {{ calcularTotalPagadoHistorico() | number:'1.2-2' }}</h3>
-            <span class="small text-white-50">Amortizado y cancelado</span>
+            <h2 class="font-weight-bold mb-1" style="color: #2C1810 !important; font-size: 2rem; font-family: 'Lora', serif;">S/. {{ calcularTotalPagadoHistorico() | number:'1.2-2' }}</h2>
+            <span class="small font-weight-bold" style="color: #166534;">Amortizado y cancelado</span>
           </div>
           <div class="card-footer py-2 px-4 d-flex justify-content-between align-items-center"
-            style="background: rgba(0, 0, 0, 0.12); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0 0 0.75rem 0.75rem;">
-            <span class="small text-white-50">Al día con abonos</span>
-            <i class="fas fa-shield-alt text-white small"></i>
+            style="background: #D1FAE5 !important; border-top: 1px solid #BBF7D0 !important; border-radius: 0 0 12px 12px;">
+            <span class="small font-weight-bold" style="color: #166534;">Al día con abonos</span>
+            <i class="fas fa-shield-alt small" style="color: #166534;"></i>
           </div>
         </div>
       </div>
 
       <!-- Card 3: Deuda Total Pendiente -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-0 text-white h-100"
-          style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%) !important; border-radius: 0.75rem; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);">
+        <div class="card h-100 border-0"
+          style="background: #FEF7EA !important; border: 1px solid #FDE68A !important; border-radius: 12px; box-shadow: 0 4px 14px rgba(217,119,6,0.06); border-left: 5px solid #D97706 !important;">
           <div class="card-body py-3 px-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small font-weight-bold text-uppercase">Saldo Pendiente</span>
-              <div style="width: 36px; height: 36px; background-color: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-hourglass-half text-white"></i>
+              <span class="small font-weight-bold text-uppercase" style="color: #9A5B13; letter-spacing: 0.5px;">Saldo Pendiente</span>
+              <div style="width: 40px; height: 40px; background-color: #FDE68A; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #FCD34D;">
+                <i class="fas fa-hourglass-half" style="color: #9A5B13;"></i>
               </div>
             </div>
-            <h3 class="font-weight-bold mb-1">S/. {{ calcularTotalDeuda() | number:'1.2-2' }}</h3>
-            <span class="small text-white-50">Por liquidar en el sistema</span>
+            <h2 class="font-weight-bold mb-1" style="color: #2C1810 !important; font-size: 2rem; font-family: 'Lora', serif;">S/. {{ calcularTotalDeuda() | number:'1.2-2' }}</h2>
+            <span class="small font-weight-bold" style="color: #9A5B13;">Por liquidar en el sistema</span>
           </div>
           <div class="card-footer py-2 px-4 d-flex justify-content-between align-items-center"
-            style="background: rgba(0, 0, 0, 0.12); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0 0 0.75rem 0.75rem;">
-            <a routerLink="/cliente/mis-compras" class="text-white small">Ver Saldos</a>
-            <i class="fas fa-arrow-right text-white small"></i>
+            style="background: #FDE68A !important; border-top: 1px solid #FCD34D !important; border-radius: 0 0 12px 12px;">
+            <a routerLink="/cliente/mis-compras" class="small font-weight-bold" style="color: #78350F; text-decoration: none;">Ver Saldos</a>
+            <i class="fas fa-arrow-right small" style="color: #9A5B13;"></i>
           </div>
         </div>
       </div>
 
       <!-- Card 4: Cuotas Vencidas / Alertas -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card border-0 text-white h-100"
-          [style.background]="cuotasVencidas.length > 0 ? 'linear-gradient(135deg, #b91c1c 0%, #ef4444 100%) !important' : 'linear-gradient(135deg, #0f766e 0%, #14b8a6 100%) !important'"
-          style="border-radius: 0.75rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+        <div class="card h-100 border-0"
+          [style.border-left]="cuotasVencidas.length > 0 ? '5px solid #DC2626 !important' : '5px solid #166534 !important'"
+          [style.background]="cuotasVencidas.length > 0 ? '#FEECEB !important' : '#FAF5EE !important'"
+          [style.border]="cuotasVencidas.length > 0 ? '1px solid #FECACA !important' : '1px solid #E5DDD3 !important'"
+          style="border-radius: 12px; box-shadow: 0 4px 14px rgba(44,24,16,0.06);">
           <div class="card-body py-3 px-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small font-weight-bold text-uppercase">
+              <span class="small font-weight-bold text-uppercase"
+                [style.color]="cuotasVencidas.length > 0 ? '#991B1B' : '#166534'" style="letter-spacing: 0.5px;">
                 {{ cuotasVencidas.length > 0 ? 'Cuotas Vencidas' : 'Estado de Cuenta' }}
               </span>
-              <div style="width: 36px; height: 36px; background-color: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                <i [class]="cuotasVencidas.length > 0 ? 'fas fa-exclamation-triangle text-white' : 'fas fa-check text-white'"></i>
+              <div [style.background-color]="cuotasVencidas.length > 0 ? '#FECACA' : '#DCFCE7'"
+                [style.border]="cuotasVencidas.length > 0 ? '1px solid #FCA5A5' : '1px solid #BBF7D0'"
+                style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <i [class]="cuotasVencidas.length > 0 ? 'fas fa-exclamation-triangle' : 'fas fa-check'"
+                  [style.color]="cuotasVencidas.length > 0 ? '#991B1B' : '#166534'"></i>
               </div>
             </div>
-            <h3 class="font-weight-bold mb-1">
+            <h2 class="font-weight-bold mb-1"
+              style="color: #2C1810 !important; font-size: 2rem; font-family: 'Lora', serif;">
               {{ cuotasVencidas.length > 0 ? cuotasVencidas.length : 'Al Día' }}
-            </h3>
-            <span class="small text-white-50">
+            </h2>
+            <span class="small font-weight-bold" [style.color]="cuotasVencidas.length > 0 ? '#991B1B' : '#166534'">
               {{ cuotasVencidas.length > 0 ? 'Requieren pago urgente' : 'Sin atrasos registrados' }}
             </span>
           </div>
           <div class="card-footer py-2 px-4 d-flex justify-content-between align-items-center"
-            style="background: rgba(0, 0, 0, 0.12); border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0 0 0.75rem 0.75rem;">
-            <a routerLink="/cliente/mis-cuotas" class="text-white small">Ver Cuotas</a>
-            <i class="fas fa-arrow-right text-white small"></i>
+            [style.background]="cuotasVencidas.length > 0 ? '#FECACA !important' : '#EFE8DF !important'"
+            [style.border-top]="cuotasVencidas.length > 0 ? '1px solid #FCA5A5 !important' : '1px solid #E5DDD3 !important'"
+            style="border-radius: 0 0 12px 12px; cursor: pointer;"
+            (click)="setPestanaDeuda('CREDITO')">
+            <span class="small font-weight-bold"
+              [style.color]="cuotasVencidas.length > 0 ? '#7F1D1D' : '#2C1810'">Ver Cuotas</span>
+            <i class="fas fa-arrow-right small" [style.color]="cuotasVencidas.length > 0 ? '#991B1B' : '#166534'"></i>
           </div>
         </div>
       </div>
@@ -196,185 +206,210 @@
     <!-- Segunda fila: Bloque Unificado de Estado de Deudas y Pagos con Pestañas -->
     <div class="row mb-4">
       <div class="col-12">
-        <div class="card border-0 text-white"
-          style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        <div class="card border-0 shadow-sm"
+          style="background: #FFFFFF !important; border-radius: 14px; border: 1px solid #E5DDD3 !important;">
 
           <!-- Header con Pestañas -->
           <div class="card-header p-0"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-top-left-radius: 14px; border-top-right-radius: 14px;">
             <div class="d-flex flex-wrap justify-content-between align-items-center px-4 pt-3 pb-2">
-              <h5 class="mb-2 mb-md-0 font-weight-bold d-flex align-items-center">
-                <i class="fas fa-wallet mr-2" style="color: #4fc3f7;"></i>
+              <h5 class="mb-2 mb-md-0 font-weight-bold d-flex align-items-center" style="color: #241A15;">
+                <i class="fas fa-wallet mr-2" style="color: #C59B6D;"></i>
                 Gestión de Deudas y Cuotas por Cuenta
               </h5>
               <div class="d-flex align-items-center">
-                <span class="badge badge-light px-3 py-2 font-weight-bold" style="font-size: 0.95rem; color: #1e3c72; border-radius: 6px;">
+                <span class="badge px-3 py-2 font-weight-bold" style="font-size: 0.95rem; background: #FAF4EB; color: #361E14; border: 1px solid #E5DDD3; border-radius: 8px;">
                   Deuda Total General: S/. {{ calcularTotalDeuda() | number:'1.2-2' }}
                 </span>
               </div>
             </div>
 
             <!-- Botones tipo ventana/pestaña -->
-            <div class="px-4 pb-2 pt-1">
+            <div class="px-4 pb-3 pt-1">
               <div class="btn-group btn-group-toggle" role="group">
                 <button type="button" class="btn px-4 py-2 font-weight-bold"
-                  [ngClass]="pestanaActivaDeuda === 'FIADO' ? 'btn-warning text-dark shadow' : 'btn-outline-warning'"
-                  style="border-radius: 6px 0 0 6px;"
+                  [style.background]="pestanaActivaDeuda === 'FIADO' ? '#361E14' : '#FFFFFF'"
+                  [style.color]="pestanaActivaDeuda === 'FIADO' ? '#FFFFFF' : '#66564E'"
+                  [style.border]="pestanaActivaDeuda === 'FIADO' ? '1px solid #361E14' : '1px solid #E5DDD3'"
+                  style="border-radius: 8px 0 0 8px; transition: all 0.2s ease;"
                   (click)="setPestanaDeuda('FIADO')">
-                  <i class="fas fa-book-open mr-2"></i>
+                  <i class="fas fa-book-open mr-2" [style.color]="pestanaActivaDeuda === 'FIADO' ? '#C59B6D' : '#9A5B13'"></i>
                   Fiado (Cuenta Corriente)
-                  <span class="badge badge-dark ml-2">S/. {{ calcularDeudaFiado() | number:'1.2-2' }}</span>
+                  <span class="badge ml-2" [style.background]="pestanaActivaDeuda === 'FIADO' ? '#C59B6D' : '#FEF7EA'" [style.color]="pestanaActivaDeuda === 'FIADO' ? '#24130C' : '#9A5B13'">
+                    S/. {{ calcularDeudaFiado() | number:'1.2-2' }}
+                  </span>
                 </button>
                 <button type="button" class="btn px-4 py-2 font-weight-bold"
-                  [ngClass]="pestanaActivaDeuda === 'CREDITO' ? 'btn-info text-white shadow' : 'btn-outline-info'"
+                  [style.background]="pestanaActivaDeuda === 'CREDITO' ? '#361E14' : '#FFFFFF'"
+                  [style.color]="pestanaActivaDeuda === 'CREDITO' ? '#FFFFFF' : '#66564E'"
+                  [style.border]="pestanaActivaDeuda === 'CREDITO' ? '1px solid #361E14' : '1px solid #E5DDD3'"
+                  style="transition: all 0.2s ease;"
                   (click)="setPestanaDeuda('CREDITO')">
-                  <i class="fas fa-credit-card mr-2"></i>
+                  <i class="fas fa-credit-card mr-2" [style.color]="pestanaActivaDeuda === 'CREDITO' ? '#C59B6D' : '#1D4ED8'"></i>
                   Crédito a Cuotas
-                  <span class="badge badge-light ml-2 text-dark">S/. {{ calcularDeudaCredito() | number:'1.2-2' }}</span>
+                  <span class="badge ml-2" [style.background]="pestanaActivaDeuda === 'CREDITO' ? '#C59B6D' : '#EFF6FF'" [style.color]="pestanaActivaDeuda === 'CREDITO' ? '#24130C' : '#1D4ED8'">
+                    S/. {{ calcularDeudaCredito() | number:'1.2-2' }}
+                  </span>
                 </button>
                 <button type="button" class="btn px-4 py-2 font-weight-bold"
-                  [ngClass]="pestanaActivaDeuda === 'CONTADO' ? 'btn-success text-white shadow' : 'btn-outline-success'"
-                  style="border-radius: 0 6px 6px 0;"
+                  [style.background]="pestanaActivaDeuda === 'CONTADO' ? '#361E14' : '#FFFFFF'"
+                  [style.color]="pestanaActivaDeuda === 'CONTADO' ? '#FFFFFF' : '#66564E'"
+                  [style.border]="pestanaActivaDeuda === 'CONTADO' ? '1px solid #361E14' : '1px solid #E5DDD3'"
+                  style="border-radius: 0 8px 8px 0; transition: all 0.2s ease;"
                   (click)="setPestanaDeuda('CONTADO')">
-                  <i class="fas fa-money-bill-wave mr-2"></i>
+                  <i class="fas fa-money-bill-wave mr-2" [style.color]="pestanaActivaDeuda === 'CONTADO' ? '#C59B6D' : '#166534'"></i>
                   Compras al Contado
-                  <span class="badge badge-light ml-2 text-success">{{ comprasContado.length }}</span>
+                  <span class="badge ml-2" [style.background]="pestanaActivaDeuda === 'CONTADO' ? '#C59B6D' : '#DCFCE7'" [style.color]="pestanaActivaDeuda === 'CONTADO' ? '#24130C' : '#166534'">
+                    {{ comprasContado.length }}
+                  </span>
                 </button>
               </div>
             </div>
           </div>
 
-          <div class="card-body p-4">
+          <div class="card-body p-4" style="background: #FFFFFF !important;">
             <!-- PESTAÑA 1: FIADO EN BODEGA -->
             <div *ngIf="pestanaActivaDeuda === 'FIADO'">
-              <!-- Banner superior -->
-              <div class="row align-items-center mb-3 p-3 rounded"
-                style="background: rgba(0, 0, 0, 0.2); border-left: 5px solid #f97316;">
-                <div class="col-md-7 mb-3 mb-md-0">
-                  <div class="d-flex align-items-center mb-1">
-                    <i class="fas fa-store text-warning mr-2 fa-lg"></i>
-                    <h5 class="mb-0 font-weight-bold text-white">Fiado en Cuenta Corriente</h5>
+              <!-- Banner superior de fiado -->
+              <div class="row align-items-center mb-4 p-3 p-md-4 rounded"
+                style="background: linear-gradient(135deg, #FAF4EB 0%, #F5EDE0 100%); border-left: 5px solid #C59B6D; border: 1px solid #E5DDD3; border-radius: 12px; box-shadow: 0 4px 12px rgba(44,24,16,0.04);">
+                <div class="col-md-7 mb-3 mb-md-0 d-flex align-items-center">
+                  <div class="mr-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                    style="width: 48px; height: 48px; border-radius: 12px; background: #361E14; box-shadow: 0 4px 10px rgba(54,30,20,0.2);">
+                    <i class="fas fa-store fa-lg" style="color: #FAD082;"></i>
                   </div>
-                  <p class="text-white-50 small mb-0">
-                    Compras fiadas de consumo en bodega. Podés abonar libremente con Yape amortizando las compras más antiguas (FIFO).
-                  </p>
+                  <div>
+                    <h5 class="mb-1 font-weight-bold cr-title-italic" style="color: #241A15; letter-spacing: 0.3px;">Fiado en Cuenta Corriente</h5>
+                    <p class="small mb-0" style="color: #66564E; line-height: 1.4;">
+                      Compras fiadas de consumo en bodega. Podés abonar libremente con Yape amortizando las compras más antiguas (FIFO).
+                    </p>
+                  </div>
                 </div>
                 <div class="col-md-5 text-md-right d-flex justify-content-md-end align-items-center">
-                  <button class="btn btn-warning font-weight-bold px-4 py-2 shadow"
-                    style="border-radius: 8px; color: #182234;"
+                  <button class="btn font-weight-bold px-4 py-2 shadow-sm"
+                    style="border-radius: 8px; background: linear-gradient(135deg, #361E14 0%, #20100A 100%); color: #FAD082; border: 1px solid #C59B6D; box-shadow: 0 4px 12px rgba(54,30,20,0.25);"
                     [disabled]="calcularDeudaFiado() <= 0"
                     (click)="abrirModalAbonoLibre('FIADO')">
-                    <i class="fas fa-coins mr-1"></i> Abonar al Fiado
+                    <i class="fas fa-coins mr-1" style="color: #FAD082;"></i> Abonar al Fiado
                   </button>
                 </div>
               </div>
 
-              <!-- Mini cards de balance fiado -->
-              <div class="row mb-3">
-                <div class="col-md-4 mb-2">
-                  <div class="p-3 rounded text-white d-flex justify-content-between align-items-center"
-                    style="background: rgba(0, 0, 0, 0.18); border-left: 4px solid #C59B6D;">
+              <!-- Mini cards de balance fiado estilo Mis Compras -->
+              <div class="row mb-4">
+                <div class="col-md-4 mb-3 mb-md-0">
+                  <div class="p-3 rounded h-100 d-flex justify-content-between align-items-center"
+                    style="background: #F5F1EB; border-radius: 10px; border-left: 4px solid #C59B6D; border: 1px solid #E5DDD3; box-shadow: 0 2px 8px rgba(44,24,16,0.04);">
                     <div>
-                      <span class="small text-white-50 text-uppercase d-block">Total Fiado Histórico</span>
-                      <h4 class="mb-0 font-weight-bold" style="color: #4fc3f7;">
+                      <span class="small font-weight-bold text-uppercase d-block mb-1" style="color: #66564E; font-size: 0.75rem; letter-spacing: 0.5px;">Total Fiado Histórico</span>
+                      <h4 class="mb-0 font-weight-bold mt-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.5rem;">
                         S/. {{ calcularTotalFiado() | number:'1.2-2' }}
                       </h4>
                     </div>
-                    <i class="fas fa-receipt fa-2x opacity-50 text-info"></i>
+                    <i class="fas fa-receipt fa-2x" style="color: #C59B6D; opacity: 0.7;"></i>
                   </div>
                 </div>
-                <div class="col-md-4 mb-2">
-                  <div class="p-3 rounded text-white d-flex justify-content-between align-items-center"
-                    style="background: rgba(0, 0, 0, 0.18); border-left: 4px solid #10b981;">
+                <div class="col-md-4 mb-3 mb-md-0">
+                  <div class="p-3 rounded h-100 d-flex justify-content-between align-items-center"
+                    style="background: #DCFCE7; border-radius: 10px; border-left: 4px solid #166534; border: 1px solid #BBF7D0; box-shadow: 0 2px 8px rgba(22,101,52,0.04);">
                     <div>
-                      <span class="small text-white-50 text-uppercase d-block">Total Pagado / Amortizado</span>
-                      <h4 class="mb-0 font-weight-bold" style="color: #34d399;">
+                      <span class="small font-weight-bold text-uppercase d-block mb-1" style="color: #166534; font-size: 0.75rem; letter-spacing: 0.5px;">Total Pagado / Amortizado</span>
+                      <h4 class="mb-0 font-weight-bold mt-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.5rem;">
                         S/. {{ calcularPagadoFiado() | number:'1.2-2' }}
                       </h4>
                     </div>
-                    <i class="fas fa-check-circle fa-2x opacity-50 text-success"></i>
+                    <i class="fas fa-check-circle fa-2x" style="color: #166534; opacity: 0.7;"></i>
                   </div>
                 </div>
-                <div class="col-md-4 mb-2">
-                  <div class="p-3 rounded text-white d-flex justify-content-between align-items-center"
-                    style="background: rgba(0, 0, 0, 0.18); border-left: 4px solid #f59e0b;">
+                <div class="col-md-4 mb-3 mb-md-0">
+                  <div class="p-3 rounded h-100 d-flex justify-content-between align-items-center"
+                    style="background: #FEF7EA; border-radius: 10px; border-left: 4px solid #D97706; border: 1px solid #FDE68A; box-shadow: 0 2px 8px rgba(217,119,6,0.04);">
                     <div>
-                      <span class="small text-white-50 text-uppercase d-block">Saldo Pendiente Actual</span>
-                      <h4 class="mb-0 font-weight-bold" style="color: #fbbf24;">
+                      <span class="small font-weight-bold text-uppercase d-block mb-1" style="color: #9A5B13; font-size: 0.75rem; letter-spacing: 0.5px;">Saldo Pendiente Actual</span>
+                      <h4 class="mb-0 font-weight-bold mt-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.5rem;">
                         S/. {{ calcularDeudaFiado() | number:'1.2-2' }}
                       </h4>
                     </div>
-                    <i class="fas fa-hourglass-half fa-2x opacity-50 text-warning"></i>
+                    <i class="fas fa-hourglass-half fa-2x" style="color: #D97706; opacity: 0.7;"></i>
                   </div>
                 </div>
               </div>
 
               <!-- Barra de progreso de pago del fiado -->
-              <div *ngIf="calcularTotalFiado() > 0" class="mb-4 p-3 rounded" style="background: rgba(0,0,0,0.18);">
+              <div *ngIf="calcularTotalFiado() > 0" class="mb-4 p-3 rounded" style="background: #FAF7F2; border: 1px solid #E5DDD3; border-radius: 10px;">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="small text-white font-weight-bold">
-                    <i class="fas fa-chart-line mr-1 text-info"></i> Progreso de Pago de Fiado
+                  <span class="small font-weight-bold" style="color: #241A15;">
+                    <i class="fas fa-chart-line mr-1" style="color: #C59B6D;"></i> Progreso de Pago de Fiado
                   </span>
-                  <span class="small font-weight-bold text-success">
+                  <span class="small font-weight-bold" style="color: #166534;">
                     {{ (calcularPagadoFiado() / calcularTotalFiado() * 100) | number:'1.0-1' }}% liquidado
                   </span>
                 </div>
-                <div class="progress" style="height: 10px; border-radius: 5px; background: rgba(0,0,0,0.3);">
-                  <div class="progress-bar bg-success" role="progressbar"
+                <div class="progress" style="height: 10px; border-radius: 5px; background: #E5DDD3;">
+                  <div class="progress-bar" role="progressbar"
+                    style="background: linear-gradient(90deg, #166534 0%, #22C55E 100%);"
                     [style.width.%]="(calcularPagadoFiado() / calcularTotalFiado() * 100)"></div>
                 </div>
               </div>
 
               <!-- Tabla de compras/cuotas fiadas pendientes -->
-              <h6 class="font-weight-bold mb-2 text-info">
-                <i class="fas fa-list mr-1"></i> Detalle de consumos fiados con saldo
+              <h6 class="font-weight-bold mb-3 cr-title-italic" style="color: #241A15; font-size: 1.05rem;">
+                <i class="fas fa-list mr-1" style="color: #C59B6D;"></i> Detalle de consumos fiados con saldo
               </h6>
 
-              <div *ngIf="cuotasFiadoPendientes.length === 0" class="alert alert-success d-flex align-items-center"
-                style="background-color: rgba(46, 204, 113, 0.15); border-left: 4px solid #2ecc71; color: #2ecc71;">
-                <i class="fas fa-check-circle fa-2x mr-3"></i>
-                <div>
-                  <h6 class="mb-0 font-weight-bold">¡Sin deuda de fiado!</h6>
-                  <small>No registrás compras fiadas pendientes en tu cuenta corriente.</small>
+              <!-- Estado Vacío cuando no hay deuda -->
+              <div *ngIf="cuotasFiadoPendientes.length === 0" class="p-4 rounded text-center my-3"
+                style="background: #FAF7F2; border: 1px solid #E5DDD3; border-radius: 12px;">
+                <div class="mx-auto mb-3 d-flex align-items-center justify-content-center"
+                  style="width: 52px; height: 52px; border-radius: 50%; background: #F0FDF4; border: 1px solid #BBF7D0;">
+                  <i class="fas fa-check-circle fa-2x" style="color: #166534;"></i>
                 </div>
+                <h5 class="font-weight-bold mb-1 cr-title-italic" style="color: #241A15;">¡Sin deuda de fiado!</h5>
+                <p class="mb-3" style="color: #66564E; font-size: 0.92rem;">No registrás compras fiadas pendientes en tu cuenta corriente.</p>
+                <a routerLink="/cliente/mis-compras" class="btn btn-sm px-3 py-2 font-weight-bold"
+                  style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 8px;">
+                  <i class="fas fa-receipt mr-1" style="color: #C59B6D;"></i> Ver Historial en Mis Compras
+                </a>
               </div>
 
               <div *ngIf="cuotasFiadoPendientes.length > 0" class="table-responsive rounded"
-                style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
-                <table class="table mb-0 text-white" style="background: transparent !important;">
+                style="background: #FFFFFF; border: 1px solid #E5DDD3;">
+                <table class="table mb-0">
                   <thead>
-                    <tr style="background: rgba(0,0,0,0.25);">
-                      <th class="py-2 px-3 text-white">Descripción / Compra</th>
-                      <th class="py-2 text-white">Saldo Pendiente</th>
-                      <th class="py-2 text-white">Vencimiento Acordado</th>
-                      <th class="py-2 text-white">Estado</th>
-                      <th class="py-2 text-center text-white">Acciones</th>
+                    <tr style="background: #F7F2EB;">
+                      <th class="py-2 px-3" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Descripción / Compra</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Saldo Pendiente</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Vencimiento Acordado</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Estado</th>
+                      <th class="py-2 text-center" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let c of cuotasFiadoPendientes"
-                      style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <tr *ngFor="let c of cuotasFiadoPendientes" style="border-bottom: 1px solid #EFE8DF;">
                       <td class="py-2 px-3">
-                        <span class="font-weight-bold text-white">{{ c.descripcionVenta || 'Consumo Fiado en Bodega' }}</span>
+                        <span class="font-weight-bold" style="color: #241A15;">{{ c.descripcionVenta || 'Consumo Fiado en Bodega' }}</span>
                       </td>
-                      <td class="py-2 text-warning font-weight-bold">
+                      <td class="py-2 font-weight-bold" style="color: #9A5B13;">
                         S/. {{ c.monto | number:'1.2-2' }}
                       </td>
-                      <td class="py-2 text-white-50 small">
+                      <td class="py-2 small" style="color: #66564E;">
                         {{ c.fechaVencimiento | date:'dd/MM/yyyy' }}
                       </td>
                       <td class="py-2">
-                        <span class="badge py-1 px-2"
-                          [style.background-color]="c.estado === 'EN_REVISION' ? '#9b59b6' : (c.estado === 'VENCIDO' ? '#e74c3c' : '#f39c12')">
+                        <span class="badge py-1 px-2 font-weight-bold"
+                          [style.background]="c.estado === 'EN_REVISION' ? '#EFF6FF' : (c.estado === 'VENCIDO' ? '#FEECEB' : '#FEF7EA')"
+                          [style.color]="c.estado === 'EN_REVISION' ? '#1D4ED8' : (c.estado === 'VENCIDO' ? '#991B1B' : '#9A5B13')"
+                          style="border-radius: 6px;">
                           <i [class]="c.estado === 'EN_REVISION' ? 'fas fa-search mr-1' : 'fas fa-clock mr-1'"></i>
                           {{ c.estado === 'EN_REVISION' ? 'En Revisión (Yape)' : c.estado }}
                         </span>
                       </td>
                       <td class="py-2 text-center">
-                        <a *ngIf="c.ventaId" [routerLink]="['/cliente/detalle-compra', c.ventaId]" class="btn btn-sm btn-outline-info" style="border-radius: 4px; font-size: 0.8rem;">
-                          <i class="fas fa-eye mr-1"></i> Ver Detalle
+                        <a *ngIf="c.ventaId" [routerLink]="['/cliente/detalle-compra', c.ventaId]" class="btn btn-sm btn-outline-secondary"
+                          style="border-radius: 6px; font-size: 0.8rem; border-color: #E5DDD3; color: #361E14;">
+                          <i class="fas fa-eye mr-1" style="color: #C59B6D;"></i> Ver Detalle
                         </a>
-                        <span *ngIf="!c.ventaId" class="small text-white-50">Consumo Bodega</span>
+                        <span *ngIf="!c.ventaId" class="small" style="color: #8C7B72;">Consumo Bodega</span>
                       </td>
                     </tr>
                   </tbody>
@@ -384,129 +419,134 @@
 
             <!-- PESTAÑA 2: CRÉDITO A CUOTAS -->
             <div *ngIf="pestanaActivaDeuda === 'CREDITO'">
-              <!-- Banner superior -->
-              <div class="row align-items-center mb-3 p-3 rounded"
-                style="background: rgba(0, 0, 0, 0.2); border-left: 5px solid #3498db;">
-                <div class="col-12">
-                  <div class="d-flex align-items-center mb-1">
-                    <i class="fas fa-calendar-alt text-info mr-2 fa-lg"></i>
-                    <h5 class="mb-0 font-weight-bold text-white">Crédito Tradicional a Cuotas</h5>
+              <!-- Banner superior de crédito -->
+              <div class="row align-items-center mb-4 p-3 p-md-4 rounded"
+                style="background: linear-gradient(135deg, #FAF4EB 0%, #F5EDE0 100%); border-left: 5px solid #1D4ED8; border: 1px solid #E5DDD3; border-radius: 12px; box-shadow: 0 4px 12px rgba(44,24,16,0.04);">
+                <div class="col-12 d-flex align-items-center">
+                  <div class="mr-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                    style="width: 48px; height: 48px; border-radius: 12px; background: #1E3A8A; box-shadow: 0 4px 10px rgba(30,58,138,0.2);">
+                    <i class="fas fa-calendar-alt fa-lg" style="color: #93C5FD;"></i>
                   </div>
-                  <p class="text-white-50 small mb-0">
-                    Compras bajo financiamiento con interés pactado y cronograma de cuotas mensuales fijas.
-                  </p>
+                  <div>
+                    <h5 class="mb-1 font-weight-bold cr-title-italic" style="color: #241A15; letter-spacing: 0.3px;">Crédito Tradicional a Cuotas</h5>
+                    <p class="small mb-0" style="color: #66564E; line-height: 1.4;">
+                      Compras bajo financiamiento con interés pactado y cronograma de cuotas mensuales fijas.
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <!-- Mini cards de balance crédito -->
-              <div class="row mb-3">
-                <div class="col-md-4 mb-2">
-                  <div class="p-3 rounded text-white d-flex justify-content-between align-items-center"
-                    style="background: rgba(0, 0, 0, 0.18); border-left: 4px solid #C59B6D;">
+              <!-- Mini cards de balance crédito estilo Mis Compras -->
+              <div class="row mb-4">
+                <div class="col-md-4 mb-3 mb-md-0">
+                  <div class="p-3 rounded h-100 d-flex justify-content-between align-items-center"
+                    style="background: #F5F1EB; border-radius: 10px; border-left: 4px solid #C59B6D; border: 1px solid #E5DDD3; box-shadow: 0 2px 8px rgba(44,24,16,0.04);">
                     <div>
-                      <span class="small text-white-50 text-uppercase d-block">Total Crédito Solicitado</span>
-                      <h4 class="mb-0 font-weight-bold" style="color: #4fc3f7;">
+                      <span class="small font-weight-bold text-uppercase d-block mb-1" style="color: #66564E; font-size: 0.75rem; letter-spacing: 0.5px;">Total Crédito Solicitado</span>
+                      <h4 class="mb-0 font-weight-bold mt-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.5rem;">
                         S/. {{ calcularTotalCredito() | number:'1.2-2' }}
                       </h4>
                     </div>
-                    <i class="fas fa-file-invoice-dollar fa-2x opacity-50 text-info"></i>
+                    <i class="fas fa-file-invoice-dollar fa-2x" style="color: #C59B6D; opacity: 0.7;"></i>
                   </div>
                 </div>
-                <div class="col-md-4 mb-2">
-                  <div class="p-3 rounded text-white d-flex justify-content-between align-items-center"
-                    style="background: rgba(0, 0, 0, 0.18); border-left: 4px solid #10b981;">
+                <div class="col-md-4 mb-3 mb-md-0">
+                  <div class="p-3 rounded h-100 d-flex justify-content-between align-items-center"
+                    style="background: #DCFCE7; border-radius: 10px; border-left: 4px solid #166534; border: 1px solid #BBF7D0; box-shadow: 0 2px 8px rgba(22,101,52,0.04);">
                     <div>
-                      <span class="small text-white-50 text-uppercase d-block">Total Cuotas Pagadas</span>
-                      <h4 class="mb-0 font-weight-bold" style="color: #34d399;">
+                      <span class="small font-weight-bold text-uppercase d-block mb-1" style="color: #166534; font-size: 0.75rem; letter-spacing: 0.5px;">Total Cuotas Pagadas</span>
+                      <h4 class="mb-0 font-weight-bold mt-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.5rem;">
                         S/. {{ calcularPagadoCredito() | number:'1.2-2' }}
                       </h4>
                     </div>
-                    <i class="fas fa-check-circle fa-2x opacity-50 text-success"></i>
+                    <i class="fas fa-check-circle fa-2x" style="color: #166534; opacity: 0.7;"></i>
                   </div>
                 </div>
-                <div class="col-md-4 mb-2">
-                  <div class="p-3 rounded text-white d-flex justify-content-between align-items-center"
-                    style="background: rgba(0, 0, 0, 0.18); border-left: 4px solid #f59e0b;">
+                <div class="col-md-4 mb-3 mb-md-0">
+                  <div class="p-3 rounded h-100 d-flex justify-content-between align-items-center"
+                    style="background: #FEF7EA; border-radius: 10px; border-left: 4px solid #D97706; border: 1px solid #FDE68A; box-shadow: 0 2px 8px rgba(217,119,6,0.04);">
                     <div>
-                      <span class="small text-white-50 text-uppercase d-block">Cuotas por Pagar</span>
-                      <h4 class="mb-0 font-weight-bold" style="color: #fbbf24;">
+                      <span class="small font-weight-bold text-uppercase d-block mb-1" style="color: #9A5B13; font-size: 0.75rem; letter-spacing: 0.5px;">Cuotas por Pagar</span>
+                      <h4 class="mb-0 font-weight-bold mt-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.5rem;">
                         S/. {{ calcularDeudaCredito() | number:'1.2-2' }}
                       </h4>
                     </div>
-                    <i class="fas fa-hourglass-half fa-2x opacity-50 text-warning"></i>
+                    <i class="fas fa-hourglass-half fa-2x" style="color: #D97706; opacity: 0.7;"></i>
                   </div>
                 </div>
               </div>
 
               <!-- Barra de progreso de pago de crédito -->
-              <div *ngIf="calcularTotalCredito() > 0" class="mb-4 p-3 rounded" style="background: rgba(0,0,0,0.18);">
+              <div *ngIf="calcularTotalCredito() > 0" class="mb-4 p-3 rounded" style="background: #FAF7F2; border: 1px solid #E5DDD3;">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                  <span class="small text-white font-weight-bold">
-                    <i class="fas fa-chart-line mr-1 text-info"></i> Progreso de Pago de Crédito
+                  <span class="small font-weight-bold" style="color: #241A15;">
+                    <i class="fas fa-chart-line mr-1" style="color: #C59B6D;"></i> Progreso de Pago de Crédito
                   </span>
-                  <span class="small font-weight-bold text-success">
+                  <span class="small font-weight-bold" style="color: #166534;">
                     {{ (calcularPagadoCredito() / calcularTotalCredito() * 100) | number:'1.0-1' }}% cancelado
                   </span>
                 </div>
-                <div class="progress" style="height: 10px; border-radius: 5px; background: rgba(0,0,0,0.3);">
-                  <div class="progress-bar bg-info" role="progressbar"
+                <div class="progress" style="height: 10px; border-radius: 5px; background: #E5DDD3;">
+                  <div class="progress-bar" role="progressbar"
+                    style="background: #1D4ED8;"
                     [style.width.%]="(calcularPagadoCredito() / calcularTotalCredito() * 100)"></div>
                 </div>
               </div>
 
               <!-- Tabla de cuotas de crédito -->
-              <h6 class="font-weight-bold mb-2 text-info">
-                <i class="fas fa-calendar-check mr-1"></i> Cronograma de cuotas pendientes
+              <h6 class="font-weight-bold mb-2" style="color: #241A15;">
+                <i class="fas fa-calendar-check mr-1" style="color: #C59B6D;"></i> Cronograma de cuotas pendientes
               </h6>
 
-              <div *ngIf="cuotasCreditoPendientes.length === 0" class="alert alert-success d-flex align-items-center"
-                style="background-color: rgba(46, 204, 113, 0.15); border-left: 4px solid #2ecc71; color: #2ecc71;">
-                <i class="fas fa-check-circle fa-2x mr-3"></i>
+              <div *ngIf="cuotasCreditoPendientes.length === 0" class="alert d-flex align-items-center"
+                style="background-color: #DCFCE7; border-left: 4px solid #166534; color: #166534; border: 1px solid #BBF7D0; border-radius: 8px;">
+                <i class="fas fa-check-circle fa-2x mr-3" style="color: #166534;"></i>
                 <div>
-                  <h6 class="mb-0 font-weight-bold">¡Sin cuotas pendientes!</h6>
-                  <small>Estás al día con todos tus pagos de crédito.</small>
+                  <h6 class="mb-0 font-weight-bold" style="color: #166534;">¡Sin cuotas pendientes!</h6>
+                  <small style="color: #14532D;">Estás al día con todos tus pagos de crédito.</small>
                 </div>
               </div>
 
               <div *ngIf="cuotasCreditoPendientes.length > 0" class="table-responsive rounded"
-                style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
-                <table class="table mb-0 text-white" style="background: transparent !important;">
+                style="background: #FFFFFF; border: 1px solid #E5DDD3;">
+                <table class="table mb-0">
                   <thead>
-                    <tr style="background: rgba(0,0,0,0.25);">
-                      <th class="py-2 px-3 text-white">N° Cuota / Compra</th>
-                      <th class="py-2 text-white">Monto Cuota</th>
-                      <th class="py-2 text-white">Fecha de Vencimiento</th>
-                      <th class="py-2 text-white">Estado</th>
-                      <th class="py-2 text-center text-white">Acción</th>
+                    <tr style="background: #F7F2EB;">
+                      <th class="py-2 px-3" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">N° Cuota / Compra</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Monto Cuota</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Fecha de Vencimiento</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Estado</th>
+                      <th class="py-2 text-center" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Acción</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let c of cuotasCreditoPendientes"
-                      style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <tr *ngFor="let c of cuotasCreditoPendientes" style="border-bottom: 1px solid #EFE8DF;">
                       <td class="py-2 px-3">
-                        <span class="badge badge-info mr-2">Cuota {{ c.numeroCuota }}</span>
-                        <span class="font-weight-bold text-white">{{ c.descripcionVenta || 'Crédito' }}</span>
+                        <span class="badge mr-2 px-2 py-1" style="background: #FAF4EB; color: #361E14; border: 1px solid #E5DDD3;">Cuota {{ c.numeroCuota }}</span>
+                        <span class="font-weight-bold" style="color: #241A15;">{{ c.descripcionVenta || 'Crédito' }}</span>
                       </td>
-                      <td class="py-2 text-white font-weight-bold">
+                      <td class="py-2 font-weight-bold" style="color: #241A15;">
                         S/. {{ c.monto | number:'1.2-2' }}
                       </td>
-                      <td class="py-2 text-white-50 small">
+                      <td class="py-2 small" style="color: #66564E;">
                         {{ c.fechaVencimiento | date:'dd/MM/yyyy' }}
                       </td>
                       <td class="py-2">
-                        <span class="badge py-1 px-2"
-                          [style.background-color]="c.estado === 'EN_REVISION' ? '#9b59b6' : (c.estado === 'VENCIDO' ? '#e74c3c' : '#3498db')">
+                        <span class="badge py-1 px-2 font-weight-bold"
+                          [style.background]="c.estado === 'EN_REVISION' ? '#EFF6FF' : (c.estado === 'VENCIDO' ? '#FEECEB' : '#FEF7EA')"
+                          [style.color]="c.estado === 'EN_REVISION' ? '#1D4ED8' : (c.estado === 'VENCIDO' ? '#991B1B' : '#9A5B13')"
+                          style="border-radius: 6px;">
                           <i [class]="c.estado === 'EN_REVISION' ? 'fas fa-search mr-1' : 'fas fa-clock mr-1'"></i>
                           {{ c.estado === 'EN_REVISION' ? 'En Revisión' : c.estado }}
                         </span>
                       </td>
                       <td class="py-2 text-center">
-                        <button *ngIf="c.estado !== 'EN_REVISION'" class="btn btn-sm btn-primary py-1 px-3 shadow"
-                          style="border-radius: 6px;"
+                        <button *ngIf="c.estado !== 'EN_REVISION'" class="btn btn-sm py-1 px-3 shadow-sm font-weight-bold"
+                          style="border-radius: 6px; background: #361E14; color: #FFFFFF; border: none;"
                           [routerLink]="['/cliente/pagar-cuota', c.id]">
-                          <i class="fas fa-credit-card mr-1"></i> Pagar Cuota
+                          <i class="fas fa-credit-card mr-1" style="color: #C59B6D;"></i> Pagar Cuota
                         </button>
-                        <span *ngIf="c.estado === 'EN_REVISION'" class="small text-white-50">
+                        <span *ngIf="c.estado === 'EN_REVISION'" class="small" style="color: #8C7B72;">
                           <i class="fas fa-hourglass-half mr-1"></i> En espera
                         </span>
                       </td>
@@ -519,45 +559,45 @@
             <!-- PESTAÑA 3: COMPRAS AL CONTADO -->
             <div *ngIf="pestanaActivaDeuda === 'CONTADO'">
               <div class="row align-items-center mb-4 p-3 rounded"
-                style="background: rgba(0, 0, 0, 0.2); border-left: 5px solid #10b981;">
+                style="background: #DCFCE7; border-left: 5px solid #166534; border: 1px solid #BBF7D0;">
                 <div class="col-12">
                   <div class="d-flex align-items-center mb-1">
-                    <i class="fas fa-money-bill-wave text-success mr-2 fa-lg"></i>
-                    <h5 class="mb-0 font-weight-bold text-white">Compras Realizadas al Contado</h5>
+                    <i class="fas fa-money-bill-wave mr-2 fa-lg" style="color: #166534;"></i>
+                    <h5 class="mb-0 font-weight-bold" style="color: #14532D;">Compras Realizadas al Contado</h5>
                   </div>
-                  <p class="text-white-50 small mb-0">
+                  <p class="small mb-0" style="color: #166534;">
                     Transacciones liquidadas al 100% al momento de la venta. No generan deudas ni intereses.
                   </p>
                 </div>
               </div>
 
-              <div *ngIf="comprasContado.length === 0" class="text-center py-4 text-white-50">
-                <i class="fas fa-receipt fa-2x mb-2 opacity-50"></i>
+              <div *ngIf="comprasContado.length === 0" class="text-center py-4" style="color: #66564E;">
+                <i class="fas fa-receipt fa-2x mb-2" style="color: #C59B6D; opacity: 0.6;"></i>
                 <p class="mb-0">No tenés compras al contado registradas en tu historial.</p>
               </div>
 
               <div *ngIf="comprasContado.length > 0" class="table-responsive rounded"
-                style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
-                <table class="table mb-0 text-white" style="background: transparent !important;">
+                style="background: #FFFFFF; border: 1px solid #E5DDD3;">
+                <table class="table mb-0">
                   <thead>
-                    <tr style="background: rgba(0,0,0,0.25);">
-                      <th class="py-2 px-3 text-white">Fecha</th>
-                      <th class="py-2 text-white">Descripción</th>
-                      <th class="py-2 text-white">Monto Pagado</th>
-                      <th class="py-2 text-white">Estado</th>
-                      <th class="py-2 text-center text-white">Acciones</th>
+                    <tr style="background: #F7F2EB;">
+                      <th class="py-2 px-3" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Fecha</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Descripción</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Monto Pagado</th>
+                      <th class="py-2" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Estado</th>
+                      <th class="py-2 text-center" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let v of comprasContado.slice(0, 5)"
-                      style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                      <td class="py-2 px-3 text-white-50 small">{{ v.fechaVenta | date:'dd/MM/yyyy' }}</td>
-                      <td class="py-2 font-weight-bold text-white">{{ v.descripcion }}</td>
-                      <td class="py-2 text-success font-weight-bold">S/. {{ v.montoTotal | number:'1.2-2' }}</td>
-                      <td class="py-2"><span class="badge badge-success px-2 py-1">PAGADO</span></td>
+                    <tr *ngFor="let v of comprasContado.slice(0, 5)" style="border-bottom: 1px solid #EFE8DF;">
+                      <td class="py-2 px-3 small" style="color: #66564E;">{{ v.fechaVenta | date:'dd/MM/yyyy' }}</td>
+                      <td class="py-2 font-weight-bold" style="color: #241A15;">{{ v.descripcion }}</td>
+                      <td class="py-2 font-weight-bold" style="color: #166534;">S/. {{ v.montoTotal | number:'1.2-2' }}</td>
+                      <td class="py-2"><span class="badge px-2 py-1 font-weight-bold" style="background: #DCFCE7; color: #166534;">PAGADO</span></td>
                       <td class="py-2 text-center">
-                        <a [routerLink]="['/cliente/detalle-compra', v.id]" class="btn btn-sm btn-outline-light" style="border-radius: 4px; font-size: 0.8rem;">
-                          <i class="fas fa-eye mr-1"></i> Ver Detalle
+                        <a [routerLink]="['/cliente/detalle-compra', v.id]" class="btn btn-sm btn-outline-secondary"
+                          style="border-radius: 6px; font-size: 0.8rem; border-color: #E5DDD3; color: #361E14;">
+                          <i class="fas fa-eye mr-1" style="color: #C59B6D;"></i> Ver Detalle
                         </a>
                       </td>
                     </tr>
@@ -568,14 +608,14 @@
 
             <!-- Footer con acceso directo a Mis Compras -->
             <div class="d-flex justify-content-between align-items-center mt-3 pt-3"
-              style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
-              <span class="text-white-50 small">
-                <i class="fas fa-info-circle mr-1 text-info"></i>
+              style="border-top: 1px solid #E5DDD3;">
+              <span class="small" style="color: #66564E;">
+                <i class="fas fa-info-circle mr-1" style="color: #C59B6D;"></i>
                 Podés ver todas las transacciones históricas y comprobantes en Mis Compras.
               </span>
-              <a routerLink="/cliente/mis-compras" class="btn btn-outline-light btn-sm font-weight-bold px-3 py-1"
-                style="border-radius: 6px;">
-                <i class="fas fa-arrow-right mr-1"></i> Ver Mis Compras Completo
+              <a routerLink="/cliente/mis-compras" class="btn btn-sm font-weight-bold px-3 py-1"
+                style="border-radius: 6px; background: #361E14; color: #FFFFFF; border: none;">
+                <i class="fas fa-arrow-right mr-1" style="color: #C59B6D;"></i> Ver Mis Compras Completo
               </a>
             </div>
 
@@ -587,113 +627,88 @@
     <!-- Tabla de últimas compras -->
     <div class="row mb-4">
       <div class="col-12">
-        <div class="card border-0 text-white"
-          style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        <div class="card border-0 shadow-sm"
+          style="background: #FFFFFF !important; border-radius: 14px; border: 1px solid #E5DDD3 !important;">
           <div class="card-header d-flex justify-content-between align-items-center py-3"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <h5 class="mb-0">
-              <i class="fas fa-shopping-cart mr-2" style="color: #4fc3f7;"></i>
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-top-left-radius: 14px; border-top-right-radius: 14px;">
+            <h5 class="mb-0 font-weight-bold d-flex align-items-center" style="color: #241A15;">
+              <i class="fas fa-shopping-cart mr-2" style="color: #C59B6D;"></i>
               Últimas Compras
             </h5>
-            <a routerLink="/cliente/mis-compras" class="btn btn-sm"
-              style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem; transition: all 0.2s ease;"
-              onmouseover="this.style.background='rgba(79, 195, 247, 0.3)';"
-              onmouseout="this.style.background='rgba(79, 195, 247, 0.2)';">
-              <i class="fas fa-list mr-1"></i>
+            <a routerLink="/cliente/mis-compras" class="btn btn-sm font-weight-bold px-3 py-1"
+              style="background: #FAF4EB; color: #361E14; border: 1px solid #E5DDD3; border-radius: 8px;">
+              <i class="fas fa-list mr-1" style="color: #C59B6D;"></i>
               Ver Todas
             </a>
           </div>
           <div class="card-body p-0">
-            <div class="table-responsive"
-              style="border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem; overflow: hidden;">
-              <table class="table mb-0" style="color: rgba(255, 255, 255, 0.9); background: transparent !important;">
+            <div class="table-responsive" style="border-bottom-left-radius: 14px; border-bottom-right-radius: 14px;">
+              <table class="table mb-0">
                 <thead>
-                  <tr style="background: rgba(0, 0, 0, 0.2);">
-                    <th class="py-3 px-4 text-white"
-                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                      Fecha
-                    </th>
-                    <th class="py-3 text-white"
-                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                      Descripción
-                    </th>
-                    <th class="py-3 text-white"
-                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                      Monto
-                    </th>
-                    <th class="py-3 text-white"
-                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                      Tipo
-                    </th>
-                    <th class="py-3 text-white"
-                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                      Estado
-                    </th>
-                    <th class="py-3 text-white"
-                      style="font-weight: 500; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: transparent !important;">
-                      Acciones
-                    </th>
+                  <tr style="background: #F7F2EB;">
+                    <th class="py-3 px-4" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Fecha</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Descripción</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Monto</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Tipo</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Estado</th>
+                    <th class="py-3 text-center" style="color: #66564E; font-weight: 700; font-size: 0.82rem; text-transform: uppercase;">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let venta of ventas.slice(0, 5)"
-                    style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.25s ease; background: transparent !important;"
-                    onmouseover="this.style.backgroundColor='rgba(255,255,255,0.07)';"
+                    style="border-bottom: 1px solid #EFE8DF; transition: background-color 0.2s ease;"
+                    onmouseover="this.style.backgroundColor='#FAF5EE';"
                     onmouseout="this.style.backgroundColor='transparent';">
-                    <td class="py-3 px-4 text-white" style="background: transparent !important;">
+                    <td class="py-3 px-4">
                       <div class="d-flex align-items-center">
                         <div
-                          style="width: 40px; height: 40px; border-radius: 10px; background-color: rgba(79, 195, 247, 0.15); display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                          <span style="font-size: 10px; color: #4fc3f7; text-transform: uppercase; font-weight: 500;">{{
+                          style="width: 40px; height: 40px; border-radius: 10px; background-color: #FAF4EB; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #E5DDD3;">
+                          <span style="font-size: 10px; color: #C59B6D; text-transform: uppercase; font-weight: 700;">{{
                             venta.fechaVenta | date:'MMM' }}</span>
-                          <span style="font-size: 14px; font-weight: 700; color: white;">{{ venta.fechaVenta | date:'dd'
+                          <span style="font-size: 14px; font-weight: 700; color: #241A15;">{{ venta.fechaVenta | date:'dd'
                             }}</span>
                         </div>
-                        <span style="color: rgba(255,255,255,0.6); margin-left: 8px;">{{ venta.fechaVenta | date:'yyyy'
+                        <span style="color: #66564E; margin-left: 8px;">{{ venta.fechaVenta | date:'yyyy'
                           }}</span>
                       </div>
                     </td>
-                    <td class="py-3 text-white"
-                      style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: transparent !important;">
+                    <td class="py-3" style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #241A15; font-weight: 600;">
                       {{ venta.descripcion }}
                     </td>
-                    <td class="py-3 font-weight-bold text-white" style="background: transparent !important;">S/. {{
-                      venta.montoTotal | number:'1.2-2' }}</td>
-                    <td class="py-3" style="background: transparent !important;">
-                      <span class="badge py-2 px-3"
-                        [style.background-color]="venta.tipoVenta === 'CONTADO' ? '#2ecc71' : venta.tipoVenta === 'FIADO' ? '#e67e22' : '#3498db'"
-                        style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <i
-                          [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-1' : 'fas fa-credit-card mr-1'"></i>
+                    <td class="py-3 font-weight-bold" style="color: #241A15;">
+                      S/. {{ venta.montoTotal | number:'1.2-2' }}
+                    </td>
+                    <td class="py-3">
+                      <span class="badge py-2 px-3 font-weight-bold"
+                        [style.background]="venta.tipoVenta === 'CONTADO' ? '#DCFCE7' : venta.tipoVenta === 'FIADO' ? '#FEF7EA' : '#EFF6FF'"
+                        [style.color]="venta.tipoVenta === 'CONTADO' ? '#166534' : venta.tipoVenta === 'FIADO' ? '#9A5B13' : '#1D4ED8'"
+                        style="border-radius: 6px;">
+                        <i [class]="venta.tipoVenta === 'CONTADO' ? 'fas fa-money-bill-wave mr-1' : venta.tipoVenta === 'FIADO' ? 'fas fa-book-open mr-1' : 'fas fa-credit-card mr-1'"></i>
                         {{ venta.tipoVenta === 'CONTADO' ? 'Contado' : venta.tipoVenta === 'FIADO' ? 'Fiado' : 'Crédito' }}
                       </span>
                     </td>
-                    <td class="py-3" style="background: transparent !important;">
-                      <span class="badge py-2 px-3" [style.background-color]="
-                          venta.estado === 'PAGADO' ? '#2ecc71' :
-                          venta.estado === 'PENDIENTE' ? '#f39c12' : '#e74c3c'"
-                        style="font-weight: 500; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <i [class]="
-                          venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' :
-                          venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-exclamation-circle mr-1'"></i>
+                    <td class="py-3">
+                      <span class="badge py-2 px-3 font-weight-bold"
+                        [style.background]="venta.estado === 'PAGADO' ? '#DCFCE7' : venta.estado === 'PENDIENTE' ? '#FEF7EA' : '#FEECEB'"
+                        [style.color]="venta.estado === 'PAGADO' ? '#166534' : venta.estado === 'PENDIENTE' ? '#9A5B13' : '#991B1B'"
+                        style="border-radius: 6px;">
+                        <i [class]="venta.estado === 'PAGADO' ? 'fas fa-check-circle mr-1' : venta.estado === 'PENDIENTE' ? 'fas fa-clock mr-1' : 'fas fa-exclamation-circle mr-1'"></i>
                         {{ venta.estado }}
                       </span>
                     </td>
-                    <td class="py-3" style="background: transparent !important;">
-                      <button class="btn btn-sm"
-                        style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: all 0.25s ease;"
-                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
-                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';"
+                    <td class="py-3 text-center">
+                      <button class="btn btn-sm font-weight-bold"
+                        style="background: #361E14; color: #FFFFFF; border: none; border-radius: 6px; padding: 6px 14px;"
                         [routerLink]="['/cliente/detalle-compra', venta.id]">
-                        <i class="fas fa-eye mr-1"></i> Ver Detalle
+                        <i class="fas fa-eye mr-1" style="color: #C59B6D;"></i> Ver Detalle
                       </button>
                     </td>
                   </tr>
                   <!-- Mensaje si no hay ventas -->
                   <tr *ngIf="ventas.length === 0">
-                    <td colspan="6" class="text-center py-5" style="background: transparent !important;">
-                      <div style="opacity: 0.6;">
-                        <i class="fas fa-shopping-cart mb-3" style="font-size: 2.5rem;"></i>
+                    <td colspan="6" class="text-center py-5">
+                      <div style="color: #66564E;">
+                        <i class="fas fa-shopping-cart mb-3" style="font-size: 2.5rem; color: #C59B6D; opacity: 0.6;"></i>
                         <p class="mb-0">Aún no has realizado compras</p>
                       </div>
                     </td>
@@ -709,22 +724,17 @@
     <!-- Gráfico de Pagos -->
     <div class="row">
       <div class="col-12 mb-4">
-        <div class="card border-0 text-white"
-          style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        <div class="card border-0 shadow-sm"
+          style="background: #FFFFFF !important; border-radius: 14px; border: 1px solid #E5DDD3 !important;">
           <div class="card-header d-flex justify-content-between align-items-center py-3"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <h5 class="mb-0">
-              <i class="fas fa-chart-bar mr-2" style="color: #4fc3f7;"></i>
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-top-left-radius: 14px; border-top-right-radius: 14px;">
+            <h5 class="mb-0 font-weight-bold d-flex align-items-center" style="color: #241A15;">
+              <i class="fas fa-chart-bar mr-2" style="color: #C59B6D;"></i>
               Historial de Pagos por Mes
             </h5>
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm"
-                style="background: rgba(79, 195, 247, 0.2); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.5rem 0 0 0.5rem;">Año
-                Actual</button>
-              <button type="button" class="btn btn-sm"
-                style="background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0 0.5rem 0.5rem 0; border-left: none;">Último
-                Año</button>
-            </div>
+            <span class="badge px-3 py-1 font-weight-bold" style="background: #FAF4EB; color: #361E14; border: 1px solid #E5DDD3;">
+              Año {{ currentYear }}
+            </span>
           </div>
           <div class="card-body p-4">
             <div style="height: 280px; position: relative;">

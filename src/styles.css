@@ -4,37 +4,38 @@
    ========================================================================== */
 
 :root {
-  /* Tonos Principales (Espresso & Caoba) */
-  --cr-primary: #2C1810;
-  --cr-primary-hover: #3D2217;
-  --cr-primary-dark: #1E0F0A;
-  --cr-primary-light: #4A281B;
+  /* Tonos Principales Suavizados (Espresso Cálido Noble) */
+  --cr-primary: #361E14;
+  --cr-primary-hover: #482B1E;
+  --cr-primary-dark: #24130C;
+  --cr-primary-light: #543425;
+  --cr-header-gradient: linear-gradient(135deg, #382015 0%, #24130B 100%);
 
-  /* Acentos Nobles (Oro / Bronce Envejecido) */
+  /* Acentos Nobles (Oro / Bronce Luminoso) */
   --cr-gold: #C59B6D;
-  --cr-gold-light: #DFC29E;
+  --cr-gold-light: #FAD082;
   --cr-gold-dark: #9E7448;
-  --cr-gold-subtle: rgba(197, 155, 109, 0.15);
+  --cr-gold-subtle: rgba(197, 155, 109, 0.18);
 
-  /* Fondos Cálidos (Crema / Lino / Pergamino) */
-  --cr-bg-page: #F5F1EB;
+  /* Fondos Cálidos (Crema / Avena) */
+  --cr-bg-page: #F4EFEB;
   --cr-bg-surface: #FFFFFF;
-  --cr-bg-sidebar: #22130C;
+  --cr-bg-sidebar: #26150D;
   --cr-bg-card: #FFFFFF;
-  --cr-bg-muted: #EFE9E0;
+  --cr-bg-muted: #EFE8DF;
 
   /* Bordes Suaves y Contrastes */
   --cr-border: #E5DDD3;
   --cr-border-focus: #C59B6D;
 
-  /* Textos de Alto Contraste (Lectura Descansada Adultos Mayores) */
+  /* Textos de Alto Contraste */
   --cr-text-main: #241A15;
   --cr-text-muted: #66564E;
-  --cr-text-light: #94837B;
+  --cr-text-light: #8C7B72;
   --cr-text-gold: #C59B6D;
 
   /* Semáforos Financieros Claros */
-  --cr-success-bg: #EAF5EC;
+  --cr-success-bg: #DCFCE7;
   --cr-success-text: #166534;
   --cr-success-border: #BBF7D0;
 
@@ -46,8 +47,8 @@
   --cr-warning-text: #9A5B13;
   --cr-warning-border: #FDE68A;
 
-  --cr-info-bg: #EBF3FA;
-  --cr-info-text: #1E4E8C;
+  --cr-info-bg: #EFF6FF;
+  --cr-info-text: #1D4ED8;
   --cr-info-border: #BFDBFE;
 
   /* Tipografías */
@@ -69,6 +70,33 @@ html, body {
 h1, h2, h3, .card-title, .brand-text, .display-4, .display-5 {
   font-family: var(--cr-font-title) !important;
   letter-spacing: -0.01em;
+}
+
+/* Encabezados y Títulos Nobles Estilizados */
+.cr-banner {
+  background: var(--cr-header-gradient) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 24px rgba(36, 19, 11, 0.16) !important;
+  border-left: 5px solid var(--cr-gold) !important;
+  color: #FFFFFF !important;
+  padding: 24px 28px !important;
+}
+
+.cr-title-italic {
+  font-family: var(--cr-font-title) !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px;
+  color: inherit;
+}
+
+.cr-banner .cr-title-italic {
+  color: #FFFFFF !important;
+}
+
+.cr-subtitle {
+  color: #E2D2C3 !important;
+  font-size: 0.95rem !important;
 }
 
 /* Contenedor Principal y Layout */
@@ -236,4 +264,70 @@ h1, h2, h3, .card-title, .brand-text, .display-4, .display-5 {
   border-color: var(--cr-gold) !important;
   box-shadow: 0 0 0 3px rgba(197, 155, 109, 0.2) !important;
   outline: none !important;
+}
+
+/* ==========================================================================
+   REGLAS DE CONTRASTE GLOBAL Y RESCATE VISUAL
+   ========================================================================== */
+
+/* En tarjetas blancas o por defecto, asegurar texto oscuro */
+.card, .card-body, .custom-table-container {
+  color: var(--cr-text-main);
+}
+
+/* Evitar texto blanco invisible dentro de contenedores que tienen fondo claro */
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) .text-white,
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) .text-light,
+.custom-table-container .text-white,
+.custom-table-container .text-light {
+  color: var(--cr-text-main) !important;
+}
+
+/* Etiquetas y subtítulos en tarjetas claras */
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) label,
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) .form-label,
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) .opacity-75 {
+  color: var(--cr-text-muted) !important;
+  opacity: 1 !important;
+}
+
+/* Corregir inputs y selects con fondos semi-transparentes o rotos dentro de cards blancas */
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) input.form-control,
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) select.form-control,
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) select.custom-select {
+  background-color: #FFFFFF !important;
+  color: var(--cr-text-main) !important;
+  border: 1.5px solid var(--cr-border) !important;
+}
+
+.card:not([style*="background: linear-gradient(135deg, #28140B"]):not([style*="background: #182234"]):not([style*="background: #1e293b"]):not(.table-dark) input.form-control::placeholder {
+  color: var(--cr-text-light) !important;
+}
+
+/* Tabs de navegación en cards blancas (como admin-pagos) */
+.card .nav-tabs .nav-link {
+  color: var(--cr-text-muted) !important;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+}
+
+.card .nav-tabs .nav-link.active {
+  color: var(--cr-primary) !important;
+  border-bottom: 3px solid var(--cr-gold) !important;
+  background-color: var(--cr-bg-muted) !important;
+}
+
+.card .nav-tabs .nav-link:hover {
+  color: var(--cr-primary) !important;
+}
+
+/* Enlaces y botones de acción en tablas claras */
+.custom-table td {
+  color: var(--cr-text-main) !important;
+}
+
+.custom-table thead th {
+  color: var(--cr-text-muted) !important;
+  background-color: #F7F2EB !important;
 }

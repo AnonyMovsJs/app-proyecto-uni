@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    ADMIN DASHBOARD (OPCIÓN G) - COMERCIAL REYES
    ========================================================================== */
 
@@ -41,20 +41,32 @@
   color: #180B06;
 }
 
-/* KPI Cards */
+/* KPI Cards - Diseño Ejecutivo Noble */
 .cr-kpi-card {
-  background: #FFFFFF;
-  border-radius: 14px;
-  border: 1px solid #EADBCE;
-  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.03);
+  background: linear-gradient(145deg, #FFFFFF 0%, #FAF6F0 100%);
+  border-radius: 16px;
+  border: 1px solid #E5DDD3;
+  box-shadow: 0 4px 20px rgba(44, 24, 16, 0.05);
   padding: 24px 22px;
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.cr-kpi-card::after {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(197, 155, 109, 0.12) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .cr-kpi-card::before {
@@ -65,52 +77,75 @@
   bottom: 0;
   width: 5px;
   background: #2C1810;
+  border-radius: 4px 0 0 4px;
 }
 
-.cr-kpi-card.gold::before { background: #C59B6D; }
-.cr-kpi-card.amber::before { background: #B45309; }
-.cr-kpi-card.green::before { background: #166534; }
+.cr-kpi-card.gold::before { background: linear-gradient(to bottom, #C59B6D, #D4AF37); }
+.cr-kpi-card.amber::before { background: linear-gradient(to bottom, #B45309, #D97706); }
+.cr-kpi-card.green::before { background: linear-gradient(to bottom, #166534, #22C55E); }
 
 .cr-kpi-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(44, 24, 16, 0.10);
+  border-color: #C59B6D;
 }
 
 .cr-kpi-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .cr-kpi-label {
-  font-size: 13.5px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
   font-weight: 700;
-  color: #78645A;
+  color: #66564E;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.06em;
 }
 
 .cr-kpi-icon-wrap {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  background: #FAF4EB;
-  border: 1px solid #EADBCE;
+  border-radius: 12px;
+  background: #F5EFEB;
+  border: 1px solid #E5DDD3;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #C59B6D;
-  font-size: 18px;
+  color: #2C1810;
+  font-size: 19px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.cr-kpi-card.gold .cr-kpi-icon-wrap {
+  background: #FEF7EA;
+  border-color: #FDE68A;
+  color: #B45309;
+}
+
+.cr-kpi-card.amber .cr-kpi-icon-wrap {
+  background: #FEF3E7;
+  border-color: #FED7AA;
+  color: #C2410C;
+}
+
+.cr-kpi-card.green .cr-kpi-icon-wrap {
+  background: #DCFCE7;
+  border-color: #BBF7D0;
+  color: #166534;
 }
 
 .cr-kpi-number {
-  font-family: var(--cr-font-title);
-  font-size: 40px;
+  font-family: 'Lora', serif;
+  font-size: 42px;
   font-weight: 700;
   color: #241A15;
   line-height: 1.1;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
 }
 
 .cr-kpi-link {
@@ -120,14 +155,16 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 6px;
-  border-top: 1px solid #F5EEE6;
-  padding-top: 12px;
+  justify-content: space-between;
+  border-top: 1px solid #EADBCE;
+  padding-top: 14px;
+  transition: all 0.2s ease;
 }
 
 .cr-kpi-link:hover {
   color: #2C1810;
-  text-decoration: underline;
+  transform: translateX(2px);
+  text-decoration: none;
 }
 
 /* Sales Table Panel */

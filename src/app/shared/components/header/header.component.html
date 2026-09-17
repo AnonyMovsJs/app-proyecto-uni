@@ -39,21 +39,38 @@
 
         <div style="max-height: 340px; overflow-y: auto;">
           <a *ngFor="let notif of notificaciones" href="javascript:void(0)" class="dropdown-item cr-notif-item"
-            [style.background]="notif.leida ? 'transparent' : 'rgba(197, 155, 109, 0.08)'"
+            [style.background]="notif.leida ? 'transparent' : 'rgba(197, 155, 109, 0.12)'"
             (click)="abrirDetalle(notif)">
             <div class="d-flex align-items-start">
-              <i class="fas fa-exclamation-circle text-warning mt-1 mr-2" *ngIf="notif.diasRetraso > 0 && notif.diasRetraso <= 30"></i>
-              <i class="fas fa-exclamation-triangle text-danger mt-1 mr-2" *ngIf="notif.diasRetraso > 30"></i>
-              <i class="fas fa-bell text-info mt-1 mr-2" *ngIf="notif.diasRetraso === 0"></i>
-              <div class="flex-grow-1">
-                <div class="d-flex justify-content-between">
-                  <strong class="cr-notif-title">{{ notif.titulo }}</strong>
-                  <span *ngIf="!notif.leida" class="badge badge-warning" style="font-size: 0.65rem;">NUEVA</span>
+              <!-- Icono según tipo de notificación -->
+              <ng-container *ngIf="notif.tipo === 'PAGO_PENDIENTE'">
+                <div class="mr-2 mt-1 rounded-circle d-flex align-items-center justify-content-center"
+                     style="width: 28px; height: 28px; background: rgba(39, 174, 96, 0.15); color: #27ae60; flex-shrink: 0;">
+                  <i class="fas fa-receipt font-weight-bold" style="font-size: 13px;"></i>
                 </div>
-                <p class="mb-1 cr-notif-msg text-truncate" style="max-width: 250px;">{{ notif.mensaje }}</p>
+              </ng-container>
+
+              <ng-container *ngIf="notif.tipo !== 'PAGO_PENDIENTE'">
+                <i class="fas fa-exclamation-circle text-warning mt-1 mr-2" *ngIf="notif.originalNotif && notif.originalNotif.diasRetraso > 0 && notif.originalNotif.diasRetraso <= 30"></i>
+                <i class="fas fa-exclamation-triangle text-danger mt-1 mr-2" *ngIf="notif.originalNotif && notif.originalNotif.diasRetraso > 30"></i>
+                <i class="fas fa-bell text-info mt-1 mr-2" *ngIf="!notif.originalNotif || notif.originalNotif.diasRetraso === 0"></i>
+              </ng-container>
+
+              <div class="flex-grow-1" style="min-width: 0;">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong class="cr-notif-title text-truncate mr-2" style="font-size: 0.88rem;">{{ notif.titulo }}</strong>
+                  <span *ngIf="!notif.leida" class="badge"
+                    [ngClass]="notif.tipo === 'PAGO_PENDIENTE' ? 'badge-success' : 'badge-warning'"
+                    style="font-size: 0.65rem;">
+                    NUEVO
+                  </span>
+                </div>
+                <p class="mb-1 cr-notif-msg text-truncate" style="max-width: 240px; font-size: 0.82rem;">{{ notif.mensaje }}</p>
                 <div class="d-flex justify-content-between align-items-center">
-                  <span class="text-danger small font-weight-bold">S/. {{ notif.montoDeuda | number:'1.2-2' }}</span>
-                  <span class="text-muted" style="font-size: 0.75rem;">{{ notif.fechaEnvio | date:'short' }}</span>
+                  <span class="small font-weight-bold" [ngClass]="notif.tipo === 'PAGO_PENDIENTE' ? 'text-success' : 'text-danger'">
+                    S/. {{ notif.monto | number:'1.2-2' }}
+                  </span>
+                  <span class="text-muted" style="font-size: 0.72rem;">{{ notif.fecha | date:'short' }}</span>
                 </div>
               </div>
             </div>
@@ -61,13 +78,20 @@
 
           <div *ngIf="notificaciones.length === 0" class="p-4 text-center">
             <i class="far fa-bell-slash fa-2x mb-2 d-block text-muted" style="opacity: 0.5;"></i>
-            <span class="small text-muted">No tienes notificaciones pendientes</span>
+            <span class="small text-muted">
+              {{ isAdmin ? 'No hay comprobantes pendientes de validación' : 'No tienes notificaciones pendientes' }}
+            </span>
           </div>
         </div>
 
-        <a *ngIf="isAdmin" routerLink="/admin/cobranzas" class="dropdown-item dropdown-footer text-center py-2 font-weight-bold" style="color: var(--cr-primary); background: #FAF5EE;">
-          <i class="fas fa-hand-holding-usd mr-1 text-warning"></i> Ir a Control de Cobranzas
-        </a>
+        <div *ngIf="isAdmin" class="border-top" style="border-color: #EADBCE !important;">
+          <a routerLink="/admin/pagos" class="dropdown-item dropdown-footer text-center py-2 font-weight-bold d-block" style="color: #27ae60; background: #FAF5EE;">
+            <i class="fas fa-check-double mr-1"></i> Ir a Validar Pagos
+          </a>
+          <a routerLink="/admin/cobranzas" class="dropdown-item dropdown-footer text-center py-2 font-weight-bold d-block" style="color: var(--cr-primary); background: #FFFFFF; font-size: 0.85rem;">
+            <i class="fas fa-hand-holding-usd mr-1 text-warning"></i> Control de Cobranzas
+          </a>
+        </div>
       </div>
     </li>
 

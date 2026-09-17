@@ -1,4 +1,4 @@
-﻿<div class="container-fluid">
+<div class="container-fluid">
   <!-- Header principal -->
   <div class="row mb-4">
     <div class="col-12">
@@ -45,134 +45,161 @@
   <div *ngIf="!loading" class="row">
     <div class="col-12">
       <!-- Tarjeta con pestañas de filtro -->
-      <div class="card border-0 text-white"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-        
-        <div class="card-header border-bottom-0 pb-0" style="background: transparent;">
-          <ul class="nav nav-tabs border-0">
+      <div class="card border-0"
+        style="background: #FFFFFF; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.10); border: 1px solid #E5DDD3;">
+
+        <div class="card-header border-0 pb-0"
+          style="background: var(--cr-header-gradient); border-radius: 0.75rem 0.75rem 0 0; padding: 1.2rem 1.5rem 0 1.5rem;">
+          <ul class="nav nav-tabs border-0" style="gap: 10px;">
             <li class="nav-item">
-              <a class="nav-link cursor-pointer text-white" [class.active]="filtro === 'PENDIENTE'"
-                [style.background]="filtro === 'PENDIENTE' ? 'rgba(155, 89, 182, 0.2)' : 'transparent'"
-                [style.border-bottom]="filtro === 'PENDIENTE' ? '3px solid #9b59b6' : 'none'"
+              <a class="nav-link cursor-pointer px-3 py-2"
+                [style.background]="filtro === 'PENDIENTE' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.color]="filtro === 'PENDIENTE' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.border]="filtro === 'PENDIENTE' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="font-weight: 700; font-size: 0.95rem; border-radius: 8px 8px 0 0; transition: all 0.2s ease;"
                 (click)="filtro = 'PENDIENTE'">
-                <i class="fas fa-clock mr-1 text-warning"></i> Pendientes de Revisión
-                <span class="badge badge-warning ml-1">{{ contarPorEstado('PENDIENTE') }}</span>
+                <i class="fas fa-clock mr-1" [style.color]="filtro === 'PENDIENTE' ? '#180B06' : '#FCD34D'"></i>
+                <span [style.color]="filtro === 'PENDIENTE' ? '#180B06' : '#FFFFFF'">Pendientes</span>
+                <span class="badge ml-2" [style.background]="filtro === 'PENDIENTE' ? '#180B06' : '#D97706'" style="color: #FFFFFF; font-size: 0.8rem; font-weight: 800; padding: 4px 8px; border-radius: 12px;">{{ contarPorEstado('PENDIENTE') }}</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link cursor-pointer text-white" [class.active]="filtro === 'APROBADO'"
-                [style.background]="filtro === 'APROBADO' ? 'rgba(46, 204, 113, 0.2)' : 'transparent'"
-                [style.border-bottom]="filtro === 'APROBADO' ? '3px solid #2ecc71' : 'none'"
+              <a class="nav-link cursor-pointer px-3 py-2"
+                [style.background]="filtro === 'APROBADO' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.color]="filtro === 'APROBADO' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.border]="filtro === 'APROBADO' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="font-weight: 700; font-size: 0.95rem; border-radius: 8px 8px 0 0; transition: all 0.2s ease;"
                 (click)="filtro = 'APROBADO'">
-                <i class="fas fa-check-circle mr-1 text-success"></i> Aprobados
-                <span class="badge badge-success ml-1">{{ contarPorEstado('APROBADO') }}</span>
+                <i class="fas fa-check-circle mr-1" [style.color]="filtro === 'APROBADO' ? '#180B06' : '#4ADE80'"></i>
+                <span [style.color]="filtro === 'APROBADO' ? '#180B06' : '#FFFFFF'">Aprobados</span>
+                <span class="badge ml-2" [style.background]="filtro === 'APROBADO' ? '#180B06' : '#16A34A'" style="color: #FFFFFF; font-size: 0.8rem; font-weight: 800; padding: 4px 8px; border-radius: 12px;">{{ contarPorEstado('APROBADO') }}</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link cursor-pointer text-white" [class.active]="filtro === 'RECHAZADO'"
-                [style.background]="filtro === 'RECHAZADO' ? 'rgba(231, 76, 60, 0.2)' : 'transparent'"
-                [style.border-bottom]="filtro === 'RECHAZADO' ? '3px solid #e74c3c' : 'none'"
+              <a class="nav-link cursor-pointer px-3 py-2"
+                [style.background]="filtro === 'RECHAZADO' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.color]="filtro === 'RECHAZADO' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.border]="filtro === 'RECHAZADO' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="font-weight: 700; font-size: 0.95rem; border-radius: 8px 8px 0 0; transition: all 0.2s ease;"
                 (click)="filtro = 'RECHAZADO'">
-                <i class="fas fa-times-circle mr-1 text-danger"></i> Rechazados
-                <span class="badge badge-danger ml-1">{{ contarPorEstado('RECHAZADO') }}</span>
+                <i class="fas fa-times-circle mr-1" [style.color]="filtro === 'RECHAZADO' ? '#180B06' : '#F87171'"></i>
+                <span [style.color]="filtro === 'RECHAZADO' ? '#180B06' : '#FFFFFF'">Rechazados</span>
+                <span class="badge ml-2" [style.background]="filtro === 'RECHAZADO' ? '#180B06' : '#DC2626'" style="color: #FFFFFF; font-size: 0.8rem; font-weight: 800; padding: 4px 8px; border-radius: 12px;">{{ contarPorEstado('RECHAZADO') }}</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link cursor-pointer text-white" [class.active]="filtro === 'TODOS'"
-                [style.background]="filtro === 'TODOS' ? 'rgba(79, 195, 247, 0.2)' : 'transparent'"
-                [style.border-bottom]="filtro === 'TODOS' ? '3px solid #4fc3f7' : 'none'"
+              <a class="nav-link cursor-pointer px-3 py-2"
+                [style.background]="filtro === 'TODOS' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.color]="filtro === 'TODOS' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.border]="filtro === 'TODOS' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="font-weight: 700; font-size: 0.95rem; border-radius: 8px 8px 0 0; transition: all 0.2s ease;"
                 (click)="filtro = 'TODOS'">
-                <i class="fas fa-list mr-1 text-info"></i> Todos
-                <span class="badge badge-info ml-1">{{ pagos.length }}</span>
+                <i class="fas fa-list mr-1" [style.color]="filtro === 'TODOS' ? '#180B06' : '#93C5FD'"></i>
+                <span [style.color]="filtro === 'TODOS' ? '#180B06' : '#FFFFFF'">Todos</span>
+                <span class="badge ml-2" [style.background]="filtro === 'TODOS' ? '#180B06' : '#2563EB'" style="color: #FFFFFF; font-size: 0.8rem; font-weight: 800; padding: 4px 8px; border-radius: 12px;">{{ pagos.length }}</span>
               </a>
             </li>
           </ul>
         </div>
 
-        <div class="card-body">
-          <div *ngIf="pagosFiltrados.length === 0" class="text-center py-5 text-muted">
-            <i class="fas fa-inbox fa-3x mb-3 opacity-50"></i>
-            <p>No hay pagos en esta categoría.</p>
+        <div class="card-body p-0">
+          <div *ngIf="pagosFiltrados.length === 0" class="text-center py-5" style="color: #66564E;">
+            <i class="fas fa-inbox fa-3x mb-3" style="opacity: 0.4; color: #C59B6D;"></i>
+            <p class="mb-0">No hay pagos en esta categoría.</p>
           </div>
 
           <div *ngIf="pagosFiltrados.length > 0" class="table-responsive">
-            <table class="table text-white table-hover" style="background: transparent;">
+            <table class="table table-hover mb-0" style="color: #241A15;">
               <thead>
-                <tr style="background: rgba(0,0,0,0.2);">
-                  <th>ID</th>
-                  <th>Cliente</th>
-                  <th>Cuota</th>
-                  <th>Fecha</th>
-                  <th>Método</th>
-                  <th>Monto</th>
-                  <th>Comprobante</th>
-                  <th>Estado</th>
-                  <th class="text-center">Acciones</th>
+                <tr style="background: #F5F1EB;">
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">ID</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Cliente</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Tipo</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Cuota</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Fecha</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Método</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Monto</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Comprobante</th>
+                  <th style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Estado</th>
+                  <th class="text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em;">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pago of pagosFiltrados">
+                <tr *ngFor="let pago of pagosFiltrados" style="border-bottom: 1px solid #F0E8DF;">
                   <!-- ID -->
-                  <td class="align-middle">
-                    <span class="badge badge-secondary">#{{ pago.id }}</span>
+                  <td class="align-middle py-3">
+                    <span class="badge" style="background: #2C1810; color: #F7EAD9; padding: 4px 8px; border-radius: 6px;">#{{ pago.id }}</span>
                   </td>
 
                   <!-- Cliente -->
-                  <td class="align-middle">
-                    <div class="font-weight-bold text-white">
+                  <td class="align-middle py-3">
+                    <div class="font-weight-bold" style="color: #241A15;">
                       {{ pago.clienteNombre || 'Cliente Registrado' }}
                     </div>
-                    <small class="text-muted" *ngIf="pago.clienteDni">
+                    <small style="color: #66564E;" *ngIf="pago.clienteDni">
                       <i class="fas fa-id-card mr-1"></i>DNI: {{ pago.clienteDni }}
                     </small>
                   </td>
 
-                  <!-- Cuota / Tipo -->
-                  <td class="align-middle">
-                    <div *ngIf="pago.tipoVenta === 'FIADO'" class="mb-1">
-                      <span class="badge py-1 px-2" style="background: rgba(230, 126, 34, 0.2); color: #e67e22; border: 1px solid #e67e22;">
-                        <i class="fas fa-book-open mr-1"></i> Fiado (Abono)
-                      </span>
-                    </div>
-                    <span class="badge badge-info px-2 py-1" *ngIf="pago.numeroCuota">
-                      <i class="fas fa-calendar-alt mr-1"></i>
-                      Cuota {{ pago.numeroCuota }} <span *ngIf="pago.totalCuotas && pago.tipoVenta !== 'FIADO'">de {{ pago.totalCuotas }}</span>
+                  <!-- Tipo -->
+                  <td class="align-middle py-3">
+                    <span *ngIf="pago.tipoVenta === 'FIADO'" class="badge py-1 px-2"
+                      style="background: #FEF3E7; color: #9A5B13; border: 1px solid #F59E0B; font-weight: 700;">
+                      <i class="fas fa-book-open mr-1"></i> Fiado
                     </span>
-                    <span class="text-muted small" *ngIf="!pago.numeroCuota">
-                      Cuota #{{ pago.cuotaId || pago.cuota.id || '-' }}
+                    <span *ngIf="pago.tipoVenta !== 'FIADO'" class="badge py-1 px-2"
+                      style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; font-weight: 700;">
+                      <i class="fas fa-credit-card mr-1"></i> Crédito
+                    </span>
+                  </td>
+
+                  <!-- Cuota -->
+                  <td class="align-middle py-3">
+                    <span *ngIf="pago.numeroCuota" class="badge px-2 py-1"
+                      style="background: #F5F1EB; color: #2C1810; border: 1px solid #E5DDD3; font-weight: 700;">
+                      <i class="fas fa-calendar-day mr-1" style="color: #C59B6D;"></i>
+                      Cuota {{ pago.numeroCuota }} <span *ngIf="pago.totalCuotas && pago.tipoVenta !== 'FIADO'">/ {{ pago.totalCuotas }}</span>
+                    </span>
+                    <span *ngIf="!pago.numeroCuota && pago.tipoVenta === 'FIADO'" class="small font-weight-bold" style="color: #9A5B13;">
+                      Abono a Cuenta
+                    </span>
+                    <span *ngIf="!pago.numeroCuota && pago.tipoVenta !== 'FIADO'" style="color: #66564E; font-size: 0.85rem;">
+                      #{{ pago.cuotaId || (pago.cuota ? pago.cuota.id : '-') }}
                     </span>
                   </td>
 
                   <!-- Fecha -->
-                  <td class="align-middle text-nowrap">
+                  <td class="align-middle py-3 text-nowrap" style="color: #241A15;">
                     {{ pago.fechaPago }}
                   </td>
 
                   <!-- Método -->
-                  <td class="align-middle">
+                  <td class="align-middle py-3">
                     <span class="badge px-2 py-1"
-                      [style.background]="pago.metodoPago === 'YAPE' ? '#7127ba' : '#34495e'">
+                      [style.background]="pago.metodoPago === 'YAPE' ? '#7127ba' : '#475569'"
+                      style="color: white; border-radius: 6px;">
                       <i class="fas fa-qrcode mr-1" *ngIf="pago.metodoPago === 'YAPE'"></i>
                       {{ pago.metodoPago || 'EFECTIVO' }}
                     </span>
                   </td>
 
                   <!-- Monto -->
-                  <td class="align-middle font-weight-bold text-success text-nowrap">
+                  <td class="align-middle py-3 font-weight-bold text-nowrap" style="color: #166534;">
                     S/. {{ pago.monto | number:'1.2-2' }}
                   </td>
 
                   <!-- Comprobante -->
-                  <td class="align-middle">
-                    <button *ngIf="pago.comprobanteUrl" class="btn btn-sm btn-outline-info text-nowrap"
+                  <td class="align-middle py-3">
+                    <button *ngIf="pago.comprobanteUrl" class="btn btn-sm text-nowrap"
+                      style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 6px;"
                       (click)="abrirModalComprobante(pago)">
                       <i class="fas fa-image mr-1"></i> Ver Foto
                     </button>
-                    <span *ngIf="!pago.comprobanteUrl" class="text-muted small">Sin imagen</span>
+                    <span *ngIf="!pago.comprobanteUrl" style="color: #66564E; font-size: 0.85rem;">Sin imagen</span>
                   </td>
 
                   <!-- Estado -->
-                  <td class="align-middle">
+                  <td class="align-middle py-3">
                     <span class="badge py-1 px-2"
                       [ngClass]="{
                         'badge-warning': pago.estado === 'PENDIENTE',
@@ -184,29 +211,38 @@
                   </td>
 
                   <!-- Acciones y Navegación -->
-                  <td class="align-middle text-center">
-                    <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center" style="gap: 5px;">
-                      <!-- Botones de Aprobación/Rechazo para pagos PENDIENTES -->
-                      <ng-container *ngIf="pago.estado === 'PENDIENTE'">
-                        <button class="btn btn-sm btn-success text-nowrap" title="Aceptar Pago" (click)="validarPago(pago.id, 'APROBADO')">
-                          <i class="fas fa-check mr-1"></i> Aceptar
-                        </button>
-                        <button class="btn btn-sm btn-danger text-nowrap" title="Rechazar Pago" (click)="validarPago(pago.id, 'RECHAZADO')">
-                          <i class="fas fa-times mr-1"></i> Rechazar
-                        </button>
-                      </ng-container>
+                  <td class="align-middle py-3 text-center">
+                    <!-- Si está PENDIENTE: Solo Aceptar y Rechazar con botones claros y espaciados -->
+                    <div *ngIf="pago.estado === 'PENDIENTE'" class="d-inline-flex align-items-center" style="gap: 8px;">
+                      <button class="btn btn-sm text-nowrap font-weight-bold px-3 py-1"
+                        style="background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; border-radius: 6px;"
+                        title="Aprobar y Registrar Pago"
+                        (click)="validarPago(pago.id, 'APROBADO')">
+                        <i class="fas fa-check mr-1"></i> Aceptar
+                      </button>
+                      <button class="btn btn-sm text-nowrap font-weight-bold px-3 py-1"
+                        style="background: #FEECEB; color: #DC2626; border: 1px solid #FECACA; border-radius: 6px;"
+                        title="Rechazar Pago"
+                        (click)="validarPago(pago.id, 'RECHAZADO')">
+                        <i class="fas fa-times mr-1"></i> Rechazar
+                      </button>
+                    </div>
 
-                      <!-- Botón para ver las Cuotas del Crédito/Compra -->
+                    <!-- Si NO está PENDIENTE (Aprobado o Rechazado): Enlaces de consulta -->
+                    <div *ngIf="pago.estado !== 'PENDIENTE'" class="d-inline-flex align-items-center" style="gap: 6px;">
                       <a *ngIf="pago.clienteId" [routerLink]="['/admin/user', pago.clienteId]" [queryParams]="{ tab: 'creditos' }"
-                        class="btn btn-sm btn-outline-primary text-nowrap" title="Ver todas las cuotas de este crédito">
-                        <i class="fas fa-calendar-check mr-1"></i> Cuotas
+                        class="btn btn-sm text-nowrap"
+                        style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 6px; font-size: 0.8rem;"
+                        title="Ver cuotas del cliente">
+                        <i class="fas fa-book-open mr-1"></i> Cuentas
                       </a>
-
-                      <!-- Botón para ver el Historial Completo de Pagos del Usuario -->
                       <a *ngIf="pago.clienteId" [routerLink]="['/admin/user', pago.clienteId]" [queryParams]="{ tab: 'pagos' }"
-                        class="btn btn-sm btn-outline-warning text-nowrap" title="Ver historial de pagos del usuario">
-                        <i class="fas fa-history mr-1"></i> Historial Pagos
+                        class="btn btn-sm text-nowrap"
+                        style="background: #FAF4EB; color: #8C6239; border: 1px solid #E5DDD3; border-radius: 6px; font-size: 0.8rem;"
+                        title="Ver historial de pagos">
+                        <i class="fas fa-history mr-1"></i> Historial
                       </a>
+                      <span *ngIf="!pago.clienteId" class="small text-muted">-</span>
                     </div>
                   </td>
                 </tr>

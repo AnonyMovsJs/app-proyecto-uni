@@ -244,10 +244,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           legend: {
             position: 'bottom',
             labels: {
-              color: '#ecf0f1',
+              color: '#2C1810',
               padding: 15,
               font: {
-                size: 12,
+                family: "'Plus Jakarta Sans', sans-serif",
+                size: 13,
+                weight: 'bold',
               },
             },
           },
@@ -363,20 +365,25 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           x: {
             grid: {
               display: false,
-              /* drawBorder: false, */
             },
             ticks: {
-              color: '#ecf0f1',
+              color: '#2C1810',
+              font: {
+                family: "'Plus Jakarta Sans', sans-serif",
+                weight: 'bold',
+              },
             },
           },
           y: {
             beginAtZero: true,
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)',
-              /* drawBorder: false, */
+              color: '#E5DDD3',
             },
             ticks: {
-              color: '#ecf0f1',
+              color: '#66564E',
+              font: {
+                family: "'Plus Jakarta Sans', sans-serif",
+              },
             },
           },
         },
@@ -384,10 +391,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           legend: {
             position: 'bottom',
             labels: {
-              color: '#ecf0f1',
+              color: '#2C1810',
               padding: 15,
               font: {
-                size: 12,
+                family: "'Plus Jakarta Sans', sans-serif",
+                size: 13,
+                weight: 'bold',
               },
             },
           },
@@ -395,7 +404,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
             display: false,
           },
           tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backgroundColor: 'rgba(44, 24, 16, 0.9)',
             titleFont: {
               size: 14,
             },
@@ -457,11 +466,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           {
             data: [pagadosAmount, pendientesAmount, vencidosAmount],
             backgroundColor: [
-              'rgba(46, 204, 113, 0.7)',
-              'rgba(243, 156, 18, 0.7)',
-              'rgba(231, 76, 60, 0.7)',
+              '#16A34A',
+              '#D97706',
+              '#DC2626',
             ],
-            borderColor: ['#2ecc71', '#f39c12', '#e74c3c'],
+            borderColor: ['#FFFFFF', '#FFFFFF', '#FFFFFF'],
             borderWidth: 2,
           },
         ],
@@ -474,10 +483,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
           legend: {
             position: 'bottom',
             labels: {
-              color: '#ecf0f1',
+              color: '#2C1810',
               padding: 15,
               font: {
-                size: 12,
+                family: "'Plus Jakarta Sans', sans-serif",
+                size: 13,
+                weight: 'bold',
               },
             },
           },

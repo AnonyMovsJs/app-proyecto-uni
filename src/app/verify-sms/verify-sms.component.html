@@ -1,86 +1,138 @@
-<div class="container vh-100 d-flex justify-content-center align-items-center">
-  <div class="card" style="min-width: 320px; max-width: 400px; width: 100%;">
-    <div class="card-header">
-      <h3>Verificación por Código</h3>
-      <div class="d-flex justify-content-end">
-        <span><i class="fas fa-mobile-alt me-2"></i></span>
-        <span><i class="fab fa-whatsapp"></i></span>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="text-center mb-3">
-        <i class="fas fa-sms" style="font-size: 2rem; color: #007bff;"></i>
-        <p class="mt-2 text-muted">
-          Hemos enviado un código de 6 dígitos a tu teléfono
-        </p>
-        <small class="text-muted">{{ email }}</small>
+<div class="verify-wrapper">
+  <!-- Halos decorativos de luz cálida ámbar/espresso -->
+  <div class="verify-backdrop-glow"></div>
+
+  <div class="verify-container">
+    <div class="verify-card">
+      <!-- Encabezado de Marca Espresso & Oro -->
+      <div class="verify-brand-header">
+        <div class="brand-badge">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h1 class="brand-title">Comercial Reyes</h1>
+        <p class="brand-subtitle">VERIFICACIÓN DE SEGURIDAD (2FA)</p>
       </div>
 
-      <!-- Botón WhatsApp con countdown -->
-      <div class="text-center mb-3" *ngIf="!showWhatsAppButton && !whatsappSent">
-        <div class="alert alert-info py-2">
-          <small>
-            <i class="fas fa-clock me-1"></i>
-            ¿No recibiste el SMS? Opción WhatsApp disponible en {{ countdown }}s
-          </small>
-        </div>
-      </div>
-
-      <!-- Botón WhatsApp -->
-      <div class="text-center mb-3" *ngIf="showWhatsAppButton && !whatsappSent">
-        <div class="alert alert-warning py-2 mb-2">
-          <small><i class="fas fa-exclamation-triangle me-1"></i>¿Problemas con SMS? Prueba WhatsApp</small>
-        </div>
-        <button class="btn btn-success btn-sm" (click)="onSendWhatsApp()" [disabled]="whatsappSending">
-          <i class="fab fa-whatsapp me-2"></i>
-          <span *ngIf="!whatsappSending">Enviar por WhatsApp</span>
-          <span *ngIf="whatsappSending">
-            <span class="spinner-border spinner-border-sm me-2"></span>
-            Enviando...
-          </span>
-        </button>
-      </div>
-
-      <!-- Confirmación WhatsApp enviado -->
-      <div class="text-center mb-3" *ngIf="whatsappSent">
-        <div class="alert alert-success py-2">
-          <i class="fab fa-whatsapp me-1"></i>
-          <small>¡Código enviado por WhatsApp! Revisa tu chat.</small>
-        </div>
-      </div>
-
-      <form (ngSubmit)="onVerifySms()">
-        <div class="alert alert-danger" *ngIf="errorMessage">
-          Por favor ingresa un código válido de 6 dígitos
+      <!-- Cuerpo del Componente -->
+      <div class="verify-body">
+        <div class="verify-intro">
+          <div class="device-icon-bubble">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h2 class="verify-title">Verifica tu Identidad</h2>
+          <p class="verify-desc">
+            Hemos enviado un código seguro de 6 dígitos a tu teléfono registrado
+          </p>
+          <div class="user-chip">
+            <i class="far fa-user me-1 text-gold"></i>
+            <span>{{ email }}</span>
+          </div>
         </div>
 
-        <div class="form-group my-3">
-          <label for="smsCode" class="form-label">Código de Verificación</label>
-          <input type="text" id="smsCode" class="form-control text-center" name="smsCode" placeholder="000000"
-            maxlength="6" [(ngModel)]="smsCode" [disabled]="isLoading"
-            style="font-size: 1.5rem; letter-spacing: 0.5rem;" autocomplete="off" />
-          <small class="form-text text-muted">
-            Ingresa el código de 6 dígitos que recibiste por SMS o WhatsApp
-          </small>
+        <!-- Botón WhatsApp con countdown -->
+        <div class="mt-3 mb-2" *ngIf="!showWhatsAppButton && !whatsappSent">
+          <div class="channel-notice">
+            <i class="fas fa-clock text-gold me-2"></i>
+            <span>¿No llegó el SMS? WhatsApp disponible en <strong>{{ countdown }}s</strong></span>
+          </div>
         </div>
 
-        <div class="form-group my-3 d-grid gap-2">
-          <button type="submit" class="btn btn-primary" [disabled]="isLoading || smsCode.length !== 6">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-            <span *ngIf="isLoading">Verificando...</span>
-            <span *ngIf="!isLoading">Verificar Código</span>
-          </button>
-
-          <button type="button" class="btn btn-outline-secondary" (click)="onBackToLogin()" [disabled]="isLoading">
-            Volver al Login
+        <!-- Botón WhatsApp cuando finaliza countdown -->
+        <div class="mt-3 mb-3" *ngIf="showWhatsAppButton && !whatsappSent">
+          <div class="channel-notice mb-2">
+            <i class="fab fa-whatsapp text-success me-2"></i>
+            <span>¿Problemas con el SMS tradicional? Prueba recibirlo por WhatsApp:</span>
+          </div>
+          <button
+            type="button"
+            class="btn btn-whatsapp w-100"
+            (click)="onSendWhatsApp()"
+            [disabled]="whatsappSending"
+          >
+            <i class="fab fa-whatsapp me-2"></i>
+            <span *ngIf="!whatsappSending">Enviar Código por WhatsApp</span>
+            <span *ngIf="whatsappSending">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Enviando mensaje...
+            </span>
           </button>
         </div>
-      </form>
 
-      <div class="text-center mt-3">
-        <small class="text-muted">
-          El código expira en 5 minutos. Si no recibiste nada, verifica tu número o usa WhatsApp.
-        </small>
+        <!-- Confirmación WhatsApp enviado -->
+        <div class="mt-3 mb-3" *ngIf="whatsappSent">
+          <div class="channel-success">
+            <i class="fab fa-whatsapp me-2"></i>
+            <span>¡Código reenviado por WhatsApp! Revisa tu bandeja de mensajes.</span>
+          </div>
+        </div>
+
+        <form (ngSubmit)="onVerifySms()" class="mt-3">
+          @if (errorMessage) {
+          <div class="verify-alert-error" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span>Por favor ingresa un código válido de 6 dígitos numéricos.</span>
+          </div>
+          }
+
+          <div class="form-group mb-3 text-center">
+            <label for="smsCode" class="form-label mb-2">
+              Ingresa el Código de 6 Dígitos
+            </label>
+            <div class="code-input-wrapper">
+              <input
+                type="text"
+                id="smsCode"
+                class="form-control code-input"
+                name="smsCode"
+                placeholder="------"
+                maxlength="6"
+                [(ngModel)]="smsCode"
+                [disabled]="isLoading"
+                autocomplete="one-time-code"
+                autofocus
+              />
+            </div>
+            <small class="code-hint">
+              Recibido vía SMS o WhatsApp de Comercial Reyes
+            </small>
+          </div>
+
+          <div class="actions-group">
+            <button
+              type="submit"
+              class="btn verify-submit-btn"
+              [disabled]="isLoading || smsCode.length !== 6"
+            >
+              @if (isLoading) {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span>Verificando Código...</span>
+              } @else {
+                <i class="fas fa-check-circle me-2"></i>
+                <span>Verificar y Acceder</span>
+              }
+            </button>
+
+            <button
+              type="button"
+              class="btn verify-back-btn"
+              (click)="onBackToLogin()"
+              [disabled]="isLoading"
+            >
+              <i class="fas fa-arrow-left me-2"></i>
+              <span>Volver al Login</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="verify-footer-hint">
+          <i class="fas fa-history text-gold me-1"></i>
+          <span>El código expira en 5 minutos por razones de seguridad.</span>
+        </div>
+      </div>
+
+      <!-- Pie de Tarjeta -->
+      <div class="verify-footer">
+        <small>© 2026 Comercial Reyes &bull; Universidad Nacional de Ingeniería</small>
       </div>
     </div>
   </div>

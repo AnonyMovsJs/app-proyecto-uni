@@ -24,11 +24,15 @@ export class AuthService {
 
   set user(user: any) {
     this._user = user;
+    localStorage.setItem('login', JSON.stringify(user));
     sessionStorage.setItem('login', JSON.stringify(user));
   }
 
   get user() {
     if (this._user.isAuth) {
+      return this._user;
+    } else if (localStorage.getItem('login')) {
+      this._user = JSON.parse(localStorage.getItem('login') || '{}');
       return this._user;
     } else if (sessionStorage.getItem('login')) {
       this._user = JSON.parse(sessionStorage.getItem('login') || '{}');
@@ -54,13 +58,17 @@ export class AuthService {
 
   set token(token: string) {
     this._token = token;
+    localStorage.setItem('token', token);
     sessionStorage.setItem('token', token);
   }
 
   get token() {
     if (this._token != null) {
       return this._token;
-    } else if (sessionStorage.getItem('token') || '{}') {
+    } else if (localStorage.getItem('token')) {
+      this._token = localStorage.getItem('token') || '{}';
+      return this._token;
+    } else if (sessionStorage.getItem('token')) {
       this._token = sessionStorage.getItem('token') || '{}';
       return this._token;
     }
@@ -172,5 +180,7 @@ export class AuthService {
 
     sessionStorage.removeItem('login');
     sessionStorage.removeItem('token');
+    localStorage.removeItem('login');
+    localStorage.removeItem('token');
   }
 }

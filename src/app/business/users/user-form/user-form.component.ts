@@ -50,8 +50,8 @@ export class UserFormComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(2)]],
       lastname: ['', [Validators.required, Validators.minLength(2)]],
       dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
-      address: ['', Validators.required],
+      phone: ['', [Validators.pattern(/^\d{9}$/)]],
+      address: [''],
       // Solo incluimos email en modo edición, pero lo deshabilitamos
       ...(this.isEditMode ? { email: [{ value: '', disabled: true }] } : {}),
       // La contraseña es opcional en modo edición

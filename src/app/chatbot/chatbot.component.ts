@@ -7,6 +7,7 @@ import {
   AfterViewChecked,
   ChangeDetectorRef,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   ActionData,
@@ -56,16 +57,17 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   adminSuggestions = [
     '¿Quién no paga?',
     'Clientes con deudas',
-    '¿Cuánto debe Anthony?',
-    'Registrar cliente',
-    'Cuotas de Ronald Villacorta'
+    '¿Cuánto me deberá Anthony en 5 meses?',
+    'Llévame al perfil de Anthony',
+    'Llévame a cobranzas',
+    'Llévame a nueva venta'
   ];
 
   userSuggestions = [
     '¿Cuánto debo en total?',
     '¿Cuándo vence mi próxima cuota?',
     'Mis cuotas pendientes',
-    'Mis cuotas pagadas'
+    'Llévame a mis compras'
   ];
 
   private messagesSubscription!: Subscription;
@@ -75,7 +77,8 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
   constructor(
     private chatbotService: ChatbotService,
     public authService: AuthService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router
   ) {
     if (this.speechRecognition) {
       this.initSpeechRecognition();
@@ -112,6 +115,10 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
       (action) => {
         this.actionData = action;
         if (action) {
+          if (action.type === 'NAVIGATE' && action.data && action.data.route) {
+            console.log('Agente ejecutando navegación automática a:', action.data.route);
+            this.router.navigateByUrl(action.data.route);
+          }
           setTimeout(() => this.scrollToBottom(), 100);
         }
       }
@@ -340,6 +347,12 @@ export class ChatbotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
     } catch (err) {
       // Ignorar
+    }
+  }
+
+  navigateToRoute(route: string): void {
+    if (route) {
+      this.router.navigateByUrl(route);
     }
   }
 

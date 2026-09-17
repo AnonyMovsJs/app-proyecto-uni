@@ -1,46 +1,48 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { User } from '../shared/model/user';
-import Swal from 'sweetalert2';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2';
+import { User } from '../shared/model/user';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-auth',
-  imports: [FormsModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
-  encapsulation: ViewEncapsulation.None,
 })
 export class AuthComponent {
   user: User;
   errorMensagge: boolean = false;
-
+  showPassword: boolean = false;
+  isLoading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {
     this.user = new User();
   }
 
-  // Reemplaza el método onSubmit() en tu auth.component.ts
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 
-  onSubmit() {
+  onSubmit(): void {
     if (!this.user.email || !this.user.password) {
       this.errorMensagge = true;
       return;
-    } else {
-      this.errorMensagge = false;
     }
+    this.errorMensagge = false;
+    this.isLoading = true;
 
     this.authService
       .loginUser({ email: this.user.email, password: this.user.password })
       .subscribe({
         next: (response) => {
+          this.isLoading = false;
           console.log('Respuesta del login:', response);
 
-          // Verificar si requiere SMS
           if (response.requiresSms) {
-            // Guardar datos temporales
             this.authService.tempToken = response.tempToken;
             this.authService.pendingAuth = {
               email: response.email,
@@ -48,17 +50,16 @@ export class AuthComponent {
               tempToken: response.tempToken,
             };
 
-            // Mostrar mensaje de éxito y redirigir a verificación SMS
             Swal.fire({
-              title: 'SMS Enviado',
+              title: 'Código 2FA Enviado',
               text: 'Se ha enviado un código de verificación a tu teléfono',
               icon: 'info',
               confirmButtonText: 'Continuar',
+              confirmButtonColor: '#361E14',
             }).then(() => {
               this.router.navigate(['/verify-sms']);
             });
           } else {
-            // Login tradicional sin 2FA (por si acaso)
             const token = response.token;
             const payload = this.authService.getPayload(token);
             const user = { email: payload.sub };
@@ -80,26 +81,34 @@ export class AuthComponent {
         },
 
         error: (error) => {
-          if (error.status == 401) {
-            Swal.fire(
-              'Error en el login',
-              'Email o password incorrectos!',
-              'error'
-            );
+          this.isLoading = false;
+          if (error.status === 401) {
+            Swal.fire({
+              title: 'Error de Autenticación',
+              text: 'Email o contraseña incorrectos',
+              icon: 'error',
+              confirmButtonColor: '#361E14',
+            });
           } else if (error.error && error.error.error === 'SMS_ERROR') {
-            Swal.fire(
-              'Error SMS',
-              'No se pudo enviar el código SMS. Intenta nuevamente.',
-              'error'
-            );
+            Swal.fire({
+              title: 'Error en Envío 2FA',
+              text: 'No se pudo enviar el código SMS. Intenta nuevamente.',
+              icon: 'error',
+              confirmButtonColor: '#361E14',
+            });
           } else {
-            Swal.fire('Error', 'Error interno del servidor', 'error');
+            Swal.fire({
+              title: 'Error de Conexión',
+              text: 'No se pudo conectar con el servidor. Verifica que el backend esté en ejecución.',
+              icon: 'error',
+              confirmButtonColor: '#361E14',
+            });
           }
         },
       });
   }
 
-  get admin() {
+  get admin(): boolean {
     return this.authService.isAdmin();
   }
 }

@@ -1,20 +1,318 @@
-.card {
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* ==========================================================================
+   COMERCIAL REYES - VERIFY SMS COMPONENT (ESPRESSO & CREMA NOBLE)
+   ========================================================================== */
+
+:host {
+  display: block;
+  min-height: 100vh;
 }
 
-.card-header {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  border-radius: 15px 15px 0 0;
+.verify-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: radial-gradient(circle at 50% 15%, #3e2417 0%, #24130C 60%, #170b07 100%);
+  overflow: hidden;
 }
 
-.form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+/* Halos decorativos de luz ámbar/oro */
+.verify-backdrop-glow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(197, 155, 109, 0.18) 0%, rgba(54, 30, 20, 0) 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  border: none;
+.verify-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Tarjeta Principal */
+.verify-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(18, 9, 5, 0.45), 0 0 0 1px rgba(197, 155, 109, 0.2);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Encabezado Espresso Noble */
+.verify-brand-header {
+  background: linear-gradient(135deg, #382015 0%, #24130B 100%);
+  padding: 28px 24px 22px;
+  text-align: center;
+  position: relative;
+  border-bottom: 2px solid #C59B6D;
+}
+
+.brand-badge {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 10px;
+  border-radius: 12px;
+  background: rgba(197, 155, 109, 0.18);
+  border: 1.5px solid rgba(197, 155, 109, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FAD082;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.brand-title {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.brand-subtitle {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: #C59B6D;
+  margin: 6px 0 0;
+  text-transform: uppercase;
+}
+
+/* Cuerpo del Componente */
+.verify-body {
+  padding: 28px 28px 22px;
+}
+
+.verify-intro {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.device-icon-bubble {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background-color: #FAF7F2;
+  border: 1px solid #E5DDD3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #361E14;
+  font-size: 1.25rem;
+}
+
+.verify-title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #241A15;
+  margin: 0 0 6px;
+}
+
+.verify-desc {
+  font-size: 0.86rem;
+  color: #66564E;
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #FAF7F2;
+  border: 1px solid #E5DDD3;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #361E14;
+}
+
+/* Avisos de Canal (SMS / WhatsApp) */
+.channel-notice {
+  background-color: #FEF7EA;
+  border: 1px solid #FDE68A;
+  color: #9A5B13;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.channel-success {
+  background-color: #DCFCE7;
+  border: 1px solid #BBF7D0;
+  color: #166534;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  border: 1px solid #1EBE5D;
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+
+.btn-whatsapp:hover:not(:disabled) {
+  background-color: #1EBE5D;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+/* Alerta de Error */
+.verify-alert-error {
+  display: flex;
+  align-items: center;
+  background-color: #FEECEB;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Input del Código 2FA */
+.form-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #361E14;
+}
+
+.code-input-wrapper {
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.code-input {
+  text-align: center !important;
+  font-family: 'Plus Jakarta Sans', monospace, sans-serif !important;
+  font-size: 1.9rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.55rem !important;
+  padding: 12px 14px !important;
+  background-color: #FAF8F5 !important;
+  border: 2px solid #E5DDD3 !important;
+  border-radius: 14px !important;
+  color: #241A15 !important;
+  transition: all 0.2s ease;
+}
+
+.code-input::placeholder {
+  color: #C2B5AC !important;
+  letter-spacing: 0.55rem;
+}
+
+.code-input:focus {
+  background-color: #FFFFFF !important;
+  border-color: #C59B6D !important;
+  box-shadow: 0 0 0 3px rgba(197, 155, 109, 0.25) !important;
+  outline: none !important;
+}
+
+.code-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #8C7B72;
+}
+
+/* Botones de Acción */
+.actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.verify-submit-btn {
+  background: linear-gradient(135deg, #382015 0%, #24130B 100%) !important;
+  border: 1px solid #C59B6D !important;
+  color: #F7EAD9 !important;
+  font-weight: 700;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(36, 19, 11, 0.3);
+  transition: all 0.2s ease;
+}
+
+.verify-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4A2A1C 0%, #2C180E 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+.verify-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.verify-back-btn {
+  background: transparent !important;
+  border: 1.5px solid #E5DDD3 !important;
+  color: #66564E !important;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.verify-back-btn:hover:not(:disabled) {
+  background: #FAF7F2 !important;
+  color: #361E14 !important;
+  border-color: #C59B6D !important;
+}
+
+/* Hints y Footer */
+.verify-footer-hint {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.76rem;
+  color: #8C7B72;
+}
+
+.verify-footer {
+  background-color: #FAF7F2;
+  border-top: 1px solid #E5DDD3;
+  padding: 12px 20px;
+  text-align: center;
+  color: #8C7B72;
+  font-size: 0.74rem;
+}
+
+.text-gold {
+  color: #C59B6D;
 }

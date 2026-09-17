@@ -1,28 +1,29 @@
-﻿<div class="container-fluid py-3">
+<div class="container-fluid py-3">
   <!-- Header con estilo acorde a la paleta institucional -->
   <div class="row mb-4">
     <div class="col-12">
       <div
         class="jumbotron text-white p-4 mb-0"
         style="
-          background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important;
+          background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important;
           border-radius: 0.75rem;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-          border-left: 5px solid #2575fc;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+          border-left: 5px solid #C59B6D;
         "
       >
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
           <div>
-            <h1 class="display-5 font-weight-bold mb-1">
-              <i class="fas fa-hand-holding-usd mr-2 text-warning"></i>Control de Cobranzas
+            <h1 class="mb-1 text-white" style="font-family: 'Lora', serif; font-weight: 700; font-size: 2.1rem;">
+              <i class="fas fa-hand-holding-usd mr-2" style="color: #FAD082;"></i>Control de Cobranzas
             </h1>
-            <p class="lead mb-0 opacity-75">
+            <p class="mb-0" style="color: #E2D2C3; font-size: 1rem;">
               Monitoreo en tiempo real de cuentas por cobrar, días de mora y alertas automatizadas
             </p>
           </div>
           <div class="mt-3 mt-md-0">
-            <button class="btn btn-outline-light px-3 shadow-sm" (click)="cargarDatosCobranzas()">
-              <i class="fas fa-sync-alt mr-2" [class.fa-spin]="loading"></i> Actualizar
+            <button class="btn px-4 py-2 font-weight-bold" (click)="cargarDatosCobranzas()"
+              style="background: #2C1810; color: #F7EAD9; border: 1px solid #C59B6D; border-radius: 8px;">
+              <i class="fas fa-sync-alt mr-2" [class.fa-spin]="loading" style="color: #FAD082;"></i> Actualizar
             </button>
           </div>
         </div>
@@ -33,20 +34,19 @@
   <!-- Loading State -->
   <div *ngIf="loading" class="row">
     <div class="col-12 text-center py-5">
-      <div class="spinner-grow text-primary mx-1" style="width: 1.2rem; height: 1.2rem"></div>
-      <div class="spinner-grow text-info mx-1" style="width: 1.2rem; height: 1.2rem"></div>
       <div class="spinner-grow text-warning mx-1" style="width: 1.2rem; height: 1.2rem"></div>
-      <p class="text-light mt-3 font-weight-bold">Analizando deudas y calculando días de mora...</p>
+      <div class="spinner-grow text-dark mx-1" style="width: 1.2rem; height: 1.2rem"></div>
+      <p class="mt-3 font-weight-bold" style="color: #66564E;">Analizando deudas y calculando días de mora...</p>
     </div>
   </div>
 
   <!-- Error Alert -->
   <div *ngIf="error" class="row mb-4">
     <div class="col-12">
-      <div class="alert alert-danger shadow-sm border-0 d-flex align-items-center">
+      <div class="alert alert-danger shadow-sm border-0 d-flex align-items-center" style="border-radius: 8px; border-left: 4px solid #DC2626;">
         <i class="fas fa-exclamation-circle fa-2x mr-3"></i>
         <div>
-          <h5 class="mb-0">Error en el módulo de cobranzas</h5>
+          <h5 class="mb-0 font-weight-bold">Error en el módulo de cobranzas</h5>
           <p class="mb-0 small">{{ error }}</p>
         </div>
       </div>
@@ -55,175 +55,195 @@
 
   <!-- Contenido Principal -->
   <div *ngIf="!loading && !error">
-    <!-- Tarjetas de Métricas (KPIs idénticas al diseño) -->
+    <!-- Tarjetas de Métricas (KPIs nobles) -->
     <div class="row mb-4">
       <!-- KPI 1: Total Cartera Vencida -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card kpi-card border-0 text-white h-100 shadow-sm card-purple">
-          <div class="card-body">
+        <div class="cobranzas-kpi kpi-danger">
+          <div>
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small text-uppercase font-weight-bold">Total Cartera Vencida (S/.)</span>
-              <div class="kpi-icon-box">
+              <span class="small text-uppercase font-weight-bold" style="color: #991B1B;">Cartera en Mora (S/.)</span>
+              <div class="kpi-icon-box" style="background: #FEECEB; color: #DC2626;">
                 <i class="fas fa-wallet"></i>
               </div>
             </div>
-            <h2 class="display-5 font-weight-bold mb-0">
+            <h3 class="font-weight-bold mb-0" style="color: #991B1B; font-family: 'Lora', serif; font-size: 2rem;">
               S/. {{ totalCarteraVencida | number: '1.2-2' }}
-            </h2>
+            </h3>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center py-2 px-3">
-            <a href="javascript:void(0)" (click)="filtrarPorEstado('MORA')" class="text-white small">Ver Detalle</a>
-            <i class="fas fa-arrow-right small"></i>
+          <div class="d-flex justify-content-between align-items-center pt-3 mt-3" style="border-top: 1px solid #E5DDD3;">
+            <a href="javascript:void(0)" (click)="filtrarPorEstado('MORA')" class="font-weight-bold small" style="color: #991B1B;">Filtrar en mora</a>
+            <i class="fas fa-arrow-right small" style="color: #991B1B;"></i>
           </div>
         </div>
       </div>
 
-      <!-- KPI 2: Promedio Días de Retraso (Objetivo Específico 2) -->
+      <!-- KPI 2: Promedio Días de Retraso -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card kpi-card border-0 text-white h-100 shadow-sm card-blue">
-          <div class="card-body">
+        <div class="cobranzas-kpi kpi-warning">
+          <div>
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small text-uppercase font-weight-bold">Promedio Días de Retraso</span>
-              <div class="kpi-icon-box">
+              <span class="small text-uppercase font-weight-bold" style="color: #9A5B13;">Promedio Días de Retraso</span>
+              <div class="kpi-icon-box" style="background: #FEF7EA; color: #D97706;">
                 <i class="fas fa-calendar-alt"></i>
               </div>
             </div>
-            <h2 class="display-5 font-weight-bold mb-0">
-              {{ promedioDiasRetraso }} <span class="lead text-white-50">días</span>
-            </h2>
+            <h3 class="font-weight-bold mb-0" style="color: #9A5B13; font-family: 'Lora', serif; font-size: 2rem;">
+              {{ promedioDiasRetraso }} <span style="font-size: 1.1rem; color: #66564E;">días</span>
+            </h3>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center py-2 px-3">
-            <a href="javascript:void(0)" (click)="filtrarPorEstado('TODAS')" class="text-white small">Ver Detalle</a>
-            <i class="fas fa-arrow-right small"></i>
+          <div class="d-flex justify-content-between align-items-center pt-3 mt-3" style="border-top: 1px solid #E5DDD3;">
+            <a href="javascript:void(0)" (click)="filtrarPorEstado('TODAS')" class="font-weight-bold small" style="color: #9A5B13;">Ver todos los clientes</a>
+            <i class="fas fa-arrow-right small" style="color: #9A5B13;"></i>
           </div>
         </div>
       </div>
 
       <!-- KPI 3: Cuentas por Vencer (7 días) -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card kpi-card border-0 text-white h-100 shadow-sm card-orange">
-          <div class="card-body">
+        <div class="cobranzas-kpi kpi-info">
+          <div>
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small text-uppercase font-weight-bold">Cuentas por Vencer (7 días)</span>
-              <div class="kpi-icon-box">
-                <i class="fas fa-exclamation-triangle"></i>
+              <span class="small text-uppercase font-weight-bold" style="color: #1D4ED8;">Cuentas por Vencer (7d)</span>
+              <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                <i class="fas fa-hourglass-half"></i>
               </div>
             </div>
-            <h2 class="display-5 font-weight-bold mb-0">{{ cuentasPorVencer }}</h2>
+            <h3 class="font-weight-bold mb-0" style="color: #1E3A8A; font-family: 'Lora', serif; font-size: 2rem;">
+              {{ cuentasPorVencer }}
+            </h3>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center py-2 px-3">
-            <a href="javascript:void(0)" (click)="filtrarPorEstado('POR_VENCER')" class="text-white small">Ver Detalle</a>
-            <i class="fas fa-arrow-right small"></i>
+          <div class="d-flex justify-content-between align-items-center pt-3 mt-3" style="border-top: 1px solid #E5DDD3;">
+            <a href="javascript:void(0)" (click)="filtrarPorEstado('POR_VENCER')" class="font-weight-bold small" style="color: #1D4ED8;">Ver por vencer</a>
+            <i class="fas fa-arrow-right small" style="color: #1D4ED8;"></i>
           </div>
         </div>
       </div>
 
       <!-- KPI 4: Deudas Críticas (+30 días) -->
       <div class="col-xl-3 col-md-6 mb-3">
-        <div class="card kpi-card border-0 text-white h-100 shadow-sm card-red">
-          <div class="card-body">
+        <div class="cobranzas-kpi kpi-critical">
+          <div>
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-white-50 small text-uppercase font-weight-bold">Deudas Críticas (+30 días)</span>
-              <div class="kpi-icon-box">
-                <i class="fas fa-exclamation-circle"></i>
+              <span class="small text-uppercase font-weight-bold" style="color: #7F1D1D;">Deudas Críticas (+30d)</span>
+              <div class="kpi-icon-box" style="background: #FEECEB; color: #991B1B;">
+                <i class="fas fa-exclamation-triangle"></i>
               </div>
             </div>
-            <h2 class="display-5 font-weight-bold mb-0">{{ deudasCriticas }}</h2>
+            <h3 class="font-weight-bold mb-0" style="color: #7F1D1D; font-family: 'Lora', serif; font-size: 2rem;">
+              {{ deudasCriticas }}
+            </h3>
           </div>
-          <div class="card-footer d-flex justify-content-between align-items-center py-2 px-3">
-            <a href="javascript:void(0)" (click)="filtrarPorEstado('CRITICAS')" class="text-white small">Ver Detalle</a>
-            <i class="fas fa-arrow-right small"></i>
+          <div class="d-flex justify-content-between align-items-center pt-3 mt-3" style="border-top: 1px solid #E5DDD3;">
+            <a href="javascript:void(0)" (click)="filtrarPorEstado('CRITICAS')" class="font-weight-bold small" style="color: #7F1D1D;">Filtrar críticas</a>
+            <i class="fas fa-arrow-right small" style="color: #7F1D1D;"></i>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Tabla Detalle de Cobranzas -->
-    <div class="card table-container-card border-0 shadow-lg mb-4">
-      <div class="card-header bg-transparent py-3 border-secondary d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <div class="d-flex align-items-center">
-          <i class="fas fa-history text-info mr-2 fa-lg"></i>
-          <h4 class="mb-0 font-weight-bold text-white">Detalle de Cobranzas</h4>
-          <span class="badge badge-secondary ml-3">{{ deudoresFiltrados.length }} clientes con deuda</span>
-        </div>
-
-        <!-- Filtros y Búsqueda -->
-        <div class="d-flex align-items-center flex-wrap gap-2 mt-2 mt-md-0">
-          <div class="input-group input-group-sm mr-2" style="max-width: 250px">
-            <div class="input-group-prepend">
-              <span class="input-group-text bg-dark border-secondary text-muted">
-                <i class="fas fa-search"></i>
-              </span>
-            </div>
-            <input
-              type="text"
-              class="form-control bg-dark text-white border-secondary"
-              placeholder="Buscar cliente, DNI..."
-              [(ngModel)]="searchTerm"
-              (input)="aplicarFiltros()"
-            />
+    <div class="card table-container-card mb-4 border-0" style="overflow: hidden;">
+      <div class="card-header py-3 px-4"
+        style="background: var(--cr-header-gradient); border-radius: 0.85rem 0.85rem 0 0; border-bottom: 2px solid var(--cr-gold);">
+        <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap: 14px;">
+          <!-- Título y Contador -->
+          <div class="d-flex align-items-center">
+            <i class="fas fa-list-alt mr-2" style="color: #FAD082; font-size: 1.25rem;"></i>
+            <h4 class="mb-0 cr-title-italic" style="color: #FFFFFF !important; letter-spacing: 0.4px;">Detalle de Cobranzas</h4>
+            <span class="badge ml-3 px-3 py-1 font-weight-bold"
+              style="background: rgba(197, 155, 109, 0.25); color: #FAD082; border: 1px solid #C59B6D; border-radius: 20px; font-size: 0.85rem;">
+              {{ deudoresFiltrados.length }} clientes con deuda
+            </span>
           </div>
 
-          <div class="btn-group btn-group-sm">
-            <button
-              class="btn"
-              [ngClass]="filtroEstado === 'TODAS' ? 'btn-primary' : 'btn-outline-secondary text-light'"
-              (click)="filtrarPorEstado('TODAS')"
-            >
-              Todas
-            </button>
-            <button
-              class="btn"
-              [ngClass]="filtroEstado === 'CRITICAS' ? 'btn-danger' : 'btn-outline-secondary text-light'"
-              (click)="filtrarPorEstado('CRITICAS')"
-            >
-              Críticas (+30d)
-            </button>
-            <button
-              class="btn"
-              [ngClass]="filtroEstado === 'MORA' ? 'btn-warning text-dark' : 'btn-outline-secondary text-light'"
-              (click)="filtrarPorEstado('MORA')"
-            >
-              En Mora
-            </button>
-            <button
-              class="btn"
-              [ngClass]="filtroEstado === 'AL_DIA' ? 'btn-success' : 'btn-outline-secondary text-light'"
-              (click)="filtrarPorEstado('AL_DIA')"
-            >
-              Al Día
-            </button>
+          <!-- Filtros y Búsqueda perfectamente alineados -->
+          <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+            <div class="input-group input-group-sm" style="width: 220px;">
+              <div class="input-group-prepend">
+                <span class="input-group-text" style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #66564E; border-right: none;">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; font-size: 0.85rem;"
+                placeholder="Buscar cliente, DNI..."
+                [(ngModel)]="searchTerm"
+                (input)="aplicarFiltros()"
+              />
+            </div>
+
+            <div class="btn-group btn-group-sm">
+              <button
+                class="btn font-weight-bold px-3"
+                [style.background]="filtroEstado === 'TODAS' ? '#C59B6D' : '#FFFFFF'"
+                [style.color]="filtroEstado === 'TODAS' ? '#180B06' : '#2C1810'"
+                [style.border]="'1px solid #E5DDD3'"
+                (click)="filtrarPorEstado('TODAS')"
+              >
+                Todas
+              </button>
+              <button
+                class="btn font-weight-bold px-3"
+                [style.background]="filtroEstado === 'CRITICAS' ? '#FEECEB' : '#FFFFFF'"
+                [style.color]="filtroEstado === 'CRITICAS' ? '#991B1B' : '#2C1810'"
+                [style.border]="'1px solid #E5DDD3'"
+                (click)="filtrarPorEstado('CRITICAS')"
+              >
+                Críticas (+30d)
+              </button>
+              <button
+                class="btn font-weight-bold px-3"
+                [style.background]="filtroEstado === 'MORA' ? '#FEF7EA' : '#FFFFFF'"
+                [style.color]="filtroEstado === 'MORA' ? '#9A5B13' : '#2C1810'"
+                [style.border]="'1px solid #E5DDD3'"
+                (click)="filtrarPorEstado('MORA')"
+              >
+                En Mora
+              </button>
+              <button
+                class="btn font-weight-bold px-3"
+                [style.background]="filtroEstado === 'AL_DIA' ? '#DCFCE7' : '#FFFFFF'"
+                [style.color]="filtroEstado === 'AL_DIA' ? '#166534' : '#2C1810'"
+                [style.border]="'1px solid #E5DDD3'"
+                (click)="filtrarPorEstado('AL_DIA')"
+              >
+                Al Día
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="card-body p-0">
         <div class="table-responsive">
-          <table class="table table-dark table-hover mb-0 text-nowrap align-middle">
+          <table class="table table-hover mb-0 text-nowrap align-middle" style="color: #241A15;">
             <thead>
-              <tr class="text-uppercase small border-bottom border-secondary" style="color: #ffffff !important;">
-                <th class="py-3 px-4 text-white font-weight-bold">Cliente</th>
-                <th class="py-3 text-white font-weight-bold">Teléfono</th>
-                <th class="py-3 text-white font-weight-bold">Monto Deuda</th>
-                <th class="py-3 text-white font-weight-bold">Fecha Vencimiento</th>
-                <th class="py-3 text-center text-white font-weight-bold">Días Retraso</th>
-                <th class="py-3 text-white font-weight-bold">Estado</th>
-                <th class="py-3 text-center text-white font-weight-bold">Acciones</th>
+              <tr style="background: #F5F1EB;">
+                <th class="py-3 px-4" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Cliente</th>
+                <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Teléfono</th>
+                <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Monto Deuda</th>
+                <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Fecha Vencimiento</th>
+                <th class="py-3 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Días Retraso</th>
+                <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Estado</th>
+                <th class="py-3 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.85rem; text-transform: uppercase;">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let deudor of paginaActual()" class="border-bottom border-secondary">
+              <tr *ngFor="let deudor of paginaActual()" style="border-bottom: 1px solid #F0E8DF;">
                 <!-- Cliente Info con Avatar -->
                 <td class="py-3 px-4">
                   <div class="d-flex align-items-center">
-                    <div class="avatar-circle mr-3" [ngClass]="deudor.diasRetraso > 30 ? 'avatar-red' : (deudor.diasRetraso > 0 ? 'avatar-orange' : 'avatar-blue')">
+                    <div class="avatar-circle mr-3">
                       {{ getIniciales(deudor.cliente.name, deudor.cliente.lastname) }}
                     </div>
                     <div>
-                      <div class="font-weight-bold text-white">
+                      <div class="font-weight-bold" style="color: #241A15;">
                         {{ deudor.cliente.name }} {{ deudor.cliente.lastname }}
                       </div>
-                      <small class="text-white font-weight-normal d-block" style="color: #ffffff !important; opacity: 0.95;">
+                      <small style="color: #66564E;">
                         {{ deudor.cliente.email || 'Sin correo' }}
                       </small>
                     </div>
@@ -231,25 +251,25 @@
                 </td>
 
                 <!-- Teléfono -->
-                <td class="py-3" style="color: #ffffff !important;">
-                  <i class="fas fa-phone-alt text-info mr-1 small"></i>
-                  <span style="color: #ffffff !important;">{{ deudor.cliente.phone || 'No registrado' }}</span>
+                <td class="py-3" style="color: #241A15;">
+                  <i class="fas fa-phone-alt mr-1" style="color: #C59B6D;"></i>
+                  <span>{{ deudor.cliente.phone || 'No registrado' }}</span>
                 </td>
 
                 <!-- Monto Deuda -->
                 <td class="py-3">
-                  <span class="font-weight-bold" [ngClass]="deudor.diasRetraso > 0 ? 'text-danger' : 'text-warning'">
+                  <span class="font-weight-bold" style="font-size: 1.05rem;" [ngClass]="deudor.diasRetraso > 0 ? 'text-danger' : 'text-warning'">
                     S/. {{ deudor.montoVencido | number: '1.2-2' }}
                   </span>
-                  <div class="small font-weight-bold mt-1" *ngIf="deudor.cuotasVencidasCount > 0" style="color: #ffffff !important;">
-                    <i class="fas fa-exclamation-circle text-warning mr-1"></i>{{ deudor.cuotasVencidasCount }} cuota(s) vencida(s)
+                  <div class="small font-weight-bold mt-1" *ngIf="deudor.cuotasVencidasCount > 0" style="color: #991B1B;">
+                    <i class="fas fa-exclamation-circle mr-1"></i>{{ deudor.cuotasVencidasCount }} cuota(s) vencida(s)
                   </div>
                 </td>
 
                 <!-- Fecha Vencimiento -->
-                <td class="py-3" style="color: #ffffff !important;">
-                  <i class="far fa-calendar text-info mr-1"></i>
-                  <span style="color: #ffffff !important;">{{ deudor.fechaVencimiento | date: 'dd MMM yyyy' }}</span>
+                <td class="py-3" style="color: #241A15;">
+                  <i class="far fa-calendar mr-1" style="color: #C59B6D;"></i>
+                  <span>{{ deudor.fechaVencimiento | date: 'dd MMM yyyy' }}</span>
                 </td>
 
                 <!-- Días de Retraso (Badges dinámicos de severidad) -->
@@ -259,67 +279,70 @@
                     <i class="fas fa-exclamation-triangle mr-1"></i> {{ deudor.diasRetraso }} días
                   </span>
 
-                  <!-- Mora (1 - 30 días) -->
+                  <!-- Mora regular (1 a 30 días) -->
                   <span *ngIf="deudor.diasRetraso > 0 && deudor.diasRetraso <= 30" class="badge-retraso badge-mora">
-                    <i class="far fa-clock mr-1"></i> {{ deudor.diasRetraso }} días
+                    <i class="fas fa-clock mr-1"></i> {{ deudor.diasRetraso }} días
                   </span>
 
-                  <!-- Al día (0 días) -->
-                  <span *ngIf="deudor.diasRetraso === 0" class="badge-retraso badge-al-dia">
+                  <!-- Al Día (0 días o menos) -->
+                  <span *ngIf="deudor.diasRetraso <= 0" class="badge-retraso badge-al-dia">
                     <i class="fas fa-check-circle mr-1"></i> Al día
                   </span>
                 </td>
 
                 <!-- Estado -->
                 <td class="py-3">
-                  <span class="badge badge-pill badge-secondary px-2 py-1">Crédito</span>
-                  <span *ngIf="deudor.notificadoHoy" class="badge badge-pill badge-info ml-1 px-2 py-1">
-                    <i class="fas fa-check"></i> Notificado
+                  <span
+                    class="badge px-3 py-2"
+                    [ngClass]="{
+                      'badge-danger': deudor.estadoCobranza === 'MORA' || deudor.estadoCobranza === 'CRITICA',
+                      'badge-warning': deudor.estadoCobranza === 'POR_VENCER',
+                      'badge-success': deudor.estadoCobranza === 'AL_DIA'
+                    }"
+                    style="border-radius: 6px; font-weight: 700;"
+                  >
+                    {{ deudor.estadoTexto }}
                   </span>
                 </td>
 
                 <!-- Acciones -->
                 <td class="py-3 text-center">
-                  <div class="btn-group btn-group-sm">
-                    <!-- Botón Notificación In-App en el Sistema -->
+                  <div class="btn-group" role="group">
                     <button
-                      type="button"
-                      class="btn btn-primary"
+                      class="btn btn-sm mr-2 font-weight-bold"
+                      style="background: #FEF7EA; color: #9A5B13; border: 1px solid #FDE68A; border-radius: 6px;"
                       (click)="enviarNotificacionCliente(deudor)"
-                      title="Enviar Notificación de Cobro al Cliente en el Sistema"
+                      [disabled]="deudor.notificadoHoy"
+                      title="Enviar alerta in-app al cliente"
                     >
-                      <i class="fas fa-bell mr-1"></i> Notificar
+                      <i class="fas fa-bell mr-1"></i>
+                      {{ deudor.notificadoHoy ? 'Notificado' : 'Notificar' }}
                     </button>
-
-                    <!-- Botón WhatsApp -->
                     <button
-                      *ngIf="deudor.cliente.phone"
-                      type="button"
-                      class="btn btn-success"
+                      class="btn btn-sm mr-2 font-weight-bold"
+                      style="background: #25D366; color: #FFFFFF; border: none; border-radius: 6px;"
                       (click)="enviarWhatsApp(deudor)"
                       title="Enviar recordatorio por WhatsApp"
                     >
-                      <i class="fab fa-whatsapp"></i>
+                      <i class="fab fa-whatsapp mr-1"></i> WhatsApp
                     </button>
-
-                    <!-- Botón Ver Usuario / Historial -->
                     <a
+                      class="btn btn-sm font-weight-bold"
+                      style="background: #2C1810; color: #F7EAD9; border: 1px solid #C59B6D; border-radius: 6px;"
                       [routerLink]="['/admin/user', deudor.cliente.id]"
-                      class="btn btn-outline-info"
-                      title="Ver Perfil y Estado de Cuenta"
                     >
-                      <i class="fas fa-eye"></i>
+                      <i class="fas fa-eye mr-1" style="color: #FAD082;"></i> Perfil
                     </a>
                   </div>
                 </td>
               </tr>
 
-              <!-- Fila vacía cuando no hay coincidencias -->
+              <!-- Estado Vacío -->
               <tr *ngIf="deudoresFiltrados.length === 0">
-                <td colspan="7" class="text-center py-5 text-muted">
-                  <i class="fas fa-check-circle fa-3x text-success mb-3 d-block"></i>
-                  <h5>No se encontraron clientes con deudas bajo este filtro</h5>
-                  <p class="small mb-0">Todos los pagos están al día o la búsqueda no arrojó resultados.</p>
+                <td colspan="7" class="text-center py-5" style="color: #66564E;">
+                  <i class="fas fa-check-double fa-3x mb-3" style="color: #166534; opacity: 0.5;"></i>
+                  <h5 style="color: #241A15;">¡No hay cobranzas pendientes en este filtro!</h5>
+                  <p class="mb-0">Todos los clientes coinciden con los criterios seleccionados o están al día.</p>
                 </td>
               </tr>
             </tbody>
@@ -327,35 +350,30 @@
         </div>
       </div>
 
-      <!-- Paginación Footer -->
-      <div class="card-footer bg-transparent py-3 border-secondary d-flex justify-content-between align-items-center flex-wrap">
-        <span class="text-muted small">
-          Mostrando {{ deudoresFiltrados.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0 }} a
-          {{ (currentPage * itemsPerPage) > deudoresFiltrados.length ? deudoresFiltrados.length : (currentPage * itemsPerPage) }}
-          de {{ deudoresFiltrados.length }} registros
+      <!-- Footer Paginación -->
+      <div class="card-footer py-3 d-flex justify-content-between align-items-center flex-wrap"
+        style="background: #F5F1EB; border-top: 1px solid #E5DDD3; border-radius: 0 0 0.85rem 0.85rem;">
+        <span class="small font-weight-bold" style="color: #66564E;">
+          Página {{ currentPage }} de {{ totalPages }} ({{ deudoresFiltrados.length }} registros)
         </span>
-
-        <ul class="pagination pagination-sm mb-0 mt-2 mt-md-0" *ngIf="totalPages > 1">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <button class="page-link bg-dark text-white border-secondary" (click)="cambiarPagina(currentPage - 1)">
-              &laquo;
-            </button>
-          </li>
-          <li
-            class="page-item"
-            *ngFor="let p of [].constructor(totalPages); let i = index"
-            [class.active]="currentPage === i + 1"
+        <div class="btn-group btn-group-sm">
+          <button
+            class="btn"
+            style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #2C1810;"
+            [disabled]="currentPage === 1"
+            (click)="cambiarPagina(currentPage - 1)"
           >
-            <button class="page-link bg-dark text-white border-secondary" (click)="cambiarPagina(i + 1)">
-              {{ i + 1 }}
-            </button>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button class="page-link bg-dark text-white border-secondary" (click)="cambiarPagina(currentPage + 1)">
-              &raquo;
-            </button>
-          </li>
-        </ul>
+            <i class="fas fa-chevron-left"></i> Anterior
+          </button>
+          <button
+            class="btn"
+            style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #2C1810;"
+            [disabled]="currentPage === totalPages"
+            (click)="cambiarPagina(currentPage + 1)"
+          >
+            Siguiente <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>

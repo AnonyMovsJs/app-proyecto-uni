@@ -432,4 +432,77 @@ export default class ProfileComponent implements OnInit {
   refreshData() {
     this.loadProfileData();
   }
+
+  // Ver detalle de compra con lista de productos
+  verDetalleCompra(item: any): void {
+    const ventaId = item.id;
+    if (!ventaId) return;
+
+    (Swal as any).fire({
+      title: 'Cargando detalle...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        (Swal as any).showLoading();
+      }
+    });
+
+    this.ventaService.obtenerDetallesVenta(ventaId).subscribe({
+      next: (detalles) => {
+        let filasHtml = '';
+        if (!detalles || detalles.length === 0) {
+          filasHtml = '<tr><td colspan="4" class="text-center text-muted py-3">No hay productos registrados en esta compra</td></tr>';
+        } else {
+          detalles.forEach((d: any) => {
+            filasHtml += `
+              <tr style="border-bottom: 1px solid #E5DDD3;">
+                <td style="padding: 8px 12px; text-align: left; font-weight: 600; color: #2C1810;">${d.nombreProducto}</td>
+                <td style="padding: 8px 12px; text-align: center; color: #66564E;">${d.cantidad}</td>
+                <td style="padding: 8px 12px; text-align: right; color: #66564E;">S/. ${parseFloat(d.precioUnitario).toFixed(2)}</td>
+                <td style="padding: 8px 12px; text-align: right; font-weight: 700; color: #166534;">S/. ${parseFloat(d.subtotal).toFixed(2)}</td>
+              </tr>
+            `;
+          });
+        }
+
+        (Swal as any).fire({
+          title: `Detalle de tu Compra #${ventaId}`,
+          html: `
+            <div style="text-align: left; color: #2C1810; font-family: 'Plus Jakarta Sans', sans-serif;">
+              <p class="mb-2 small" style="color: #8C7B72;">
+                ${item.description || ''}
+              </p>
+              <div class="table-responsive rounded mt-3" style="max-height: 280px; overflow-y: auto; border: 1px solid #E5DDD3;">
+                <table style="width: 100%; font-size: 0.88rem; border-collapse: collapse;">
+                  <thead>
+                    <tr style="background: #FAF7F2; border-bottom: 2px solid #E5DDD3;">
+                      <th style="padding: 8px 12px; text-align: left; color: #66564E;">Producto</th>
+                      <th style="padding: 8px 12px; text-align: center; color: #66564E;">Cant.</th>
+                      <th style="padding: 8px 12px; text-align: right; color: #66564E;">P. Unit</th>
+                      <th style="padding: 8px 12px; text-align: right; color: #66564E;">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${filasHtml}
+                  </tbody>
+                </table>
+              </div>
+              <div style="margin-top: 16px; padding: 10px; background: #F5F1EB; border-radius: 8px; text-align: right;">
+                <span style="font-size: 0.95rem; font-weight: 600; color: #66564E;">Total:</span>
+                <span style="font-size: 1.25rem; font-weight: 800; color: #166534; margin-left: 8px;">
+                  ${this.formatCurrency(item.amount || item.montoTotal || 0)}
+                </span>
+              </div>
+            </div>
+          `,
+          confirmButtonText: 'Cerrar',
+          confirmButtonColor: '#2C1810',
+          width: '580px'
+        });
+      },
+      error: (err) => {
+        console.error('Error al cargar detalles:', err);
+        (Swal as any).fire('Error', 'No se pudieron obtener los productos de la compra', 'error');
+      }
+    });
+  }
 }

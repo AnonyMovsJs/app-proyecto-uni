@@ -653,16 +653,16 @@ export class ClienteDashboardComponent implements OnInit, AfterViewInit {
               display: false,
             },
             ticks: {
-              color: '#ecf0f1',
+              color: '#66564E',
             },
           },
           y: {
             beginAtZero: true,
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)',
+              color: '#E5DDD3',
             },
             ticks: {
-              color: '#ecf0f1',
+              color: '#66564E',
             },
           },
         },
@@ -670,7 +670,7 @@ export class ClienteDashboardComponent implements OnInit, AfterViewInit {
           legend: {
             position: 'bottom',
             labels: {
-              color: '#ecf0f1',
+              color: '#241A15',
               padding: 15,
               font: {
                 size: 12,

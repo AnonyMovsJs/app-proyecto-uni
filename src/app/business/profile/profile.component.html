@@ -1,16 +1,15 @@
-﻿<div class="container-fluid">
-  <!-- Header principal -->
+<div class="container-fluid">
+  <!-- Header principal con estilo Espresso Noble suave -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="p-4 rounded"
-        style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-radius: 0.75rem; border-left: 4px solid #C59B6D;">
+      <div class="cr-banner p-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
           <div>
-            <h1 class="text-white font-weight-bold mb-0">Mi Perfil</h1>
-            <p class="text-light mt-2 mb-0 opacity-75">Visualiza y actualiza tu información personal</p>
+            <h1 class="cr-title-italic display-5 mb-0">Mi Perfil</h1>
+            <p class="cr-subtitle mt-2 mb-0">Visualiza y actualiza tu información personal</p>
           </div>
           <div class="mt-3 mt-md-0">
-            <button class="btn btn-outline-light px-3" (click)="refreshData()">
+            <button class="btn btn-outline-light px-3" (click)="refreshData()" style="border-radius: 8px; border-color: rgba(255,255,255,0.35);">
               <i class="fas fa-sync-alt mr-2"></i> Actualizar
             </button>
           </div>
@@ -22,10 +21,10 @@
   <!-- Loading Indicator -->
   <div *ngIf="loading" class="row">
     <div class="col-12 text-center py-5">
-      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
-      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
-      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
-      <p class="text-light mt-3">Cargando datos del perfil...</p>
+      <div class="spinner-grow mx-1" style="width: 1rem; height: 1rem; color: #C59B6D; animation-delay: 0s;"></div>
+      <div class="spinner-grow mx-1" style="width: 1rem; height: 1rem; color: #361E14; animation-delay: 0.2s;"></div>
+      <div class="spinner-grow mx-1" style="width: 1rem; height: 1rem; color: #9A5B13; animation-delay: 0.4s;"></div>
+      <p class="mt-3" style="color: #66564E; font-weight: 500;">Cargando datos del perfil...</p>
     </div>
   </div>
 
@@ -33,12 +32,12 @@
   <div *ngIf="error" class="row mb-4">
     <div class="col-12">
       <div class="alert"
-        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        style="background-color: #FEECEB !important; color: #991B1B !important; border-left: 4px solid #991B1B; border-radius: 0.75rem; padding: 1rem 1.25rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #FECACA;">
         <div class="d-flex align-items-center">
-          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem; color: #991B1B;"></i>
           <div>
-            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
-            <p class="mb-0">{{ error }}</p>
+            <h5 class="mb-1 font-weight-bold" style="color: #991B1B;">Error al cargar datos</h5>
+            <p class="mb-0" style="color: #7F1D1D;">{{ error }}</p>
           </div>
         </div>
       </div>
@@ -50,27 +49,27 @@
 
     <!-- Sidebar de perfil -->
     <div class="col-lg-3 col-md-4 mb-4">
-      <div class="card border-0 text-white overflow-hidden"
-        style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+      <div class="card border-0 text-white overflow-hidden shadow-sm"
+        style="background: linear-gradient(135deg, #361E14 0%, #24130C 100%) !important; border-radius: 14px; border: 1px solid #E5DDD3 !important;">
         <div class="profile-banner"
-          style="height: 80px; background: url('https://via.placeholder.com/800x200/4fc3f7/ffffff?text=') center/cover; opacity: 0.7;">
+          style="height: 80px; background: linear-gradient(135deg, #482B1E 0%, #2A160E 100%); opacity: 0.95;">
         </div>
 
         <div class="card-body text-center position-relative pt-0" style="margin-top: -40px;">
           <div class="rounded-circle mx-auto mb-3 profile-avatar"
-            style="width: 90px; height: 90px; background: #4fc3f7; border: 4px solid rgba(255,255,255,0.8); padding: 3px; overflow: hidden; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-            <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"
-              style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; font-size: 2rem; font-weight: bold;">
+            style="width: 90px; height: 90px; background: #2C1810; border: 3px solid #C59B6D; overflow: hidden; position: relative; box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
+            <div class="w-100 h-100 rounded-circle d-flex align-items-center justify-content-center cr-title-italic"
+              style="background: #2C1810; color: #F7EAD9; font-size: 2rem;">
               {{ userProfile?.name?.charAt(0) }}{{ userProfile?.lastname?.charAt(0) }}
             </div>
           </div>
 
-          <h5 class="card-title mb-1">{{userProfile?.name}} {{userProfile?.lastname}}</h5>
-          <p class="text-light opacity-75 mb-3">{{userProfile?.email}}</p>
+          <h5 class="card-title mb-1 cr-title-italic text-white" style="font-size: 1.25rem;">{{userProfile?.name}} {{userProfile?.lastname}}</h5>
+          <p class="text-light opacity-75 mb-3 small">{{userProfile?.email}}</p>
 
           <div>
-            <button class="btn btn-sm mb-3 w-100"
-              style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 0.5rem;"
+            <button class="btn btn-sm mb-3 w-100 font-weight-bold"
+              style="background: rgba(197,155,109,0.2); color: #FAD082; border: 1px solid rgba(197,155,109,0.5); border-radius: 8px; padding: 6px 12px;"
               (click)="enableEditMode()">
               <i class="fas fa-user-edit mr-2"></i> Editar Perfil
             </button>
@@ -79,52 +78,52 @@
 
         <!-- Estadísticas del usuario -->
         <div class="card-footer px-0 pb-0 pt-3"
-          style="background: transparent; border-top: 1px solid rgba(255,255,255,0.1);">
+          style="background: rgba(0,0,0,0.2) !important; border-top: 1px solid rgba(255,255,255,0.12) !important;">
           <div class="row g-0">
-            <div class="col-6 text-center py-3 border-right" style="border-color: rgba(255,255,255,0.1) !important;">
-              <h3 class="mb-0" style="color: #4fc3f7; font-weight: bold;">{{ totalCompras }}</h3>
-              <small class="text-light opacity-75">Compras</small>
+            <div class="col-6 text-center py-3 border-right" style="border-color: rgba(255,255,255,0.12) !important;">
+              <h3 class="mb-1 cr-title-italic" style="color: #FAD082; font-size: 1.65rem;">{{ totalCompras }}</h3>
+              <small class="font-weight-bold" style="color: #FFFFFF !important; font-size: 0.82rem; letter-spacing: 0.3px;">Compras</small>
             </div>
             <div class="col-6 text-center py-3">
-              <h3 class="mb-0" style="color: #4fc3f7; font-weight: bold;">{{ formatCurrency(totalGastado) }}</h3>
-              <small class="text-light opacity-75">Total Gastado</small>
+              <h3 class="mb-1 cr-title-italic" style="color: #FAD082; font-size: 1.65rem;">{{ formatCurrency(totalGastado) }}</h3>
+              <small class="font-weight-bold" style="color: #FFFFFF !important; font-size: 0.82rem; letter-spacing: 0.3px;">Total Gastado</small>
             </div>
           </div>
           <div class="row g-0">
             <div class="col-6 text-center py-3 border-right border-top"
-              style="border-color: rgba(255,255,255,0.1) !important;">
-              <h3 class="mb-0" style="color: #e74c3c; font-weight: bold;">{{ formatCurrency(totalDeuda) }}</h3>
-              <small class="text-light opacity-75">Deuda Pendiente</small>
+              style="border-color: rgba(255,255,255,0.12) !important;">
+              <h3 class="mb-1 cr-title-italic" style="color: #FCA5A5; font-size: 1.65rem;">{{ formatCurrency(totalDeuda) }}</h3>
+              <small class="font-weight-bold" style="color: #FFFFFF !important; font-size: 0.82rem; letter-spacing: 0.3px;">Deuda Pendiente</small>
             </div>
-            <div class="col-6 text-center py-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
-              <h3 class="mb-0" style="color: #2ecc71; font-weight: bold;">{{ formatCurrency(totalPagado) }}</h3>
-              <small class="text-light opacity-75">Total Pagado</small>
+            <div class="col-6 text-center py-3 border-top" style="border-color: rgba(255,255,255,0.12) !important;">
+              <h3 class="mb-1 cr-title-italic" style="color: #86EFAC; font-size: 1.65rem;">{{ formatCurrency(totalPagado) }}</h3>
+              <small class="font-weight-bold" style="color: #FFFFFF !important; font-size: 0.82rem; letter-spacing: 0.3px;">Total Pagado</small>
             </div>
           </div>
         </div>
 
         <ul class="list-group list-group-flush border-0">
           <li class="list-group-item border-0 d-flex align-items-center" [class.active]="activeTab === 'profile'"
-            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.1) !important;"
+            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.08) !important;"
             (click)="setActiveTab('profile')">
-            <i class="fas fa-user mr-3"></i>
+            <i class="fas fa-user mr-3" style="color: #C59B6D;"></i>
             <span>Información Personal</span>
-            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'profile'"></i>
+            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'profile'" style="color: #C59B6D;"></i>
           </li>
           <li class="list-group-item border-0 d-flex align-items-center" [class.active]="activeTab === 'activity'"
-            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.1) !important;"
+            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.08) !important;"
             (click)="setActiveTab('activity')">
-            <i class="fas fa-history mr-3"></i>
+            <i class="fas fa-history mr-3" style="color: #C59B6D;"></i>
             <span>Actividad Reciente</span>
-            <span class="badge rounded-pill ml-2" style="background-color: #f39c12;">{{ recentActivity.length }}</span>
-            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'activity'"></i>
+            <span class="badge ml-2 font-weight-bold" style="background-color: #C59B6D; color: #24130C; border-radius: 10px;">{{ recentActivity.length }}</span>
+            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'activity'" style="color: #C59B6D;"></i>
           </li>
           <li class="list-group-item border-0 d-flex align-items-center" [class.active]="activeTab === 'edit'"
-            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.1) !important;"
+            style="background: transparent; cursor: pointer; color: white; border-top: 1px solid rgba(255,255,255,0.08) !important;"
             (click)="setActiveTab('edit')">
-            <i class="fas fa-edit mr-3"></i>
+            <i class="fas fa-edit mr-3" style="color: #C59B6D;"></i>
             <span>Editar Perfil</span>
-            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'edit'"></i>
+            <i class="fas fa-chevron-right ml-auto" *ngIf="activeTab === 'edit'" style="color: #C59B6D;"></i>
           </li>
         </ul>
       </div>
@@ -134,55 +133,55 @@
     <div class="col-lg-9 col-md-8">
       <!-- Pestaña: Información de Perfil -->
       <div *ngIf="activeTab === 'profile'">
-        <div class="card border-0 mb-4"
-          style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="card border-0 mb-4 shadow-sm"
+          style="background: #FFFFFF; border-radius: 14px; border: 1px solid #E5DDD3;">
           <div class="card-header d-flex align-items-center py-3"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <i class="fas fa-id-card mr-2" style="color: #4fc3f7;"></i>
-            <h5 class="mb-0 text-white">Información Personal</h5>
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-radius: 14px 14px 0 0;">
+            <i class="fas fa-id-card mr-2" style="color: #C59B6D;"></i>
+            <h5 class="mb-0 font-weight-bold" style="color: #241A15;">Información Personal</h5>
           </div>
-          <div class="card-body text-white">
+          <div class="card-body">
             <div class="row">
               <div class="col-md-6 mb-3">
-                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                  <p class="small mb-1 text-light opacity-75">Nombre</p>
-                  <h6 class="mb-0">{{ userProfile?.name || 'No especificado' }}</h6>
+                <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                  <p class="small mb-1" style="color: #66564E;">Nombre</p>
+                  <h6 class="mb-0" style="color: #241A15;">{{ userProfile?.name || 'No especificado' }}</h6>
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                  <p class="small mb-1 text-light opacity-75">Apellido</p>
-                  <h6 class="mb-0">{{ userProfile?.lastname || 'No especificado' }}</h6>
+                <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                  <p class="small mb-1" style="color: #66564E;">Apellido</p>
+                  <h6 class="mb-0" style="color: #241A15;">{{ userProfile?.lastname || 'No especificado' }}</h6>
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                  <p class="small mb-1 text-light opacity-75">DNI</p>
-                  <h6 class="mb-0">{{ userProfile?.dni || 'No especificado' }}</h6>
+                <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                  <p class="small mb-1" style="color: #66564E;">DNI</p>
+                  <h6 class="mb-0" style="color: #241A15;">{{ userProfile?.dni || 'No especificado' }}</h6>
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                  <p class="small mb-1 text-light opacity-75">Celular</p>
-                  <h6 class="mb-0">{{ userProfile?.phone || 'No especificado' }}</h6>
+                <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                  <p class="small mb-1" style="color: #66564E;">Celular</p>
+                  <h6 class="mb-0" style="color: #241A15;">{{ userProfile?.phone || 'No especificado' }}</h6>
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                  <p class="small mb-1 text-light opacity-75">Email</p>
-                  <h6 class="mb-0">{{ userProfile?.email || 'No especificado' }}</h6>
+                <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                  <p class="small mb-1" style="color: #66564E;">Email</p>
+                  <h6 class="mb-0" style="color: #241A15;">{{ userProfile?.email || 'No especificado' }}</h6>
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <div class="p-3 rounded" style="background: rgba(0,0,0,0.2);">
-                  <p class="small mb-1 text-light opacity-75">Dirección</p>
-                  <h6 class="mb-0">{{ userProfile?.address || 'No especificada' }}</h6>
+                <div class="p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3;">
+                  <p class="small mb-1" style="color: #66564E;">Dirección</p>
+                  <h6 class="mb-0" style="color: #241A15;">{{ userProfile?.address || 'No especificada' }}</h6>
                 </div>
               </div>
             </div>
             <div class="text-center mt-3">
               <button class="btn btn-primary" (click)="enableEditMode()"
-                style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                style="background: linear-gradient(135deg, #28140B 0%, #3D1F12 100%); border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); color: #F7EAD9; font-weight: 600;">
                 <i class="fas fa-pencil-alt mr-2"></i> Editar Información
               </button>
             </div>
@@ -190,90 +189,96 @@
         </div>
 
         <!-- Resumen de Estado Financiero -->
-        <div class="card border-0 mb-4"
-          style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="card border-0 mb-4 shadow-sm"
+          style="background: #FFFFFF; border-radius: 14px; border: 1px solid #E5DDD3;">
           <div class="card-header d-flex align-items-center py-3"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <i class="fas fa-chart-pie mr-2" style="color: #4fc3f7;"></i>
-            <h5 class="mb-0 text-white">Estado Financiero</h5>
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-radius: 14px 14px 0 0;">
+            <i class="fas fa-chart-pie mr-2" style="color: #C59B6D;"></i>
+            <h5 class="mb-0 font-weight-bold" style="color: #241A15;">Estado Financiero</h5>
           </div>
-          <div class="card-body text-white">
+          <div class="card-body p-4">
             <div class="row">
-              <div class="col-md-3 mb-3">
-                <div class="card h-100 text-white"
-                  style="background: rgba(52, 152, 219, 0.15); border-radius: 10px; border: 1px solid rgba(52, 152, 219, 0.2);">
-                  <div class="card-body p-3 text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                      <i class="fas fa-shopping-cart mr-2" style="color: #3498db;"></i>
-                      <h6 class="mb-0" style="color: #3498db;">Total Compras</h6>
-                    </div>
-                    <h4 class="mb-0 font-weight-bold text-white">{{ totalCompras }}</h4>
+              <div class="col-md-3 mb-3 mb-md-0">
+                <div class="card border-0 p-3 h-100 d-flex flex-row justify-content-between align-items-center"
+                  style="background: #F5F1EB; border-radius: 0.75rem; border-left: 4px solid #C59B6D; border: 1px solid #E5DDD3; box-shadow: 0 2px 8px rgba(44,24,16,0.04);">
+                  <div>
+                    <span class="small text-uppercase d-block font-weight-bold" style="color: #66564E; letter-spacing: 0.04em;">Total Compras</span>
+                    <h4 class="mb-0 font-weight-bold mt-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.6rem;">
+                      {{ totalCompras }}
+                    </h4>
                   </div>
+                  <i class="fas fa-shopping-cart fa-2x" style="color: #C59B6D; opacity: 0.6;"></i>
                 </div>
               </div>
 
-              <div class="col-md-3 mb-3">
-                <div class="card h-100 text-white"
-                  style="background: rgba(46, 204, 113, 0.15); border-radius: 10px; border: 1px solid rgba(46, 204, 113, 0.2);">
-                  <div class="card-body p-3 text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                      <i class="fas fa-money-bill-wave mr-2" style="color: #2ecc71;"></i>
-                      <h6 class="mb-0" style="color: #2ecc71;">Total Pagado</h6>
-                    </div>
-                    <h4 class="mb-0 font-weight-bold text-white">{{ formatCurrency(totalPagado) }}</h4>
+              <div class="col-md-3 mb-3 mb-md-0">
+                <div class="card border-0 p-3 h-100 d-flex flex-row justify-content-between align-items-center"
+                  style="background: #DCFCE7; border-radius: 0.75rem; border-left: 4px solid #166534; border: 1px solid #BBF7D0; box-shadow: 0 2px 8px rgba(22,101,52,0.04);">
+                  <div>
+                    <span class="small text-uppercase d-block font-weight-bold" style="color: #166534; letter-spacing: 0.04em;">Total Pagado</span>
+                    <h4 class="mb-0 font-weight-bold mt-1" style="color: #14532D !important; font-family: 'Lora', serif; font-size: 1.6rem;">
+                      {{ formatCurrency(totalPagado) }}
+                    </h4>
                   </div>
+                  <i class="fas fa-check-circle fa-2x" style="color: #166534; opacity: 0.6;"></i>
                 </div>
               </div>
 
-              <div class="col-md-3 mb-3">
-                <div class="card h-100 text-white"
-                  style="background: rgba(231, 76, 60, 0.15); border-radius: 10px; border: 1px solid rgba(231, 76, 60, 0.2);">
-                  <div class="card-body p-3 text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                      <i class="fas fa-exclamation-triangle mr-2" style="color: #e74c3c;"></i>
-                      <h6 class="mb-0" style="color: #e74c3c;">Deuda Pendiente</h6>
-                    </div>
-                    <h4 class="mb-0 font-weight-bold text-white">{{ formatCurrency(totalDeuda) }}</h4>
+              <div class="col-md-3 mb-3 mb-md-0">
+                <div class="card border-0 p-3 h-100 d-flex flex-row justify-content-between align-items-center"
+                  style="background: #FEECEB; border-radius: 0.75rem; border-left: 4px solid #DC2626; border: 1px solid #FECACA; box-shadow: 0 2px 8px rgba(220,38,38,0.04);">
+                  <div>
+                    <span class="small text-uppercase d-block font-weight-bold" style="color: #991B1B; letter-spacing: 0.04em;">Deuda Pendiente</span>
+                    <h4 class="mb-0 font-weight-bold mt-1" style="color: #7F1D1D !important; font-family: 'Lora', serif; font-size: 1.6rem;">
+                      {{ formatCurrency(totalDeuda) }}
+                    </h4>
                   </div>
+                  <i class="fas fa-exclamation-triangle fa-2x" style="color: #DC2626; opacity: 0.6;"></i>
                 </div>
               </div>
 
-              <div class="col-md-3 mb-3">
-                <div class="card h-100 text-white"
-                  style="background: rgba(243, 156, 18, 0.15); border-radius: 10px; border: 1px solid rgba(243, 156, 18, 0.2);">
-                  <div class="card-body p-3 text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                      <i class="fas fa-calendar-alt mr-2" style="color: #f39c12;"></i>
-                      <h6 class="mb-0" style="color: #f39c12;">Cuotas Pendientes</h6>
-                    </div>
-                    <h4 class="mb-0 font-weight-bold text-white">{{ cuotasPendientes + cuotasVencidas }}</h4>
+              <div class="col-md-3 mb-3 mb-md-0">
+                <div class="card border-0 p-3 h-100 d-flex flex-row justify-content-between align-items-center"
+                  style="background: #FEF7EA; border-radius: 0.75rem; border-left: 4px solid #D97706; border: 1px solid #FDE68A; box-shadow: 0 2px 8px rgba(217,119,6,0.04);">
+                  <div>
+                    <span class="small text-uppercase d-block font-weight-bold" style="color: #9A5B13; letter-spacing: 0.04em;">Cuotas Pendientes</span>
+                    <h4 class="mb-0 font-weight-bold mt-1" style="color: #78350F !important; font-family: 'Lora', serif; font-size: 1.6rem;">
+                      {{ cuotasPendientes + cuotasVencidas }}
+                    </h4>
                   </div>
+                  <i class="fas fa-calendar-alt fa-2x" style="color: #9A5B13; opacity: 0.6;"></i>
                 </div>
               </div>
             </div>
 
             <!-- Alertas de estado -->
             <div *ngIf="totalDeuda > 0" class="alert mt-3"
-              style="background: rgba(243, 156, 18, 0.15) !important; border-left: 4px solid #f39c12; border-radius: 0.5rem;">
-              <div class="d-flex align-items-start">
-                <i class="fas fa-exclamation-triangle mt-1 mr-3" style="color: #f39c12;"></i>
-                <div>
-                  <h6 style="color: #f39c12;">Tienes cuotas pendientes</h6>
-                  <p class="mb-0 text-white">Tienes una deuda pendiente de <strong>{{ formatCurrency(totalDeuda)
-                      }}</strong>.
-                    <br>{{ cuotasPendientes }} cuotas pendientes y {{ cuotasVencidas }} cuotas vencidas.
-                  </p>
+              style="background: #FEF7EA !important; border-left: 4px solid #f39c12; border-radius: 0.5rem; border: 1px solid #FDE68A;">
+              <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center">
+                <div class="d-flex align-items-start mb-2 mb-sm-0">
+                  <i class="fas fa-exclamation-triangle mt-1 mr-3" style="color: #9A5B13;"></i>
+                  <div>
+                    <h6 class="font-weight-bold" style="color: #9A5B13;">Tienes cuotas pendientes</h6>
+                    <p class="mb-0" style="color: #241A15;">Tienes una deuda pendiente de <strong>{{ formatCurrency(totalDeuda)
+                        }}</strong>.
+                      <br>{{ cuotasPendientes }} cuotas pendientes y {{ cuotasVencidas }} cuotas vencidas.
+                    </p>
+                  </div>
                 </div>
+                <a routerLink="/cliente/dashboard" class="btn btn-sm font-weight-bold ml-sm-3 align-self-start align-self-sm-center"
+                  style="background: linear-gradient(135deg, #28140B 0%, #3D1F12 100%); color: #FAD082; border: 1px solid #C59B6D; border-radius: 8px; padding: 8px 16px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                  <i class="fas fa-credit-card mr-1"></i> Pagar Cuotas
+                </a>
               </div>
             </div>
 
             <div *ngIf="totalDeuda === 0 && creditos.length > 0" class="alert mt-3"
-              style="background: rgba(46, 204, 113, 0.15) !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem;">
+              style="background: #DCFCE7 !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem; border: 1px solid #BBF7D0;">
               <div class="d-flex align-items-start">
-                <i class="fas fa-check-circle mt-1 mr-3" style="color: #2ecc71;"></i>
+                <i class="fas fa-check-circle mt-1 mr-3" style="color: #166534;"></i>
                 <div>
-                  <h6 style="color: #2ecc71;">¡Estás al día!</h6>
-                  <p class="mb-0 text-white">Has pagado todas tus cuotas a tiempo. Total pagado: <strong>{{
+                  <h6 class="font-weight-bold" style="color: #166534;">¡Estás al día!</h6>
+                  <p class="mb-0" style="color: #241A15;">Has pagado todas tus cuotas a tiempo. Total pagado: <strong>{{
                       formatCurrency(totalPagado) }}</strong>.</p>
                 </div>
               </div>
@@ -282,34 +287,34 @@
         </div>
 
         <!-- Enlaces rápidos -->
-        <div class="card border-0"
-          style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="card border-0 shadow-sm"
+          style="background: #FFFFFF; border-radius: 14px; border: 1px solid #E5DDD3;">
           <div class="card-header d-flex align-items-center py-3"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <i class="fas fa-link mr-2" style="color: #4fc3f7;"></i>
-            <h5 class="mb-0 text-white">Enlaces Rápidos</h5>
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-radius: 14px 14px 0 0;">
+            <i class="fas fa-link mr-2" style="color: #C59B6D;"></i>
+            <h5 class="mb-0 font-weight-bold" style="color: #241A15;">Enlaces Rápidos</h5>
           </div>
-          <div class="card-body text-white">
+          <div class="card-body">
             <div class="row">
               <div class="col-md-4 mb-3">
                 <a routerLink="/cliente/dashboard" class="btn btn-block h-100"
-                  style="background: rgba(79, 195, 247, 0.15); color: white; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 10px; text-decoration: none;">
-                  <i class="fas fa-tachometer-alt mb-2" style="font-size: 1.5rem;"></i>
-                  <div>Dashboard</div>
+                  style="background: #F5F1EB; color: #2C1810; border: 1px solid #E5DDD3; border-radius: 10px; text-decoration: none; font-weight: 600; padding: 16px;">
+                  <i class="fas fa-tachometer-alt mb-2 d-block" style="font-size: 1.5rem; color: #C59B6D;"></i>
+                  Dashboard
                 </a>
               </div>
               <div class="col-md-4 mb-3">
                 <a routerLink="/cliente/mis-compras" class="btn btn-block h-100"
-                  style="background: rgba(46, 204, 113, 0.15); color: white; border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 10px; text-decoration: none;">
-                  <i class="fas fa-shopping-bag mb-2" style="font-size: 1.5rem;"></i>
-                  <div>Mis Compras</div>
+                  style="background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; border-radius: 10px; text-decoration: none; font-weight: 600; padding: 16px;">
+                  <i class="fas fa-shopping-bag mb-2 d-block" style="font-size: 1.5rem;"></i>
+                  Mis Compras
                 </a>
               </div>
               <div class="col-md-4 mb-3">
-                <a routerLink="/cliente/mis-cuotas" class="btn btn-block h-100"
-                  style="background: rgba(243, 156, 18, 0.15); color: white; border: 1px solid rgba(243, 156, 18, 0.3); border-radius: 10px; text-decoration: none;">
-                  <i class="fas fa-calendar-alt mb-2" style="font-size: 1.5rem;"></i>
-                  <div>Mis Cuotas</div>
+                <a routerLink="/cliente/dashboard" class="btn btn-block h-100"
+                  style="background: #FEF7EA; color: #9A5B13; border: 1px solid #FDE68A; border-radius: 10px; text-decoration: none; font-weight: 600; padding: 16px;">
+                  <i class="fas fa-calendar-alt mb-2 d-block" style="font-size: 1.5rem;"></i>
+                  Mis Cuotas
                 </a>
               </div>
             </div>
@@ -319,42 +324,48 @@
 
       <!-- Pestaña: Actividad Reciente -->
       <div *ngIf="activeTab === 'activity'">
-        <div class="card border-0"
-          style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="card border-0 shadow-sm"
+          style="background: #FFFFFF; border-radius: 14px; border: 1px solid #E5DDD3;">
           <div class="card-header d-flex align-items-center py-3"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <i class="fas fa-history mr-2" style="color: #4fc3f7;"></i>
-            <h5 class="mb-0 text-white">Actividad Reciente</h5>
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-radius: 14px 14px 0 0;">
+            <i class="fas fa-history mr-2" style="color: #C59B6D;"></i>
+            <h5 class="mb-0 font-weight-bold" style="color: #241A15;">Actividad Reciente</h5>
           </div>
-          <div class="card-body text-white px-0 py-0">
+          <div class="card-body px-0 py-0">
             <ul class="list-group list-group-flush activity-list" style="background: transparent;">
               <li class="list-group-item border-0 px-4 py-3"
-                style="position: relative; background: transparent; border-bottom: 1px solid rgba(255,255,255,0.05) !important;"
+                style="position: relative; background: transparent; border-bottom: 1px solid #F0E8DF !important;"
                 *ngFor="let activity of recentActivity">
 
                 <div class="d-flex">
                   <!-- Indicador y línea de tiempo -->
                   <div class="mr-3 position-relative activity-timeline">
                     <div class="activity-indicator" [style.background-color]="getActivityBadgeColor(activity.type)"
-                      style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border: 3px solid rgba(0,0,0,0.2);">
+                      style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
                       <i [class]="getActivityIcon(activity.type)" style="color: white;"></i>
                     </div>
                   </div>
 
                   <!-- Contenido de la actividad -->
-                  <div class="flex-grow-1 text-white">
+                  <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start mb-1">
-                      <h6 class="mb-0 text-info">{{ activity.title }}</h6>
-                      <small class="text-light opacity-75">{{ getFormattedDate(activity.date) }}</small>
+                      <h6 class="mb-0" style="color: #2C1810;">{{ activity.title }}</h6>
+                      <small style="color: #66564E;">{{ getFormattedDate(activity.date) }}</small>
                     </div>
-                    <p class="mb-2 text-light" style="opacity: 0.85;">{{ activity.description }}</p>
+                    <p class="mb-2" style="color: #66564E;">{{ activity.description }}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                      <span class="font-weight-bold" style="font-size: 1.1rem;">{{ formatCurrency(activity.amount)
+                      <span class="font-weight-bold" style="font-size: 1.1rem; color: #166534;">{{ formatCurrency(activity.amount)
                         }}</span>
-                      <span class="badge" [ngClass]="getStatusClass(activity.status)"
-                        style="font-weight: 500; border-radius: 4px; padding: 0.35rem 0.5rem;">
-                        {{ activity.status }}
-                      </span>
+                      <div class="d-flex align-items-center gap-2">
+                        <button *ngIf="activity.type === 'purchase'" (click)="verDetalleCompra(activity)" class="btn btn-sm mr-2 font-weight-bold"
+                          style="background: #FAF5EE; color: #8C532B; border: 1px solid #C59B6D; border-radius: 6px; padding: 3px 10px; font-size: 0.8rem;">
+                          <i class="fas fa-eye mr-1"></i> Ver Detalle
+                        </button>
+                        <span class="badge" [ngClass]="getStatusClass(activity.status)"
+                          style="font-weight: 600; border-radius: 4px; padding: 0.35rem 0.5rem;">
+                          {{ activity.status }}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -362,21 +373,17 @@
 
               <!-- Mensaje si no hay actividad -->
               <li *ngIf="recentActivity.length === 0" class="list-group-item border-0 px-4 py-4 text-center"
-                style="background: transparent;">
-                <div style="opacity: 0.6;">
-                  <i class="fas fa-calendar-times mb-3" style="font-size: 2.5rem;"></i>
-                  <p class="mb-0">No hay actividad reciente para mostrar</p>
-                </div>
+                style="background: transparent; color: #66564E;">
+                <i class="fas fa-calendar-times mb-3" style="font-size: 2.5rem; color: #C59B6D; opacity: 0.5;"></i>
+                <p class="mb-0">No hay actividad reciente para mostrar</p>
               </li>
             </ul>
           </div>
           <div class="card-footer text-center"
-            style="background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.05);">
-            <a routerLink="/cliente/dashboard" class="btn btn-sm"
-              style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); padding: 0.5rem 1.5rem; font-weight: 500; transition: all 0.25s ease;"
-              onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';"
-              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.15)';">
-              <i class="fas fa-tachometer-alt mr-2"></i> Ver Dashboard Completo
+            style="background: #FAF7F2; border-top: 1px solid #E5DDD3; border-radius: 0 0 14px 14px;">
+            <a routerLink="/cliente/dashboard" class="btn btn-sm font-weight-bold"
+              style="background: #361E14; color: #FFFFFF; border: none; border-radius: 8px; padding: 0.5rem 1.5rem;">
+              <i class="fas fa-tachometer-alt mr-2" style="color: #C59B6D;"></i> Ver Dashboard Completo
             </a>
           </div>
         </div>
@@ -384,17 +391,17 @@
 
       <!-- Pestaña: Editar Perfil -->
       <div *ngIf="activeTab === 'edit'">
-        <div class="card border-0"
-          style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        <div class="card border-0 shadow-sm"
+          style="background: #FFFFFF; border-radius: 14px; border: 1px solid #E5DDD3;">
           <div class="card-header d-flex align-items-center py-3"
-            style="background: rgba(0, 0, 0, 0.25); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-            <i class="fas fa-user-edit mr-2" style="color: #4fc3f7;"></i>
-            <h5 class="mb-0 text-white">Editar Información</h5>
+            style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3 !important; border-radius: 14px 14px 0 0;">
+            <i class="fas fa-user-edit mr-2" style="color: #C59B6D;"></i>
+            <h5 class="mb-0 font-weight-bold" style="color: #241A15;">Editar Información</h5>
           </div>
-          <div class="card-body text-white">
+          <div class="card-body">
             <!-- Mensaje de éxito -->
             <div *ngIf="saveSuccess" class="alert mb-4"
-              style="background-color: rgba(46, 204, 113, 0.15) !important; color: #2ecc71 !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              style="background-color: #DCFCE7 !important; color: #166534 !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem;">
               <div class="d-flex align-items-center">
                 <i class="fas fa-check-circle mr-3" style="font-size: 1.25rem;"></i>
                 <p class="mb-0">¡Información actualizada correctamente!</p>
@@ -405,9 +412,9 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label style="color: rgba(255,255,255,0.7);">Nombre</label>
+                    <label style="color: #66564E; font-weight: 600;">Nombre</label>
                     <input type="text" class="form-control" formControlName="name"
-                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                      style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; border-radius: 0.5rem;">
                     <div *ngIf="editProfileForm.get('name')?.invalid && editProfileForm.get('name')?.touched"
                       class="text-danger mt-1 small">
                       Nombre es requerido (mínimo 2 caracteres)
@@ -416,9 +423,9 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label style="color: rgba(255,255,255,0.7);">Apellido</label>
+                    <label style="color: #66564E; font-weight: 600;">Apellido</label>
                     <input type="text" class="form-control" formControlName="lastname"
-                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                      style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; border-radius: 0.5rem;">
                     <div *ngIf="editProfileForm.get('lastname')?.invalid && editProfileForm.get('lastname')?.touched"
                       class="text-danger mt-1 small">
                       Apellido es requerido (mínimo 2 caracteres)
@@ -427,9 +434,9 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label style="color: rgba(255,255,255,0.7);">DNI</label>
+                    <label style="color: #66564E; font-weight: 600;">DNI</label>
                     <input type="text" class="form-control" formControlName="dni"
-                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                      style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; border-radius: 0.5rem;">
                     <div *ngIf="editProfileForm.get('dni')?.invalid && editProfileForm.get('dni')?.touched"
                       class="text-danger mt-1 small">
                       DNI es requerido (8 dígitos numéricos)
@@ -438,9 +445,9 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label style="color: rgba(255,255,255,0.7);">Celular</label>
+                    <label style="color: #66564E; font-weight: 600;">Celular</label>
                     <input type="text" class="form-control" formControlName="phone"
-                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                      style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; border-radius: 0.5rem;">
                     <div *ngIf="editProfileForm.get('phone')?.invalid && editProfileForm.get('phone')?.touched"
                       class="text-danger mt-1 small">
                       Celular es requerido (9 dígitos numéricos)
@@ -449,9 +456,9 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label style="color: rgba(255,255,255,0.7);">Dirección</label>
+                    <label style="color: #66564E; font-weight: 600;">Dirección</label>
                     <input type="text" class="form-control" formControlName="address"
-                      style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.5rem;">
+                      style="background: #FFFFFF; border: 1px solid #E5DDD3; color: #241A15; border-radius: 0.5rem;">
                     <div *ngIf="editProfileForm.get('address')?.invalid && editProfileForm.get('address')?.touched"
                       class="text-danger mt-1 small">
                       Dirección es requerida
@@ -460,23 +467,20 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label style="color: rgba(255,255,255,0.7);">Email</label>
+                    <label style="color: #66564E; font-weight: 600;">Email</label>
                     <input type="email" class="form-control" formControlName="email"
-                      style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border-radius: 0.5rem;">
-                    <small class="form-text" style="color: rgba(255,255,255,0.5);">El email no puede ser
-                      modificado.</small>
+                      style="background: #F5F1EB; border: 1px solid #E5DDD3; color: #66564E; border-radius: 0.5rem;">
+                    <small class="form-text" style="color: #66564E;">El email no puede ser modificado.</small>
                   </div>
                 </div>
               </div>
               <div class="d-flex justify-content-center mt-2">
                 <button type="button" class="btn btn-secondary mr-2" (click)="cancelEdit()"
-                  style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 0.5rem; padding: 0.5rem 1.5rem;">
+                  style="background: #F5F1EB; border: 1px solid #E5DDD3; color: #66564E; border-radius: 0.5rem; padding: 0.5rem 1.5rem; font-weight: 600;">
                   <i class="fas fa-times mr-2"></i> Cancelar
                 </button>
                 <button type="submit" class="btn btn-primary ml-2" [disabled]="editProfileForm.invalid || loading"
-                  style="background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); border: none; border-radius: 0.5rem; padding: 0.5rem 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.25s ease;"
-                  onmouseover="this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)';"
-                  onmouseout="this.style.boxShadow='0 2px 5px rgba(0,0,0,0.2)';">
+                  style="background: linear-gradient(135deg, #28140B 0%, #3D1F12 100%); border: none; border-radius: 0.5rem; padding: 0.5rem 1.5rem; color: #F7EAD9; font-weight: 600;">
                   <i class="fas fa-save mr-2"></i> Guardar Cambios
                 </button>
               </div>
@@ -488,52 +492,27 @@
   </div>
 </div>
 
-<!-- Estilos adicionales para la línea de tiempo de actividades -->
 <style>
-  /* Estilos para la línea de tiempo */
   .activity-timeline::before {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 20px;
+    top: 0; bottom: 0; left: 20px;
     width: 2px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #E5DDD3;
     z-index: 0;
   }
-
-  .activity-list li:first-child .activity-timeline::before {
-    top: 20px;
-  }
-
-  .activity-list li:last-child .activity-timeline::before {
-    height: 20px;
-  }
-
-  /* Estilos para los inputs */
+  .activity-list li:first-child .activity-timeline::before { top: 20px; }
+  .activity-list li:last-child .activity-timeline::before { height: 20px; }
   .form-control:focus {
-    background: rgba(0, 0, 0, 0.3) !important;
-    color: white !important;
-    border-color: #4fc3f7 !important;
-    box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25) !important;
+    background: #FFFFFF !important;
+    color: #241A15 !important;
+    border-color: #C59B6D !important;
+    box-shadow: 0 0 0 0.2rem rgba(197,155,109,0.25) !important;
   }
-
-  /* Ajustes responsive */
   @media (max-width: 768px) {
-    .profile-avatar {
-      width: 80px !important;
-      height: 80px !important;
-    }
+    .profile-avatar { width: 80px !important; height: 80px !important; }
   }
-
-  /* Active tab highlight */
   .list-group-item.active {
-    background: rgba(79, 195, 247, 0.15) !important;
-  }
-
-  /* Enlaces rápidos hover */
-  .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+    background: rgba(197,155,109,0.15) !important;
   }
 </style>

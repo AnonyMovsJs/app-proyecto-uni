@@ -22,11 +22,28 @@ import { AdminPagosComponent } from './business/admin/admin-pagos/admin-pagos.co
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'login',
+  },
+  {
+    path: 'login',
+    component: AuthComponent,
+  },
+  {
+    path: 'verify-sms',
+    component: VerifySmsComponent,
+  },
+  {
+    path: 'forbidden',
+    component: ForbiddenComponent,
+  },
+  {
+    path: '',
     loadComponent: () => import('./shared/components/layout/layout.component'),
     children: [
       {
         path: 'user',
-        loadComponent: () => import('./business/profile/profile.component'),
+        component: AdminUsuarioDetalleComponent,
         canActivate: [authRutasGuard],
       },
       {
@@ -94,10 +111,6 @@ export const routes: Routes = [
         component: ClienteDashboardComponent,
         canActivate: [authRutasGuard],
       },
-      /* {
-        path: 'cliente/pagar',
-        component: PagarCuotaComponent, //REVISAR CREO QUE NO VA
-      }, */
       {
         path: 'cliente/mis-compras',
         component: ListaComprasComponent,
@@ -113,33 +126,11 @@ export const routes: Routes = [
         component: PagarCuotaComponent,
         canActivate: [authRutasGuard],
       },
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'login',
-      },
     ],
   },
-
   {
-    path: 'login',
-    component: AuthComponent,
-  },
-
-  // AGREGAR ESTA RUTA NUEVA
-  {
-    path: 'verify-sms',
-    component: VerifySmsComponent,
-  },
-
-  {
-    path: 'forbidden',
-    component: ForbiddenComponent,
-  },
-
-  {
-    path: 'forbidden',
-    component: ForbiddenComponent,
+    path: '**',
+    redirectTo: 'login',
   },
 ];
 

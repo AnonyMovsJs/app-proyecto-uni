@@ -1,24 +1,38 @@
-﻿<div class="container-fluid">
+<div class="container-fluid">
   <!-- Header Section -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="jumbotron text-white p-4"
-        style="background: linear-gradient(135deg, #28140B 0%, #180B06 100%) !important; border-radius: 0.75rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); border-left: 4px solid #C59B6D;">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+      <div class="cr-banner">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
           <div>
-            <h1 class="display-5 font-weight-bold mb-0">Perfil de Usuario</h1>
-            <p class="lead mt-2 mb-0 opacity-75">Información detallada del cliente y sus transacciones</p>
+            <h1 class="display-5 cr-title-italic mb-0" style="color: #FFFFFF !important;">Perfil del Cliente</h1>
+            <p class="cr-subtitle mt-2 mb-0" style="color: #E6D7C8 !important;">Información detallada del cliente y sus transacciones</p>
           </div>
-          <div class="mt-3 mt-md-0 d-flex">
-            <a routerLink="/users" class="btn btn-outline-light px-3 mr-2">
-              <i class="fas fa-users mr-2"></i> Usuarios
-            </a>
-            <a routerLink="/admin/ventas" class="btn btn-outline-light px-3 mr-2">
-              <i class="fas fa-shopping-cart mr-2"></i> Ventas
-            </a>
-            <a routerLink="/admin/dashboard" class="btn btn-outline-light px-3">
-              <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
-            </a>
+          <div class="mt-3 mt-md-0 d-flex flex-wrap" style="gap: 8px;">
+            <ng-container *ngIf="authService.isAdmin()">
+              <a routerLink="/users" class="btn px-3 font-weight-bold"
+                style="background: rgba(255,255,255,0.1); border: 1px solid #C59B6D; color: #FFFFFF; border-radius: 8px;">
+                <i class="fas fa-users mr-2" style="color: #FAD082;"></i> Clientes
+              </a>
+              <a routerLink="/admin/ventas" class="btn px-3 font-weight-bold"
+                style="background: rgba(255,255,255,0.1); border: 1px solid #C59B6D; color: #FFFFFF; border-radius: 8px;">
+                <i class="fas fa-shopping-cart mr-2" style="color: #FAD082;"></i> Ventas
+              </a>
+              <a routerLink="/admin/dashboard" class="btn px-3 font-weight-bold"
+                style="background: rgba(255,255,255,0.1); border: 1px solid #C59B6D; color: #FFFFFF; border-radius: 8px;">
+                <i class="fas fa-tachometer-alt mr-2" style="color: #FAD082;"></i> Dashboard
+              </a>
+            </ng-container>
+            <ng-container *ngIf="!authService.isAdmin()">
+              <a routerLink="/cliente/dashboard" class="btn px-3 font-weight-bold"
+                style="background: rgba(255,255,255,0.1); border: 1px solid #C59B6D; color: #FFFFFF; border-radius: 8px;">
+                <i class="fas fa-tachometer-alt mr-2" style="color: #FAD082;"></i> Mi Dashboard
+              </a>
+              <a routerLink="/cliente/mis-compras" class="btn px-3 font-weight-bold"
+                style="background: rgba(255,255,255,0.1); border: 1px solid #C59B6D; color: #FFFFFF; border-radius: 8px;">
+                <i class="fas fa-shopping-bag mr-2" style="color: #FAD082;"></i> Mis Compras
+              </a>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -28,23 +42,21 @@
   <!-- Loading Indicator -->
   <div *ngIf="loading" class="row">
     <div class="col-12 text-center py-5">
-      <div class="spinner-grow text-primary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0s;"></div>
-      <div class="spinner-grow text-info mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.2s;"></div>
-      <div class="spinner-grow text-secondary mx-1" style="width: 1rem; height: 1rem; animation-delay: 0.4s;"></div>
-      <p class="text-light mt-3">Cargando perfil de usuario...</p>
+      <div class="spinner-grow text-warning mx-1" style="width: 1.2rem; height: 1.2rem;"></div>
+      <div class="spinner-grow text-dark mx-1" style="width: 1.2rem; height: 1.2rem;"></div>
+      <p class="mt-3 font-weight-bold" style="color: #66564E;">Cargando perfil del cliente...</p>
     </div>
   </div>
 
   <!-- Error Alert -->
   <div *ngIf="error" class="row mb-4">
     <div class="col-12">
-      <div class="alert"
-        style="background-color: rgba(231, 76, 60, 0.15) !important; color: #e74c3c !important; border-left: 4px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <div class="alert alert-danger" style="border-radius: 10px; border-left: 4px solid #DC2626; background: #FEECEB; color: #991B1B;">
         <div class="d-flex align-items-center">
-          <i class="fas fa-exclamation-circle mr-3" style="font-size: 1.5rem;"></i>
+          <i class="fas fa-exclamation-circle mr-3 fa-2x" style="color: #DC2626;"></i>
           <div>
-            <h5 class="mb-1" style="color: #e74c3c;">Error al cargar datos</h5>
-            <p class="mb-0">{{ error }}</p>
+            <h5 class="mb-1 font-weight-bold" style="color: #991B1B;">Error al cargar datos</h5>
+            <p class="mb-0" style="color: #7F1D1D;">{{ error }}</p>
           </div>
         </div>
       </div>
@@ -55,102 +67,113 @@
   <div *ngIf="!loading && !error" class="row">
     <!-- Sidebar con info del usuario (col-md-4) -->
     <div class="col-md-4 mb-4">
-      <div class="card border-0 text-white"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
-        <div class="card-body text-center">
+      <div class="card border-0"
+        style="background: #FFFFFF; border-radius: 14px; box-shadow: 0 4px 16px rgba(44, 24, 16, 0.06); border: 1px solid #E5DDD3;">
+        <div class="card-body text-center p-4">
           <!-- Avatar del usuario -->
           <div class="mx-auto mb-3"
-            style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #4fc3f7 0%, #2980b9 100%); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; color: white; border: 5px solid rgba(255,255,255,0.1);">
+            style="width: 90px; height: 90px; border-radius: 50%; background: #361E14; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: bold; color: #F7EAD9; border: 3px solid #C59B6D; box-shadow: 0 4px 12px rgba(54, 30, 20, 0.2);">
             {{ user.name?.charAt(0).toUpperCase() }}{{ user.lastname?.charAt(0).toUpperCase() }}
           </div>
 
-          <h4 class="card-title">{{ user.name }} {{ user.lastname }}</h4>
-          <p class="text-light opacity-75 mb-4">{{ user.email }}</p>
+          <h4 class="font-weight-bold mb-1" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.45rem;">{{ user.name }} {{ user.lastname }}</h4>
+          <p class="mb-3 small font-weight-bold" style="color: #66564E;">{{ user.email }}</p>
 
           <!-- Badge de estado -->
           <div class="mb-4">
-            <span class="badge py-2 px-3" [ngClass]="getStatusClass(user.estado)"
-              style="font-weight: 500; font-size: 0.9rem; border-radius: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <span class="badge py-2 px-3 font-weight-bold"
+              [style.background]="user.estado ? '#DCFCE7' : '#FEECEB'"
+              [style.color]="user.estado ? '#166534' : '#991B1B'"
+              [style.border]="user.estado ? '1px solid #BBF7D0' : '1px solid #FECACA'"
+              style="font-size: 0.88rem; border-radius: 20px;">
               <i [class]="user.estado ? 'fas fa-check-circle mr-1' : 'fas fa-times-circle mr-1'"></i>
               {{ getStatusText(user.estado) }}
             </span>
           </div>
 
           <!-- Información de contacto -->
-          <div class="text-left">
-            <div class="d-flex align-items-center mb-3">
+          <div class="text-left mb-3">
+            <div class="d-flex align-items-center mb-3 p-2 rounded" style="background: #FAF7F2; border: 1px solid #EFE8DF;">
               <div
-                style="width: 36px; height: 36px; background: rgba(79, 195, 247, 0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                <i class="fas fa-id-card" style="color: #4fc3f7;"></i>
+                style="width: 38px; height: 38px; background: #FAF4EB; border: 1px solid #E5DDD3; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;">
+                <i class="fas fa-id-card" style="color: #C59B6D;"></i>
               </div>
               <div>
-                <small class="d-block opacity-75">DNI</small>
-                <span>{{ user.dni || 'No registrado' }}</span>
+                <small class="d-block font-weight-bold text-uppercase" style="color: #8C7B72; font-size: 0.72rem; letter-spacing: 0.5px;">DNI</small>
+                <span class="font-weight-bold" style="color: #2C1810;">{{ user.dni || 'No registrado' }}</span>
               </div>
             </div>
-            <div class="d-flex align-items-center mb-3">
+
+            <div class="d-flex align-items-center mb-3 p-2 rounded" style="background: #FAF7F2; border: 1px solid #EFE8DF;">
               <div
-                style="width: 36px; height: 36px; background: rgba(79, 195, 247, 0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                <i class="fas fa-phone" style="color: #4fc3f7;"></i>
+                style="width: 38px; height: 38px; background: #FAF4EB; border: 1px solid #E5DDD3; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;">
+                <i class="fas fa-phone" style="color: #C59B6D;"></i>
               </div>
               <div>
-                <small class="d-block opacity-75">Teléfono</small>
-                <span>{{ user.phone || 'No registrado' }}</span>
+                <small class="d-block font-weight-bold text-uppercase" style="color: #8C7B72; font-size: 0.72rem; letter-spacing: 0.5px;">Teléfono</small>
+                <span class="font-weight-bold" style="color: #2C1810;">{{ user.phone || 'No registrado' }}</span>
               </div>
             </div>
-            <div class="d-flex align-items-center mb-3">
+
+            <div class="d-flex align-items-center mb-2 p-2 rounded" style="background: #FAF7F2; border: 1px solid #EFE8DF;">
               <div
-                style="width: 36px; height: 36px; background: rgba(79, 195, 247, 0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                <i class="fas fa-map-marker-alt" style="color: #4fc3f7;"></i>
+                style="width: 38px; height: 38px; background: #FAF4EB; border: 1px solid #E5DDD3; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;">
+                <i class="fas fa-map-marker-alt" style="color: #C59B6D;"></i>
               </div>
               <div>
-                <small class="d-block opacity-75">Dirección</small>
-                <span>{{ user.address || 'No registrada' }}</span>
+                <small class="d-block font-weight-bold text-uppercase" style="color: #8C7B72; font-size: 0.72rem; letter-spacing: 0.5px;">Dirección</small>
+                <span class="font-weight-bold" style="color: #2C1810;">{{ user.address || 'No registrada' }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Métricas del usuario -->
-        <div class="card-footer px-0 pb-0 pt-3"
-          style="background: transparent; border-top: 1px solid rgba(255,255,255,0.1);">
-          <div class="row g-0">
-            <div class="col-6 text-center py-3 border-right" style="border-color: rgba(255,255,255,0.1) !important;">
-              <h3 class="mb-0" style="color: #4fc3f7; font-weight: bold;">{{ totalCompras }}</h3>
-              <small class="text-light opacity-75">Compras</small>
+        <!-- Métricas del usuario (Cuadrícula ejecutiva con Deuda Pendiente en rojo) -->
+        <div class="card-footer p-3"
+          style="background: #FAF7F2; border-top: 1px solid #E5DDD3; border-radius: 0 0 14px 14px;">
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <div class="p-3 text-center rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3; border-top: 3px solid #C59B6D;">
+                <h4 class="mb-0 font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.5rem;">{{ totalCompras }}</h4>
+                <small class="d-block font-weight-bold text-uppercase mt-1" style="color: #66564E !important; font-size: 0.72rem; letter-spacing: 0.5px;">Compras</small>
+              </div>
             </div>
-            <div class="col-6 text-center py-3">
-              <h3 class="mb-0" style="color: #4fc3f7; font-weight: bold;">{{ formatCurrency(totalGastado) }}</h3>
-              <small class="text-light opacity-75">Total Gastado</small>
-            </div>
-          </div>
-          <div class="row g-0">
-            <div class="col-6 text-center py-3 border-right border-top"
-              style="border-color: rgba(255,255,255,0.1) !important;">
-              <h3 class="mb-0" style="color: #e74c3c; font-weight: bold;">{{ formatCurrency(totalDeuda) }}</h3>
-              <small class="text-light opacity-75">Deuda Pendiente</small>
-            </div>
-            <div class="col-6 text-center py-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
-              <h3 class="mb-0" style="color: #2ecc71; font-weight: bold;">{{ formatCurrency(totalPagado) }}</h3>
-              <small class="text-light opacity-75">Total Pagado</small>
+            <div class="col-6">
+              <div class="p-3 text-center rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3; border-top: 3px solid #C59B6D;">
+                <h4 class="mb-0 font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.25rem;">{{ formatCurrency(totalGastado) }}</h4>
+                <small class="d-block font-weight-bold text-uppercase mt-1" style="color: #66564E !important; font-size: 0.72rem; letter-spacing: 0.5px;">Total Gastado</small>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <div class="p-3 text-center rounded" style="background: #FEECEB; border: 1px solid #FECACA; border-top: 3px solid #DC2626;">
+                <h4 class="mb-0 font-weight-bold" style="color: #DC2626 !important; font-family: 'Lora', serif; font-size: 1.25rem;">{{ formatCurrency(totalDeuda) }}</h4>
+                <small class="d-block font-weight-bold text-uppercase mt-1" style="color: #DC2626 !important; font-size: 0.72rem; letter-spacing: 0.5px;">Deuda Pendiente</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 text-center rounded" style="background: #DCFCE7; border: 1px solid #BBF7D0; border-top: 3px solid #166534;">
+                <h4 class="mb-0 font-weight-bold" style="color: #166534 !important; font-family: 'Lora', serif; font-size: 1.25rem;">{{ formatCurrency(totalPagado) }}</h4>
+                <small class="d-block font-weight-bold text-uppercase mt-1" style="color: #166534 !important; font-size: 0.72rem; letter-spacing: 0.5px;">Total Pagado</small>
+              </div>
+            </div>
+          </div>
 
-        <!-- Opciones del administrador -->
-        <div class="p-4 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+          <!-- Opciones de administración / perfil -->
           <div class="d-grid gap-2">
-            <a [routerLink]="['/user/edit', user.id]" class="btn"
-              style="background: rgba(79, 195, 247, 0.15); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
-              <i class="fas fa-edit mr-2"></i> Editar Usuario
+            <a [routerLink]="['/user/edit', user.id]" class="btn btn-block mb-2 font-weight-bold"
+              style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 8px; padding: 9px;">
+              <i class="fas fa-edit mr-2" style="color: #C59B6D;"></i> Editar Perfil
             </a>
-            <button class="btn" [ngClass]="{'btn-outline-success': !user.estado, 'btn-outline-danger': user.estado}"
-              [style.background]="user.estado ? 'rgba(231, 76, 60, 0.15)' : 'rgba(46, 204, 113, 0.15)'"
-              [style.color]="user.estado ? '#e74c3c' : '#2ecc71'"
-              [style.border]="user.estado ? '1px solid rgba(231, 76, 60, 0.3)' : '1px solid rgba(46, 204, 113, 0.3)'"
-              style="border-radius: 8px; padding: 10px;" (click)="cambiarEstadoUsuario()">
-              <i class="fas" [ngClass]="user.estado ? 'fa-user-times' : 'fa-user-check'" class="mr-2"></i>
-              {{ user.estado ? 'Desactivar Usuario' : 'Activar Usuario' }}
+            <button *ngIf="authService.isAdmin()" class="btn btn-block font-weight-bold"
+              [style.background]="user.estado ? '#FEECEB' : '#DCFCE7'"
+              [style.color]="user.estado ? '#991B1B' : '#166534'"
+              [style.border]="user.estado ? '1px solid #FECACA' : '1px solid #BBF7D0'"
+              style="border-radius: 8px; padding: 9px;"
+              (click)="cambiarEstadoUsuario()">
+              <i class="fas mr-2" [ngClass]="user.estado ? 'fa-user-slash' : 'fa-user-check'"></i>
+              {{ user.estado ? 'Desactivar Cliente' : 'Activar Cliente' }}
             </button>
           </div>
         </div>
@@ -159,75 +182,84 @@
 
     <!-- Contenido principal con tabs (col-md-8) -->
     <div class="col-md-8">
-      <!-- Tabs de navegación -->
+      <!-- Card con pestañas -->
       <div class="card border-0 mb-4"
-        style="background: #FFFFFF !important; border-radius: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.15);">
+        style="background: #FFFFFF; border-radius: 14px; box-shadow: 0 4px 16px rgba(44, 24, 16, 0.06); border: 1px solid #E5DDD3;">
         <div class="card-header p-0 border-bottom-0"
-          style="background: transparent; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-          <ul class="nav nav-tabs card-header-tabs">
+          style="background: var(--cr-header-gradient) !important; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom: 2px solid var(--cr-gold);">
+          <ul class="nav nav-tabs card-header-tabs m-0 border-0" style="gap: 6px; padding: 8px 12px 0 12px;">
             <li class="nav-item">
-              <a class="nav-link" [class.active]="activeTab === 'perfil'" (click)="setActiveTab('perfil')"
-                style="padding: 15px 20px; border: none; color: white; background: transparent; position: relative; cursor: pointer;">
-                <i class="fas fa-user mr-2"></i>
+              <a class="nav-link font-weight-bold cursor-pointer" [class.active]="activeTab === 'perfil'" (click)="setActiveTab('perfil')"
+                [style.color]="activeTab === 'perfil' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.background]="activeTab === 'perfil' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.border]="activeTab === 'perfil' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="padding: 10px 18px; border-radius: 8px 8px 0 0; transition: all 0.2s ease; cursor: pointer;">
+                <i class="fas fa-user mr-2" [style.color]="activeTab === 'perfil' ? '#180B06' : '#FAD082'"></i>
                 <span class="d-none d-sm-inline">Resumen</span>
-                <span *ngIf="activeTab === 'perfil'"
-                  style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #4fc3f7;"></span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" [class.active]="activeTab === 'compras'" (click)="setActiveTab('compras')"
-                style="padding: 15px 20px; border: none; color: white; background: transparent; position: relative; cursor: pointer;">
-                <i class="fas fa-shopping-cart mr-2"></i>
+              <a class="nav-link font-weight-bold cursor-pointer" [class.active]="activeTab === 'compras'" (click)="setActiveTab('compras')"
+                [style.color]="activeTab === 'compras' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.background]="activeTab === 'compras' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.border]="activeTab === 'compras' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="padding: 10px 18px; border-radius: 8px 8px 0 0; transition: all 0.2s ease; cursor: pointer;">
+                <i class="fas fa-shopping-cart mr-2" [style.color]="activeTab === 'compras' ? '#180B06' : '#FAD082'"></i>
                 <span class="d-none d-sm-inline">Compras</span>
                 <span class="badge ml-1 py-1 px-2"
-                  style="background-color: #3498db; border-radius: 30px; font-size: 0.7rem;">{{ ventas.length }}</span>
-                <span *ngIf="activeTab === 'compras'"
-                  style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #4fc3f7;"></span>
+                  [style.background]="activeTab === 'compras' ? '#180B06' : '#2C1810'"
+                  [style.color]="activeTab === 'compras' ? '#FAD082' : '#F7EAD9'"
+                  style="border-radius: 30px; font-size: 0.75rem; border: 1px solid #C59B6D;">{{ ventas.length }}</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" [class.active]="activeTab === 'creditos'" (click)="setActiveTab('creditos')"
-                style="padding: 15px 20px; border: none; color: white; background: transparent; position: relative; cursor: pointer;">
-                <i class="fas fa-credit-card mr-2"></i>
-                <span class="d-none d-sm-inline">Créditos</span>
+              <a class="nav-link font-weight-bold cursor-pointer" [class.active]="activeTab === 'creditos'" (click)="setActiveTab('creditos')"
+                [style.color]="activeTab === 'creditos' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.background]="activeTab === 'creditos' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.border]="activeTab === 'creditos' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="padding: 10px 18px; border-radius: 8px 8px 0 0; transition: all 0.2s ease; cursor: pointer;">
+                <i class="fas fa-book-open mr-2" [style.color]="activeTab === 'creditos' ? '#180B06' : '#FAD082'"></i>
+                <span class="d-none d-sm-inline">Cuentas</span>
                 <span class="badge ml-1 py-1 px-2"
-                  style="background-color: #f39c12; border-radius: 30px; font-size: 0.7rem;">{{ creditos.length
-                  }}</span>
-                <span *ngIf="activeTab === 'creditos'"
-                  style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #4fc3f7;"></span>
+                  [style.background]="activeTab === 'creditos' ? '#180B06' : '#2C1810'"
+                  [style.color]="activeTab === 'creditos' ? '#FAD082' : '#F7EAD9'"
+                  style="border-radius: 30px; font-size: 0.75rem; border: 1px solid #C59B6D;">{{ creditos.length }}</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" [class.active]="activeTab === 'pagos'" (click)="setActiveTab('pagos')"
-                style="padding: 15px 20px; border: none; color: white; background: transparent; position: relative; cursor: pointer;">
-                <i class="fas fa-money-bill-wave mr-2"></i>
+              <a class="nav-link font-weight-bold cursor-pointer" [class.active]="activeTab === 'pagos'" (click)="setActiveTab('pagos')"
+                [style.color]="activeTab === 'pagos' ? '#180B06 !important' : '#FFFFFF !important'"
+                [style.background]="activeTab === 'pagos' ? '#C59B6D' : 'rgba(255,255,255,0.08)'"
+                [style.border]="activeTab === 'pagos' ? '1px solid #FAD082' : '1px solid rgba(255,255,255,0.15)'"
+                style="padding: 10px 18px; border-radius: 8px 8px 0 0; transition: all 0.2s ease; cursor: pointer;">
+                <i class="fas fa-money-bill-wave mr-2" [style.color]="activeTab === 'pagos' ? '#180B06' : '#FAD082'"></i>
                 <span class="d-none d-sm-inline">Pagos</span>
                 <span class="badge ml-1 py-1 px-2"
-                  style="background-color: #2ecc71; border-radius: 30px; font-size: 0.7rem;">{{ pagos.length }}</span>
-                <span *ngIf="activeTab === 'pagos'"
-                  style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #4fc3f7;"></span>
+                  [style.background]="activeTab === 'pagos' ? '#180B06' : '#2C1810'"
+                  [style.color]="activeTab === 'pagos' ? '#FAD082' : '#F7EAD9'"
+                  style="border-radius: 30px; font-size: 0.75rem; border: 1px solid #C59B6D;">{{ pagos.length }}</span>
               </a>
             </li>
           </ul>
         </div>
 
         <!-- Contenido de las tabs -->
-        <div class="card-body">
-          <!-- Tab: Perfil/Resumen -->
+        <div class="card-body p-4">
+          <!-- TAB 1: RESUMEN / PERFIL -->
           <div *ngIf="activeTab === 'perfil'" style="animation: fadeIn 0.3s ease;">
             <!-- Gráficos en la pestaña de resumen -->
             <div class="row mb-4">
               <div class="col-sm-6 mb-4 mb-sm-0">
                 <div class="card border-0 h-100"
-                  style="background: rgba(0,0,0,0.2) !important; border-radius: 0.75rem;">
+                  style="background: #FFFFFF; border-radius: 12px; border: 1px solid #E5DDD3; box-shadow: 0 2px 10px rgba(44, 24, 16, 0.04);">
                   <div class="card-header d-flex justify-content-between align-items-center py-3"
-                    style="background: rgba(0, 0, 0, 0.15) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-                    <h6 class="mb-0">
-                      <i class="fas fa-chart-bar mr-2" style="color: #4fc3f7;"></i>
+                    style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                    <h6 class="mb-0 font-weight-bold cr-title-italic" style="color: #241A15;">
+                      <i class="fas fa-chart-bar mr-2" style="color: #C59B6D;"></i>
                       Compras por Mes
                     </h6>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body p-3">
                     <div style="height: 220px; position: relative;">
                       <canvas id="comprasChart" width="100%" height="220"></canvas>
                     </div>
@@ -236,15 +268,15 @@
               </div>
               <div class="col-sm-6">
                 <div class="card border-0 h-100"
-                  style="background: rgba(0,0,0,0.2) !important; border-radius: 0.75rem;">
+                  style="background: #FFFFFF; border-radius: 12px; border: 1px solid #E5DDD3; box-shadow: 0 2px 10px rgba(44, 24, 16, 0.04);">
                   <div class="card-header d-flex justify-content-between align-items-center py-3"
-                    style="background: rgba(0, 0, 0, 0.15) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-                    <h6 class="mb-0">
-                      <i class="fas fa-chart-pie mr-2" style="color: #4fc3f7;"></i>
+                    style="background: #FAF7F2 !important; border-bottom: 1px solid #E5DDD3; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                    <h6 class="mb-0 font-weight-bold cr-title-italic" style="color: #241A15;">
+                      <i class="fas fa-chart-pie mr-2" style="color: #C59B6D;"></i>
                       Estado de Pagos
                     </h6>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body p-3">
                     <div style="height: 220px; position: relative;">
                       <canvas id="pagosChart" width="100%" height="220"></canvas>
                     </div>
@@ -254,27 +286,35 @@
             </div>
 
             <!-- Alertas de estado de usuario -->
-            <div *ngIf="totalDeuda > 0" class="alert"
-              style="background: rgba(243, 156, 18, 0.15) !important; border-left: 4px solid #f39c12; border-radius: 0.5rem;">
+            <div *ngIf="totalDeuda > 0" class="alert mb-4"
+              style="background: #FEF7EA !important; border-left: 5px solid #D97706; border: 1px solid #FDE68A; border-radius: 10px;">
               <div class="d-flex align-items-start">
-                <i class="fas fa-exclamation-triangle mt-1 mr-3" style="color: #f39c12;"></i>
+                <div class="mr-3 mt-1 d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; border-radius: 50%; background: #FDE68A;">
+                  <i class="fas fa-exclamation-triangle" style="color: #B45309;"></i>
+                </div>
                 <div>
-                  <h6 style="color: #f39c12;">Deuda Pendiente</h6>
-                  <p class="mb-0 text-danger">Este usuario tiene una deuda pendiente de <strong>{{ formatCurrency(totalDeuda)
-                      }}</strong>.
-                    Hay {{ cuotasPendientesCount }} cuotas pendientes y
-                    {{ cuotasVencidasCount }} cuotas vencidas.</p>
+                  <h6 class="font-weight-bold mb-1 cr-title-italic" style="color: #92400E;">Deuda Pendiente</h6>
+                  <p class="mb-0" style="color: #78350F; font-size: 0.92rem;">
+                    Este usuario tiene una deuda pendiente de <strong style="color: #991B1B;">{{ formatCurrency(totalDeuda) }}</strong>.
+                    Hay <strong>{{ cuotasPendientesCount }}</strong> cuotas pendientes y
+                    <strong>{{ cuotasVencidasCount }}</strong> cuotas vencidas.
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div *ngIf="totalDeuda === 0 && creditos.length > 0" class="alert"
-              style="background: rgba(46, 204, 113, 0.15) !important; border-left: 4px solid #2ecc71; border-radius: 0.5rem;">
+            <div *ngIf="totalDeuda === 0 && creditos.length > 0" class="alert mb-4"
+              style="background: #DCFCE7 !important; border-left: 5px solid #166534; border: 1px solid #BBF7D0; border-radius: 10px;">
               <div class="d-flex align-items-start">
-                <i class="fas fa-check-circle mt-1 mr-3" style="color: #2ecc71;"></i>
+                <div class="mr-3 mt-1 d-flex align-items-center justify-content-center"
+                  style="width: 36px; height: 36px; border-radius: 50%; background: #BBF7D0;">
+                  <i class="fas fa-check-circle" style="color: #166534;"></i>
+                </div>
                 <div>
-                  <h6 style="color: #2ecc71;">Cliente al Día</h6>
-                  <p class="mb-0 text-white">Este usuario ha pagado todas sus cuotas a tiempo. Total pagado hasta la fecha:
+                  <h6 class="font-weight-bold mb-1 cr-title-italic" style="color: #166534;">Cliente al Día</h6>
+                  <p class="mb-0" style="color: #14532D; font-size: 0.92rem;">
+                    Este usuario ha pagado todas sus cuotas a tiempo. Total pagado hasta la fecha:
                     <strong>{{ formatCurrency(totalPagado) }}</strong>.
                   </p>
                 </div>
@@ -282,216 +322,294 @@
             </div>
 
             <!-- Últimas transacciones -->
-            <h6 class="mt-4 mb-3 pb-2 border-bottom text-white" style="border-color: rgba(255,255,255,0.1) !important;">
-              <i class="fas fa-exchange-alt mr-2" style="color: #4fc3f7;"></i>
+            <h6 class="mt-4 mb-3 pb-2 font-weight-bold"
+              style="color: #2C1810 !important; font-family: 'Lora', serif; border-bottom: 2px solid #E5DDD3; font-size: 1.15rem;">
+              <i class="fas fa-exchange-alt mr-2" style="color: #C59B6D;"></i>
               Últimas Transacciones
             </h6>
 
-            <div *ngIf="ventas.length === 0 && pagos.length === 0" class="text-center py-4"
-              style="background: rgba(0,0,0,0.1); border-radius: 0.5rem; opacity: 0.6;">
-              <i class="fas fa-info-circle mb-2" style="font-size: 2rem;"></i>
-              <p class="mb-0">Este usuario no ha realizado transacciones todavía</p>
+            <div *ngIf="ventas.length === 0 && pagos.length === 0" class="text-center py-4 rounded"
+              style="background: #FAF7F2; border: 1px solid #E5DDD3;">
+              <i class="fas fa-info-circle mb-2" style="font-size: 2rem; color: #C59B6D; opacity: 0.6;"></i>
+              <p class="mb-0" style="color: #66564E;">Este usuario no ha realizado transacciones todavía</p>
             </div>
 
             <div *ngIf="ventas.length > 0 || pagos.length > 0">
               <!-- Transacciones recientes -->
-              <div *ngFor="let trans of transaccionesRecientes" class="mb-3 text-light"
-                style="background: rgba(0,0,0,0.1); border-radius: 0.5rem; padding: 15px; transition: all 0.3s ease;"
-                onmouseover="this.style.transform='translateX(5px)'; this.style.background='rgba(0,0,0,0.15)';"
-                onmouseout="this.style.transform='translateX(0)'; this.style.background='rgba(0,0,0,0.1)';">
+              <div *ngFor="let trans of transaccionesRecientes" class="mb-3 p-3 rounded"
+                style="background: #FAF7F2; border: 1px solid #E5DDD3; border-radius: 10px; transition: all 0.25s ease;"
+                onmouseover="this.style.background='#F5EDE0'; this.style.borderColor='#C59B6D';"
+                onmouseout="this.style.background='#FAF7F2'; this.style.borderColor='#E5DDD3';">
 
                 <!-- Si es una venta -->
-                <div *ngIf="trans.tipo === 'venta'" class="d-flex justify-content-between align-items-center">
+                <div *ngIf="trans.tipo === 'venta'" class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                   <div class="d-flex align-items-center">
                     <div
-                      style="width: 40px; height: 40px; min-width: 40px; border-radius: 8px; background: rgba(52, 152, 219, 0.2); display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                      <i class="fas fa-shopping-cart" style="color: #3498db;"></i>
+                      style="width: 42px; height: 42px; min-width: 42px; border-radius: 10px; background: #FAF5EE; border: 1px solid #E5DDD3; display: flex; align-items: center; justify-content: center; margin-right: 14px;">
+                      <i class="fas fa-shopping-cart" style="color: #C59B6D;"></i>
                     </div>
                     <div>
-                      <small class="d-block text-light opacity-75">{{ formatDate(trans.datos.fechaVenta) }}</small>
-                      <span>Compra: {{ trans.datos.descripcion }}</span>
+                      <small class="d-block font-weight-bold" style="color: #8C7B72; font-size: 0.75rem;">{{ formatDate(trans.datos.fechaVenta) }}</small>
+                      <span class="font-weight-bold" style="color: #2C1810;">Compra: {{ trans.datos.descripcion }}</span>
                     </div>
                   </div>
                   <div class="text-right">
-                    <div class="font-weight-bold">{{ formatCurrency(trans.datos.montoTotal) }}</div>
-                    <span class="badge" [ngClass]="getTipoVentaClass(trans.datos.tipoVenta)">{{ trans.datos.tipoVenta
-                      }}</span>
+                    <div class="font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.15rem;">{{ formatCurrency(trans.datos.montoTotal) }}</div>
+                    <span class="badge font-weight-bold"
+                      [style.background]="trans.datos.tipoVenta === 'CONTADO' ? '#DCFCE7' : '#EFF6FF'"
+                      [style.color]="trans.datos.tipoVenta === 'CONTADO' ? '#166534' : '#1D4ED8'"
+                      [style.border]="trans.datos.tipoVenta === 'CONTADO' ? '1px solid #BBF7D0' : '1px solid #BFDBFE'"
+                      style="border-radius: 6px; padding: 4px 8px; font-size: 0.75rem;">
+                      {{ trans.datos.tipoVenta }}
+                    </span>
                   </div>
                 </div>
 
                 <!-- Si es un pago -->
-                <div *ngIf="trans.tipo === 'pago'" class="d-flex justify-content-between align-items-center">
+                <div *ngIf="trans.tipo === 'pago'" class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                   <div class="d-flex align-items-center">
                     <div
-                      style="width: 40px; height: 40px; min-width: 40px; border-radius: 8px; background: rgba(46, 204, 113, 0.2); display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                      <i class="fas fa-money-bill-wave" style="color: #2ecc71;"></i>
+                      style="width: 42px; height: 42px; min-width: 42px; border-radius: 10px; background: #F0FDF4; border: 1px solid #BBF7D0; display: flex; align-items: center; justify-content: center; margin-right: 14px;">
+                      <i class="fas fa-money-bill-wave" style="color: #166534;"></i>
                     </div>
                     <div>
-                      <small class="d-block text-light opacity-75">{{ formatDate(trans.datos.fecha_pago) }}</small>
-                      <span>Pago de cuota #{{ trans.datos.cuota_id }}</span>
+                      <small class="d-block font-weight-bold" style="color: #8C7B72; font-size: 0.75rem;">{{ formatDate(trans.datos.fecha_pago) }}</small>
+                      <span class="font-weight-bold" style="color: #2C1810;">Pago de cuota N° {{ trans.datos.cuota_id }}</span>
                     </div>
                   </div>
                   <div class="text-right">
-                    <div class="font-weight-bold" style="color: #2ecc71;">+ {{ formatCurrency(trans.datos.monto) }}
+                    <div class="font-weight-bold" style="color: #166534 !important; font-family: 'Lora', serif; font-size: 1.15rem;">
+                      + {{ formatCurrency(trans.datos.monto) }}
                     </div>
-                    <span class="badge bg-success">PAGO</span>
+                    <span class="badge font-weight-bold"
+                      style="background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; border-radius: 6px; padding: 4px 8px; font-size: 0.75rem;">
+                      PAGO
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div class="text-center mt-3" *ngIf="(ventas.length + pagos.length) > 5">
-                <button class="btn" (click)="setActiveTab('compras')"
-                  style="background: rgba(79, 195, 247, 0.15); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 20px; padding: 6px 15px;">
-                  <i class="fas fa-eye mr-2"></i> Ver todas las transacciones
+              <div class="text-center mt-4" *ngIf="(ventas.length + pagos.length) > 5">
+                <button class="btn font-weight-bold px-4 py-2" (click)="setActiveTab('compras')"
+                  style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 20px; font-size: 0.88rem;">
+                  <i class="fas fa-eye mr-2" style="color: #C59B6D;"></i> Ver todas las transacciones
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Tab: Compras -->
+          <!-- TAB 2: COMPRAS -->
           <div *ngIf="activeTab === 'compras'" style="animation: fadeIn 0.3s ease;">
-            <h6 class="mb-3 text-white">
-              <i class="fas fa-shopping-cart mr-2" style="color: #4fc3f7;"></i>
+            <h6 class="mb-3 font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.15rem;">
+              <i class="fas fa-shopping-cart mr-2" style="color: #C59B6D;"></i>
               Historial de Compras
             </h6>
 
-            <div *ngIf="ventas.length === 0" class="text-center py-4"
-              style="background: rgba(0,0,0,0.1); border-radius: 0.5rem; opacity: 0.6;">
-              <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
-              <p class="mb-0">Este usuario no ha realizado compras todavía</p>
+            <div *ngIf="ventas.length === 0" class="text-center py-5 rounded"
+              style="background: #FAF7F2; border: 1px solid #E5DDD3;">
+              <i class="fas fa-shopping-cart mb-2" style="font-size: 2.2rem; color: #C59B6D; opacity: 0.5;"></i>
+              <p class="mb-0" style="color: #66564E;">Este usuario no ha realizado compras todavía</p>
             </div>
 
-            <div *ngIf="ventas.length > 0" class="table-responsive">
-              <table class="table text-white" style="background: transparent !important;">
+            <div *ngIf="ventas.length > 0" class="table-responsive rounded" style="border: 1px solid #E5DDD3;">
+              <table class="table table-hover mb-0" style="color: #241A15;">
                 <thead>
-                  <tr style="background: rgba(0, 0, 0, 0.15) !important;">
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Fecha</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Descripción</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Monto</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Tipo</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Estado</th>
-                    <!-- <th style="border-color: rgba(255,255,255,0.05) !important;">Acciones</th> -->
+                  <tr style="background: #F5F1EB;">
+                    <th class="py-3 px-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Fecha</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Descripción</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Monto</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Tipo</th>
+                    <th class="py-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Estado</th>
+                    <th class="py-3 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let venta of ventas"
-                    style="transition: all 0.25s ease; background: transparent !important; border-color: rgba(255,255,255,0.05) !important;"
-                    onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)';"
-                    onmouseout="this.style.backgroundColor='transparent';">
-                    <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ formatDate(venta.fechaVenta) }}</td>
-                    <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ venta.descripcion }}</td>
-                    <td style="border-color: rgba(255,255,255,0.05) !important;" class="font-weight-bold text-white">{{
-                      formatCurrency(venta.montoTotal) }}</td>
-                    <td style="border-color: rgba(255,255,255,0.05) !important;">
-                      <span class="badge" [ngClass]="getTipoVentaClass(venta.tipoVenta)"
-                        style="padding: 6px 10px; font-weight: 500; border-radius: 6px;">
+                  <tr *ngFor="let venta of ventas" style="border-bottom: 1px solid #EFE8DF;">
+                    <td class="py-3 px-3 font-weight-bold" style="color: #66564E;">{{ formatDate(venta.fechaVenta) }}</td>
+                    <td class="py-3 font-weight-bold" style="color: #241A15;">{{ venta.descripcion }}</td>
+                    <td class="py-3 font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif;">{{ formatCurrency(venta.montoTotal) }}</td>
+                    <td class="py-3">
+                      <span class="badge font-weight-bold"
+                        [style.background]="venta.tipoVenta === 'CONTADO' ? '#DCFCE7' : '#EFF6FF'"
+                        [style.color]="venta.tipoVenta === 'CONTADO' ? '#166534' : '#1D4ED8'"
+                        [style.border]="venta.tipoVenta === 'CONTADO' ? '1px solid #BBF7D0' : '1px solid #BFDBFE'"
+                        style="padding: 5px 10px; border-radius: 6px;">
                         {{ venta.tipoVenta }}
                       </span>
                     </td>
-                    <td style="border-color: rgba(255,255,255,0.05) !important;">
-                      <span class="badge" [ngClass]="getEstadoClass(venta.estado)"
-                        style="padding: 6px 10px; font-weight: 500; border-radius: 6px;">
+                    <td class="py-3">
+                      <span class="badge font-weight-bold"
+                        [style.background]="venta.estado === 'PAGADO' ? '#DCFCE7' : (venta.estado === 'PENDIENTE' ? '#FEF7EA' : '#FEECEB')"
+                        [style.color]="venta.estado === 'PAGADO' ? '#166534' : (venta.estado === 'PENDIENTE' ? '#9A5B13' : '#991B1B')"
+                        [style.border]="venta.estado === 'PAGADO' ? '1px solid #BBF7D0' : (venta.estado === 'PENDIENTE' ? '1px solid #FDE68A' : '1px solid #FECACA')"
+                        style="padding: 5px 10px; border-radius: 6px;">
                         {{ venta.estado }}
                       </span>
                     </td>
-                    <!-- <td style="border-color: rgba(255,255,255,0.05) !important;">
-                      <a [routerLink]="['/cliente/detalle-compra/:id', venta.id]" class="btn btn-sm"
-                        style="background: rgba(79, 195, 247, 0.15); color: #4fc3f7; border: 1px solid rgba(79, 195, 247, 0.3); border-radius: 0.25rem;">
-                        <i class="fas fa-eye mr-1"></i> Ver
-                      </a>
-                    </td> -->
+                    <td class="py-3 text-center">
+                      <button class="btn btn-sm font-weight-bold"
+                        (click)="verDetalleCompra(venta)"
+                        style="background: #2C1810; color: #F7EAD9; border: 1px solid #C59B6D; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem;">
+                        <i class="fas fa-eye mr-1" style="color: #FAD082;"></i> Ver Detalle
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Tab: Créditos -->
+          <!-- TAB 3: CRÉDITOS / CUENTAS -->
           <div *ngIf="activeTab === 'creditos'" style="animation: fadeIn 0.3s ease;">
-            <h6 class="mb-3">
-              <i class="fas fa-credit-card mr-2" style="color: #4fc3f7;"></i>
-              Créditos y Cuotas
+            <h6 class="mb-3 font-weight-bold cr-title-italic" style="color: #241A15; font-size: 1.05rem;">
+              <i class="fas fa-book-open mr-2" style="color: #C59B6D;"></i>
+              Cuentas y Cuotas
             </h6>
 
-            <div *ngIf="creditos.length === 0" class="text-center py-4"
-              style="background: rgba(0,0,0,0.1); border-radius: 0.5rem; opacity: 0.6;">
-              <i class="fas fa-credit-card mb-2" style="font-size: 2rem;"></i>
-              <p class="mb-0">Este usuario no tiene créditos registrados</p>
+            <div *ngIf="creditos.length === 0" class="text-center py-5 rounded"
+              style="background: #FAF7F2; border: 1px solid #E5DDD3;">
+              <i class="fas fa-book-open mb-2" style="font-size: 2.2rem; color: #C59B6D; opacity: 0.5;"></i>
+              <p class="mb-0" style="color: #66564E;">Este cliente no tiene cuentas registradas</p>
             </div>
 
             <div *ngIf="creditos.length > 0">
-              <div *ngFor="let credito of creditos" class="card mb-4 text-white"
-                style="background: rgba(0,0,0,0.15); border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.05);">
-                <div class="card-header d-flex justify-content-between align-items-center py-3"
-                  style="background: rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
-                  <h6 class="mb-0">
-                    <i class="fas fa-credit-card mr-2" style="color: #4fc3f7;"></i>
-                    Crédito #{{ credito.id }}
-                  </h6>
-                  <span class="badge" [ngClass]="getEstadoClass(credito.estado)"
-                    style="padding: 6px 10px; font-weight: 500; border-radius: 6px;">
-                    {{ credito.estado }}
-                  </span>
+              <div *ngFor="let credito of creditos; let i = index" class="card mb-3 border-0"
+                style="background: #FFFFFF; border-radius: 12px; border: 1px solid #E5DDD3; box-shadow: 0 2px 8px rgba(44,24,16,0.04); overflow: hidden;">
+                
+                <!-- Encabezado desplegable (Acordeón) -->
+                <div class="card-header d-flex justify-content-between align-items-center py-3 px-4"
+                  (click)="toggleCuenta(credito.id)"
+                  style="background: #FAF7F2 !important; cursor: pointer; user-select: none; border-bottom: 1px solid #E5DDD3; transition: background 0.2s ease;"
+                  onmouseover="this.style.background='#F5EFE6';"
+                  onmouseout="this.style.background='#FAF7F2';">
+                  
+                  <div class="d-flex align-items-center flex-wrap">
+                    <i class="fas fa-chevron-down mr-3"
+                      [style.transform]="isCuentaDesplegada(credito.id) ? 'rotate(0deg)' : 'rotate(-90deg)'"
+                      style="transition: transform 0.25s ease; color: #C59B6D; font-size: 0.95rem;"></i>
+                    <h6 class="mb-0 font-weight-bold mr-2" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.15rem;">
+                      <i class="fas fa-file-invoice mr-1" style="color: #C59B6D;"></i>
+                      Cuenta N° {{ i + 1 }}
+                    </h6>
+                    <span class="small d-none d-sm-inline" style="color: #66564E;">
+                      <i class="far fa-calendar-alt mr-1" style="color: #C59B6D;"></i>{{ formatDate(credito.fechaInicio) }}
+                    </span>
+                  </div>
+
+                  <div class="d-flex align-items-center">
+                    <span class="d-none d-md-inline font-weight-bold mr-3" style="color: #166534; font-family: 'Lora', serif; font-size: 1.05rem;">
+                      {{ formatCurrency(credito.montoTotal) }}
+                    </span>
+                    <span class="badge py-1 px-2 mr-2 font-weight-bold d-none d-sm-inline"
+                      style="background: #FFFFFF; color: #66564E; border: 1px solid #E5DDD3; font-size: 0.78rem;">
+                      <i class="fas fa-tasks mr-1 text-warning"></i>{{ contarCuotasPagadas(credito.id) }}/{{ credito.numeroCuotas }} pagadas
+                    </span>
+                    <span class="badge font-weight-bold mr-2"
+                      [style.background]="credito.estado === 'ACTIVO' ? '#DCFCE7' : (credito.estado === 'PENDIENTE' ? '#FEF7EA' : '#FEECEB')"
+                      [style.color]="credito.estado === 'ACTIVO' ? '#166534' : (credito.estado === 'PENDIENTE' ? '#9A5B13' : '#991B1B')"
+                      [style.border]="credito.estado === 'ACTIVO' ? '1px solid #BBF7D0' : (credito.estado === 'PENDIENTE' ? '1px solid #FDE68A' : '1px solid #FECACA')"
+                      style="padding: 5px 10px; border-radius: 6px; font-size: 0.8rem;">
+                      {{ credito.estado }}
+                    </span>
+                    <span class="small font-weight-bold d-none d-lg-inline" style="color: #9A5B13; font-size: 0.82rem;">
+                      {{ isCuentaDesplegada(credito.id) ? 'Ocultar ▲' : 'Ver Detalle ▼' }}
+                    </span>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <div class="row mb-3">
+
+                <!-- Contenido desplegable con animación suave -->
+                <div *ngIf="isCuentaDesplegada(credito.id)" class="card-body p-4" style="background: #FFFFFF; animation: fadeIn 0.3s ease;">
+                  <div class="row mb-3 p-3 rounded" style="background: #F5F1EB; border: 1px solid #E5DDD3; border-left: 4px solid #C59B6D;">
                     <div class="col-md-4 mb-2 mb-md-0">
-                      <small class="d-block text-light opacity-75">Monto Total:</small>
-                      <span class="font-weight-bold">{{ formatCurrency(credito.montoTotal) }}</span>
+                      <small class="d-block font-weight-bold text-uppercase" style="color: #66564E !important; font-size: 0.75rem; letter-spacing: 0.5px;">Monto Total:</small>
+                      <span class="font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.3rem;">{{ formatCurrency(credito.montoTotal) }}</span>
                     </div>
                     <div class="col-md-4 mb-2 mb-md-0">
-                      <small class="d-block text-light opacity-75">Interés:</small>
-                      <span>{{ credito.interes }}%</span>
+                      <small class="d-block font-weight-bold text-uppercase" style="color: #66564E !important; font-size: 0.75rem; letter-spacing: 0.5px;">Interés:</small>
+                      <span class="font-weight-bold" style="color: #2C1810 !important; font-size: 1.15rem;">{{ credito.interes }}%</span>
                     </div>
                     <div class="col-md-4">
-                      <small class="d-block text-light opacity-75">Plazo:</small>
-                      <span>{{ credito.numeroCuotas }} cuotas</span>
+                      <small class="d-block font-weight-bold text-uppercase" style="color: #66564E !important; font-size: 0.75rem; letter-spacing: 0.5px;">Plazo:</small>
+                      <span class="font-weight-bold" style="color: #2C1810 !important; font-size: 1.15rem;">{{ credito.numeroCuotas }} cuotas</span>
                     </div>
                   </div>
 
-                  <div class="row mb-3">
+                  <div class="row mb-3 px-2">
                     <div class="col-md-6 mb-2 mb-md-0">
-                      <small class="d-block text-light opacity-75">Fecha Inicio:</small>
-                      <span>{{ formatDate(credito.fechaInicio) }}</span>
+                      <small class="d-block font-weight-bold text-uppercase" style="color: #66564E !important; font-size: 0.75rem; letter-spacing: 0.5px;">Fecha Inicio:</small>
+                      <span class="font-weight-bold" style="color: #2C1810 !important;">{{ formatDate(credito.fechaInicio) }}</span>
                     </div>
                     <div class="col-md-6">
-                      <small class="d-block text-light opacity-75">Fecha Fin:</small>
-                      <span>{{ formatDate(credito.fechaFin) }}</span>
+                      <small class="d-block font-weight-bold text-uppercase" style="color: #66564E !important; font-size: 0.75rem; letter-spacing: 0.5px;">Fecha Fin:</small>
+                      <span class="font-weight-bold" style="color: #2C1810 !important;">{{ formatDate(credito.fechaFin) }}</span>
                     </div>
                   </div>
 
                   <!-- Cuotas de este crédito -->
-                  <h6 class="mt-4 mb-3 pb-2 border-bottom" style="border-color: rgba(255,255,255,0.1) !important;">
-                    <i class="fas fa-list-alt mr-2" style="color: #4fc3f7;"></i>
+                  <h6 class="mt-4 mb-3 pb-2 font-weight-bold"
+                    style="color: #2C1810 !important; font-family: 'Lora', serif; border-bottom: 2px solid #E5DDD3; font-size: 1.05rem;">
+                    <i class="fas fa-list-alt mr-2" style="color: #C59B6D;"></i>
                     Cuotas
                   </h6>
 
-                  <div class="table-responsive ">
-                    <table class="table text-white" style="background: transparent !important;">
+                  <div class="table-responsive rounded" style="border: 1px solid #E5DDD3;">
+                    <table class="table table-hover mb-0" style="color: #241A15;">
                       <thead>
-                        <tr style="background: rgba(0, 0, 0, 0.15) !important;">
-                          <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">#</th>
-                          <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Monto</th>
-                          <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Vencimiento</th>
-                          <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Estado</th>
+                        <tr style="background: #F5F1EB;">
+                          <th class="py-2 px-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">N°</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Monto</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Vencimiento</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Estado</th>
+                          <th class="py-2 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.82rem; text-transform: uppercase;">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody >
+                      <tbody>
                         <ng-container *ngFor="let cuota of cuotas">
-                          <tr *ngIf="cuota.credito_id === credito.id"
-                            style="transition: all 0.25s ease; background: transparent !important; border-color: rgba(255,255,255,0.05) !important;"
-                            onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)';"
-                            onmouseout="this.style.backgroundColor='transparent';">
-                            <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ cuota.numeroCuota }}</td>
-                            <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{ formatCurrency(cuota.monto)
-                              }}</td>
-                            <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">{{
-                              formatDate(cuota.fechaVencimiento) }}</td>
-                            <td class="text-white" style="border-color: rgba(255,255,255,0.05) !important;">
-                              <span class="badge" [ngClass]="getEstadoClass(cuota.estado)"
-                                style="padding: 6px 10px; font-weight: 500; border-radius: 6px;">
+                          <tr *ngIf="cuota.credito_id === credito.id" style="border-bottom: 1px solid #EFE8DF;">
+                            <td class="py-2 px-3 font-weight-bold" style="color: #66564E;">{{ cuota.numeroCuota }}</td>
+                            <td class="py-2 font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif;">{{ formatCurrency(cuota.monto) }}</td>
+                            <td class="py-2 small" style="color: #66564E;">{{ formatDate(cuota.fechaVencimiento) }}</td>
+                            <td class="py-2">
+                              <span class="badge font-weight-bold"
+                                [style.background]="cuota.estado === 'PAGADO' ? '#DCFCE7' : (cuota.estado === 'PENDIENTE' ? '#FEF7EA' : '#FEECEB')"
+                                [style.color]="cuota.estado === 'PAGADO' ? '#166534' : (cuota.estado === 'PENDIENTE' ? '#9A5B13' : '#991B1B')"
+                                [style.border]="cuota.estado === 'PAGADO' ? '1px solid #BBF7D0' : (cuota.estado === 'PENDIENTE' ? '1px solid #FDE68A' : '1px solid #FECACA')"
+                                style="padding: 5px 10px; border-radius: 6px;">
                                 {{ cuota.estado }}
                               </span>
+                            </td>
+                            <td class="py-2 text-center">
+                              <div *ngIf="cuota.estado !== 'PAGADO'" class="btn-group" role="group">
+                                <button *ngIf="authService.isAdmin()" class="btn btn-sm font-weight-bold mr-1"
+                                  (click)="registrarCobroPresencial(cuota)"
+                                  style="background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem;"
+                                  title="Registrar cobro presencial">
+                                  <i class="fas fa-hand-holding-usd mr-1"></i> Pagar
+                                </button>
+                                <button *ngIf="!authService.isAdmin()" class="btn btn-sm font-weight-bold mr-1"
+                                  (click)="pagarCuotaCliente(cuota)"
+                                  style="background: #FAF5FF; color: #6B21A8; border: 1px solid #D8B4FE; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem;"
+                                  title="Pagar cuota con Yape adjuntando comprobante">
+                                  <i class="fas fa-qrcode mr-1"></i> Pagar
+                                </button>
+                                <button class="btn btn-sm font-weight-bold"
+                                  (click)="irADetalleVenta(cuota, credito)"
+                                  style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem;"
+                                  title="Ver detalle completo de la venta">
+                                  <i class="fas fa-eye mr-1"></i> Ver Detalle
+                                </button>
+                              </div>
+                              <div *ngIf="cuota.estado === 'PAGADO'" class="btn-group" role="group">
+                                <span class="badge font-weight-bold mr-1 py-1 px-2" style="background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; font-size: 0.75rem;">
+                                  <i class="fas fa-check-circle mr-1"></i> Pagado
+                                </span>
+                                <button class="btn btn-sm font-weight-bold"
+                                  (click)="irADetalleVenta(cuota, credito)"
+                                  style="background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 6px; padding: 2px 8px; font-size: 0.75rem;"
+                                  title="Ver detalle de la venta">
+                                  <i class="fas fa-eye"></i>
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         </ng-container>
@@ -503,68 +621,197 @@
             </div>
           </div>
 
-          <!-- Tab: Pagos -->
+          <!-- TAB 4: PAGOS (Agrupados por Cuenta en Acordeón) -->
           <div *ngIf="activeTab === 'pagos'" style="animation: fadeIn 0.3s ease;">
-            <h6 class="mb-3 text-white">
-              <i class="fas fa-money-bill-wave mr-2" style="color: #4fc3f7;"></i>
-              Historial de Pagos
-            </h6>
-
-            <div *ngIf="pagos.length === 0" class="text-center py-4"
-              style="background: rgba(100, 104, 36, 0.1); border-radius: 0.5rem; opacity: 0.6;">
-              <i class="fas fa-money-bill-wave mb-2" style="font-size: 2rem;"></i>
-              <p class="mb-0 text-danger">Este usuario no ha realizado pagos todavía</p>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="mb-0 font-weight-bold" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.15rem;">
+                <i class="fas fa-money-bill-wave mr-2" style="color: #C59B6D;"></i>
+                Historial de Pagos por Cuenta
+              </h6>
+              <span class="badge py-2 px-3 font-weight-bold"
+                style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 20px; font-size: 0.82rem;">
+                Total Pagado: <strong style="color: #166534;">{{ formatCurrency(totalPagado) }}</strong>
+              </span>
             </div>
 
-            <div *ngIf="pagos.length > 0" class="table-responsive">
-              <table class="table text-white" style="background: transparent !important;">
-                <thead>
-                  <tr style="background: rgba(0, 0, 0, 0.15) !important;">
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">ID</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Método</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Fecha de Pago</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Monto</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Estado</th>
-                    <th class="text-info" style="border-color: rgba(255,255,255,0.05) !important;">Comprobante</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let pago of pagos"
-                    style="transition: all 0.25s ease; background: transparent !important; border-color: rgba(255,255,255,0.05) !important;"
-                    onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)';"
-                    onmouseout="this.style.backgroundColor='transparent';">
-                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">#{{ pago.id }}</td>
-                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">
-                      <span class="badge px-2 py-1" [style.background]="pago.metodoPago === 'YAPE' ? '#7127ba' : '#34495e'">
-                        {{ pago.metodoPago || 'EFECTIVO' }}
-                      </span>
-                    </td>
-                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">{{ formatDate(pago.fechaPago) }}</td>
-                    <td class="text-white align-middle font-weight-bold" style="border-color: rgba(255,255,255,0.05) !important;">
-                      <span style="color: #2ecc71;">{{ formatCurrency(pago.monto) }}</span>
-                    </td>
-                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">
-                      <span class="badge" [ngClass]="{
-                        'badge-warning': pago.estado === 'PENDIENTE',
-                        'badge-success': pago.estado === 'APROBADO' || !pago.estado,
-                        'badge-danger': pago.estado === 'RECHAZADO'
-                      }">
-                        {{ pago.estado || 'APROBADO' }}
-                      </span>
-                      <small *ngIf="pago.estado === 'RECHAZADO' && pago.motivoRechazo" class="d-block text-danger mt-1">
-                        <i class="fas fa-info-circle mr-1"></i>{{ pago.motivoRechazo }}
-                      </small>
-                    </td>
-                    <td class="text-white align-middle" style="border-color: rgba(255,255,255,0.05) !important;">
-                      <button *ngIf="pago.comprobanteUrl" class="btn btn-sm btn-outline-info"
-                        (click)="verFotoComprobante(pago)">
-                        <i class="fas fa-image mr-1"></i> Ver Foto
-                      </button>
-                      <span *ngIf="!pago.comprobanteUrl" class="text-muted small">Sin comprobante</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div *ngIf="pagos.length === 0" class="text-center py-5 rounded"
+              style="background: #FAF7F2; border: 1px solid #E5DDD3;">
+              <i class="fas fa-money-bill-wave mb-2" style="font-size: 2.2rem; color: #C59B6D; opacity: 0.5;"></i>
+              <p class="mb-0" style="color: #66564E;">Este cliente no ha realizado pagos todavía</p>
+            </div>
+
+            <div *ngIf="pagos.length > 0">
+              <!-- Acordeón por cada Cuenta / Crédito -->
+              <div *ngFor="let credito of creditos; let i = index" class="card mb-3 border-0"
+                style="background: #FFFFFF; border-radius: 12px; border: 1px solid #E5DDD3; box-shadow: 0 2px 8px rgba(44,24,16,0.04); overflow: hidden;">
+                
+                <!-- Encabezado de la cuenta en Pagos -->
+                <div class="card-header d-flex justify-content-between align-items-center py-3 px-4"
+                  (click)="togglePagosCuenta(credito.id)"
+                  style="background: #FAF7F2 !important; cursor: pointer; user-select: none; border-bottom: 1px solid #E5DDD3; transition: background 0.2s ease;"
+                  onmouseover="this.style.background='#F5EFE6';"
+                  onmouseout="this.style.background='#FAF7F2';">
+                  
+                  <div class="d-flex align-items-center flex-wrap">
+                    <i class="fas fa-chevron-down mr-3"
+                      [style.transform]="isPagosCuentaDesplegado(credito.id) ? 'rotate(0deg)' : 'rotate(-90deg)'"
+                      style="transition: transform 0.25s ease; color: #C59B6D; font-size: 0.95rem;"></i>
+                    <h6 class="mb-0 font-weight-bold mr-2" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.12rem;">
+                      <i class="fas fa-file-invoice-dollar mr-1" style="color: #C59B6D;"></i>
+                      Cuenta N° {{ i + 1 }}
+                    </h6>
+                    <span class="small d-none d-sm-inline mr-2" style="color: #66564E;">
+                      · Total Cuenta: <strong>{{ formatCurrency(credito.montoTotal) }}</strong>
+                    </span>
+                  </div>
+
+                  <div class="d-flex align-items-center">
+                    <span class="badge py-1 px-2 mr-2 font-weight-bold"
+                      style="background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; font-size: 0.8rem;">
+                      <i class="fas fa-receipt mr-1"></i>{{ obtenerPagosPorCredito(credito.id).length }} pago(s)
+                    </span>
+                    <span class="small font-weight-bold d-none d-md-inline" style="color: #9A5B13; font-size: 0.82rem;">
+                      {{ isPagosCuentaDesplegado(credito.id) ? 'Ocultar ▲' : 'Ver Pagos ▼' }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Detalle desplegable de pagos para esta cuenta -->
+                <div *ngIf="isPagosCuentaDesplegado(credito.id)" class="card-body p-0" style="background: #FFFFFF; animation: fadeIn 0.3s ease;">
+                  <div *ngIf="obtenerPagosPorCredito(credito.id).length === 0" class="p-4 text-center">
+                    <p class="text-muted small mb-0">No se registran pagos para esta cuenta todavía</p>
+                  </div>
+
+                  <div *ngIf="obtenerPagosPorCredito(credito.id).length > 0" class="table-responsive">
+                    <table class="table table-hover mb-0" style="color: #241A15;">
+                      <thead>
+                        <tr style="background: #F8F4EE;">
+                          <th class="py-2 px-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">N°</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Cuota</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Método</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Fecha</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Monto</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Estado</th>
+                          <th class="py-2 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Comprobante</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let pago of obtenerPagosPorCredito(credito.id); let pIndex = index" style="border-bottom: 1px solid #EFE8DF;">
+                          <td class="py-2 px-3 font-weight-bold" style="color: #66564E;">N° {{ pIndex + 1 }}</td>
+                          <td class="py-2">
+                            <span class="badge py-1 px-2 font-weight-bold" style="background: #F3ECE2; color: #4A3B32; border: 1px solid #E5DDD3; font-size: 0.76rem;">
+                              {{ pago.numeroCuota ? 'Cuota ' + pago.numeroCuota : 'Abono Libre' }}
+                            </span>
+                          </td>
+                          <td class="py-2">
+                            <span class="badge px-2 py-1 font-weight-bold"
+                              [style.background]="pago.metodoPago === 'YAPE' ? '#6c2bd9' : '#34495e'"
+                              style="color: #FFFFFF; border-radius: 6px; font-size: 0.78rem;">
+                              <i class="fas fa-qrcode mr-1" *ngIf="pago.metodoPago === 'YAPE'"></i>
+                              {{ pago.metodoPago || 'EFECTIVO' }}
+                            </span>
+                          </td>
+                          <td class="py-2 font-weight-bold small" style="color: #66564E;">{{ formatDate(pago.fechaPago) }}</td>
+                          <td class="py-2 font-weight-bold cr-title-italic" style="color: #166534; font-size: 1rem;">
+                            {{ formatCurrency(pago.monto) }}
+                          </td>
+                          <td class="py-2">
+                            <span class="badge font-weight-bold"
+                              [style.background]="pago.estado === 'PENDIENTE' ? '#FEF7EA' : ((pago.estado === 'APROBADO' || !pago.estado) ? '#DCFCE7' : '#FEECEB')"
+                              [style.color]="pago.estado === 'PENDIENTE' ? '#9A5B13' : ((pago.estado === 'APROBADO' || !pago.estado) ? '#166534' : '#991B1B')"
+                              [style.border]="pago.estado === 'PENDIENTE' ? '1px solid #FDE68A' : ((pago.estado === 'APROBADO' || !pago.estado) ? '1px solid #BBF7D0' : '1px solid #FECACA')"
+                              style="padding: 4px 8px; border-radius: 6px; font-size: 0.76rem;">
+                              {{ pago.estado || 'APROBADO' }}
+                            </span>
+                            <small *ngIf="pago.estado === 'RECHAZADO' && pago.motivoRechazo" class="d-block text-danger mt-1">
+                              <i class="fas fa-info-circle mr-1"></i>{{ pago.motivoRechazo }}
+                            </small>
+                          </td>
+                          <td class="py-2 text-center">
+                            <button *ngIf="pago.comprobanteUrl" class="btn btn-sm font-weight-bold"
+                              style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 6px; padding: 3px 8px; font-size: 0.78rem;"
+                              (click)="verFotoComprobante(pago)">
+                              <i class="fas fa-image mr-1" style="color: #C59B6D;"></i> Ver Foto
+                            </button>
+                            <span *ngIf="!pago.comprobanteUrl" class="small" style="color: #8C7B72; font-size: 0.78rem;">Sin comprobante</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Otros pagos / Abonos globales (si existieran) -->
+              <div *ngIf="obtenerPagosOtros().length > 0" class="card mb-3 border-0"
+                style="background: #FFFFFF; border-radius: 12px; border: 1px solid #E5DDD3; box-shadow: 0 2px 8px rgba(44,24,16,0.04); overflow: hidden;">
+                <div class="card-header d-flex justify-content-between align-items-center py-3 px-4"
+                  (click)="togglePagosCuenta('otros')"
+                  style="background: #FAF7F2 !important; cursor: pointer; user-select: none; border-bottom: 1px solid #E5DDD3;">
+                  <div class="d-flex align-items-center flex-wrap">
+                    <i class="fas fa-chevron-down mr-3"
+                      [style.transform]="isPagosCuentaDesplegado('otros') ? 'rotate(0deg)' : 'rotate(-90deg)'"
+                      style="transition: transform 0.25s ease; color: #C59B6D; font-size: 0.95rem;"></i>
+                    <h6 class="mb-0 font-weight-bold mr-2" style="color: #2C1810 !important; font-family: 'Lora', serif; font-size: 1.12rem;">
+                      <i class="fas fa-coins mr-1" style="color: #C59B6D;"></i>
+                      Otros Abonos y Pagos Directos
+                    </h6>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="badge py-1 px-2 mr-2 font-weight-bold" style="background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; font-size: 0.8rem;">
+                      {{ obtenerPagosOtros().length }} pago(s)
+                    </span>
+                  </div>
+                </div>
+                <div *ngIf="isPagosCuentaDesplegado('otros')" class="card-body p-0" style="background: #FFFFFF; animation: fadeIn 0.3s ease;">
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0" style="color: #241A15;">
+                      <thead>
+                        <tr style="background: #F8F4EE;">
+                          <th class="py-2 px-3" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">N°</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Método</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Fecha</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Monto</th>
+                          <th class="py-2" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Estado</th>
+                          <th class="py-2 text-center" style="color: #66564E; font-weight: 700; border-bottom: 2px solid #E5DDD3; font-size: 0.8rem; text-transform: uppercase;">Comprobante</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let pago of obtenerPagosOtros(); let oIndex = index" style="border-bottom: 1px solid #EFE8DF;">
+                          <td class="py-2 px-3 font-weight-bold" style="color: #66564E;">N° {{ oIndex + 1 }}</td>
+                          <td class="py-2">
+                            <span class="badge px-2 py-1 font-weight-bold"
+                              [style.background]="pago.metodoPago === 'YAPE' ? '#6c2bd9' : '#34495e'"
+                              style="color: #FFFFFF; border-radius: 6px; font-size: 0.78rem;">
+                              {{ pago.metodoPago || 'EFECTIVO' }}
+                            </span>
+                          </td>
+                          <td class="py-2 font-weight-bold small" style="color: #66564E;">{{ formatDate(pago.fechaPago) }}</td>
+                          <td class="py-2 font-weight-bold cr-title-italic" style="color: #166534; font-size: 1rem;">
+                            {{ formatCurrency(pago.monto) }}
+                          </td>
+                          <td class="py-2">
+                            <span class="badge font-weight-bold"
+                              [style.background]="pago.estado === 'PENDIENTE' ? '#FEF7EA' : ((pago.estado === 'APROBADO' || !pago.estado) ? '#DCFCE7' : '#FEECEB')"
+                              [style.color]="pago.estado === 'PENDIENTE' ? '#9A5B13' : ((pago.estado === 'APROBADO' || !pago.estado) ? '#166534' : '#991B1B')"
+                              style="padding: 4px 8px; border-radius: 6px; font-size: 0.76rem;">
+                              {{ pago.estado || 'APROBADO' }}
+                            </span>
+                          </td>
+                          <td class="py-2 text-center">
+                            <button *ngIf="pago.comprobanteUrl" class="btn btn-sm font-weight-bold"
+                              style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 6px; padding: 3px 8px; font-size: 0.78rem;"
+                              (click)="verFotoComprobante(pago)">
+                              <i class="fas fa-image mr-1" style="color: #C59B6D;"></i> Ver Foto
+                            </button>
+                            <span *ngIf="!pago.comprobanteUrl" class="small" style="color: #8C7B72; font-size: 0.78rem;">Sin comprobante</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -576,34 +823,41 @@
 <!-- Modal para ver comprobante del usuario -->
 <div *ngIf="modalComprobanteVisible" class="modal-backdrop-custom" (click)="cerrarModalComprobante()">
   <div class="modal-dialog-custom" (click)="$event.stopPropagation()">
-    <div class="card bg-dark text-white border-secondary">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="fas fa-receipt mr-2 text-info"></i> Comprobante de Pago Yape</h5>
-        <button type="button" class="close text-white" (click)="cerrarModalComprobante()">&times;</button>
+    <div class="card border-0" style="background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid #E5DDD3;">
+      <div class="card-header d-flex justify-content-between align-items-center py-3 px-4"
+        style="background: linear-gradient(135deg, #24140C 0%, #150A05 100%) !important; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: 2px solid #C59B6D;">
+        <h5 class="mb-0 cr-title-italic" style="color: #FFFFFF !important;">
+          <i class="fas fa-receipt mr-2" style="color: #FAD082;"></i> Comprobante de Pago Yape
+        </h5>
+        <button type="button" class="close text-white" style="opacity: 0.9;" (click)="cerrarModalComprobante()">&times;</button>
       </div>
 
       <!-- Alerta si el pago fue rechazado con su motivo -->
       <div *ngIf="pagoSeleccionado && pagoSeleccionado.estado === 'RECHAZADO'" class="p-3 pb-0">
-        <div class="alert alert-danger mb-0" style="background-color: rgba(231, 76, 60, 0.2); border-left: 4px solid #e74c3c;">
-          <h6 class="font-weight-bold mb-1 text-danger">
+        <div class="alert mb-0" style="background-color: #FEECEB; border-left: 4px solid #DC2626; color: #991B1B; border-radius: 8px;">
+          <h6 class="font-weight-bold mb-1" style="color: #991B1B;">
             <i class="fas fa-exclamation-triangle mr-2"></i> Pago Rechazado
           </h6>
-          <p class="mb-1 text-white small"><strong>Motivo:</strong> {{ pagoSeleccionado.motivoRechazo || 'Comprobante no válido' }}</p>
-          <small class="text-light opacity-75" *ngIf="pagoSeleccionado.fechaValidacion">
+          <p class="mb-1 small" style="color: #7F1D1D;"><strong>Motivo:</strong> {{ pagoSeleccionado.motivoRechazo || 'Comprobante no válido' }}</p>
+          <small style="color: #991B1B;" *ngIf="pagoSeleccionado.fechaValidacion">
             Fecha de revisión: {{ pagoSeleccionado.fechaValidacion }}
           </small>
         </div>
       </div>
 
-      <div class="card-body text-center p-3">
+      <div class="card-body text-center p-4">
         <img [src]="comprobanteSeleccionadoUrl" alt="Comprobante Yape"
-          style="max-width: 100%; max-height: 65vh; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+          style="max-width: 100%; max-height: 65vh; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid #E5DDD3;">
       </div>
-      <div class="card-footer text-right">
-        <a [href]="comprobanteSeleccionadoUrl" target="_blank" class="btn btn-outline-info mr-2">
-          <i class="fas fa-external-link-alt mr-1"></i> Abrir en tamaño real
+      <div class="card-footer d-flex justify-content-end align-items-center py-3 px-4"
+        style="background: #FAF7F2; border-top: 1px solid #E5DDD3; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+        <a [href]="comprobanteSeleccionadoUrl" target="_blank" class="btn btn-sm font-weight-bold mr-2 px-3 py-2"
+          style="background: #FAF4EB; color: #361E14; border: 1px solid #C59B6D; border-radius: 8px;">
+          <i class="fas fa-external-link-alt mr-1" style="color: #C59B6D;"></i> Abrir en tamaño real
         </a>
-        <button class="btn btn-secondary" (click)="cerrarModalComprobante()">Cerrar</button>
+        <button class="btn btn-sm font-weight-bold px-3 py-2"
+          style="background: #361E14; color: #F7EAD9; border: none; border-radius: 8px;"
+          (click)="cerrarModalComprobante()">Cerrar</button>
       </div>
     </div>
   </div>
@@ -617,7 +871,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -634,37 +888,19 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(8px);
     }
-
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
-  /* Estilos para las pestañas */
   .nav-tabs {
     border-bottom: none !important;
   }
 
   .nav-tabs .nav-link {
-    transition: all 0.3s ease;
-  }
-
-  .nav-tabs .nav-link:not(.active):hover {
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .nav-tabs .nav-link.active {
-    color: #4fc3f7 !important;
-    background: rgba(79, 195, 247, 0.1) !important;
-    border: none !important;
-  }
-
-  /* Estilos de tablas */
-  .table th,
-  .table td {
-    background-color: transparent !important;
+    transition: all 0.25s ease;
   }
 </style>

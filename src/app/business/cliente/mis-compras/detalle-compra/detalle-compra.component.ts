@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { VentaService } from '../../../../shared/services/venta.service';
 import { CreditoService } from '../../../../shared/services/credito.service';
+import { PagoService } from '../../../../shared/services/pago.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { CommonModule, Location } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-detalle-compra',
@@ -30,6 +32,7 @@ export class DetalleCompraComponent implements OnInit {
     private router: Router,
     private ventaService: VentaService,
     private creditoService: CreditoService,
+    private pagoService: PagoService,
     public authService: AuthService,
     private location: Location
   ) {}
@@ -72,9 +75,20 @@ export class DetalleCompraComponent implements OnInit {
   }
 
   cargarDetalles(): void {
+    // Si la venta ya traía los detalles anidados
+    if (this.venta?.detalles && Array.isArray(this.venta.detalles) && this.venta.detalles.length > 0) {
+      this.detalles = this.venta.detalles;
+      if (this.venta.tipoVenta === 'CREDITO' || this.venta.tipoVenta === 'FIADO') {
+        this.cargarCredito();
+      } else {
+        this.loading = false;
+      }
+      return;
+    }
+
     this.ventaService.obtenerDetallesVenta(this.ventaId).subscribe({
       next: (detalles) => {
-        this.detalles = detalles;
+        this.detalles = detalles || [];
 
         // Si es venta a crédito o fiado, cargar información del crédito
         if (this.venta.tipoVenta === 'CREDITO' || this.venta.tipoVenta === 'FIADO') {
@@ -84,9 +98,13 @@ export class DetalleCompraComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.error = 'Error al cargar los detalles de la compra';
-        this.loading = false;
-        console.error('Error al cargar detalles', error);
+        console.warn('Detalles no disponibles para esta venta, mostrando descripción general', error);
+        this.detalles = [];
+        if (this.venta.tipoVenta === 'CREDITO' || this.venta.tipoVenta === 'FIADO') {
+          this.cargarCredito();
+        } else {
+          this.loading = false;
+        }
       },
     });
   }
@@ -188,5 +206,141 @@ export class DetalleCompraComponent implements OnInit {
     return this.cuotas
       .filter((c) => c.estado !== 'PAGADO')
       .reduce((sum, c) => sum + Number(c.monto), 0);
+  }
+
+  // Registrar cobro presencial (Efectivo o Yape) para admin
+  registrarCobroPresencial(cuota: any): void {
+    const deudaCuota = parseFloat(cuota.monto) || 0;
+
+    (Swal as any).fire({
+      title: 'Registrar Pago / Cobro',
+      html: `
+        <div style="text-align: left; color: #2C1810; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <p class="mb-2" style="font-size: 0.92rem;">
+            Cuota #<strong>${cuota.numeroCuota}</strong> | Deuda pendiente: <strong style="color: #9A5B13;">S/. ${deudaCuota.toFixed(2)}</strong>
+          </p>
+
+          <div class="form-group mb-3">
+            <label style="font-weight: 700; font-size: 0.88rem; color: #2C1810;">Método de Pago:</label>
+            <select id="swal-cobro-metodo" class="swal2-input" style="width: 100%; margin: 4px 0; height: 42px; border: 1px solid #C59B6D;">
+              <option value="EFECTIVO" selected>Efectivo (en caja / tienda)</option>
+              <option value="YAPE">Yape (en mostrador)</option>
+              <option value="TRANSFERENCIA">Transferencia bancaria</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label style="font-weight: 700; font-size: 0.88rem; color: #2C1810;">Monto Cobrado (S/.):</label>
+            <input id="swal-cobro-monto" type="number" step="0.50" min="0.50" max="${deudaCuota}" value="${deudaCuota}"
+                   class="swal2-input" style="width: 100%; margin: 4px 0; border: 1px solid #C59B6D; font-weight: 700; color: #166534;"
+                   onkeydown="if(event.key==='-'||event.key==='+'||event.key==='e') event.preventDefault();">
+            <small class="text-muted d-block mt-1">Máximo permitido: S/. ${deudaCuota.toFixed(2)} (no se permiten números negativos ni superar la deuda).</small>
+          </div>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: '<i class="fas fa-check-circle mr-1"></i> Registrar Pago Aprobado',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#166534',
+      preConfirm: () => {
+        const metodo = (document.getElementById('swal-cobro-metodo') as HTMLSelectElement)?.value || 'EFECTIVO';
+        const montoInput = (document.getElementById('swal-cobro-monto') as HTMLInputElement)?.value;
+        const montoNum = parseFloat(montoInput);
+
+        if (!montoInput || isNaN(montoNum) || montoNum <= 0) {
+          (Swal as any).showValidationMessage('Ingresa un monto numérico positivo mayor a 0');
+          return false;
+        }
+
+        if (montoNum > deudaCuota) {
+          (Swal as any).showValidationMessage(`El monto no puede superar la deuda total pendiente (S/. ${deudaCuota.toFixed(2)})`);
+          return false;
+        }
+
+        return {
+          cuotaId: cuota.id,
+          monto: montoNum,
+          metodoPago: metodo
+        };
+      }
+    }).then((result: any) => {
+      if (result.isConfirmed && result.value) {
+        (Swal as any).fire({
+          title: 'Registrando pago...',
+          allowOutsideClick: false,
+          didOpen: () => (Swal as any).showLoading()
+        });
+
+        this.pagoService.registrarPago(result.value).subscribe({
+          next: () => {
+            (Swal as any).fire({
+              title: '¡Pago Registrado!',
+              text: 'El pago presencial fue registrado y aprobado con éxito',
+              icon: 'success',
+              confirmButtonColor: '#166534'
+            }).then(() => {
+              this.cargarDatos();
+            });
+          },
+          error: (err: any) => {
+            console.error('Error al registrar cobro:', err);
+            (Swal as any).fire('Error', err?.error?.error || err?.error || 'No se pudo registrar el pago', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  // Aplazar o cambiar fecha de vencimiento
+  editarFechaVencimiento(cuota: any): void {
+    const fechaActual = cuota.fechaVencimiento || new Date().toISOString().split('T')[0];
+
+    (Swal as any).fire({
+      title: 'Aplazar / Modificar Vencimiento',
+      html: `
+        <div style="text-align: left; color: #2C1810;">
+          <p class="mb-2" style="font-size: 0.9rem;">
+            Cuota #<strong>${cuota.numeroCuota}</strong> | Monto pendiente: <strong style="color: #9A5B13;">S/. ${parseFloat(cuota.monto).toFixed(2)}</strong>
+          </p>
+          <label style="font-weight: 600; font-size: 0.88rem; color: #66564E;">Nueva Fecha de Vencimiento:</label>
+          <input id="swal-nueva-fecha" type="date" value="${fechaActual}" class="swal2-input" style="width: 100%; margin: 8px 0; border: 1px solid #C59B6D;">
+          <small class="text-muted d-block mt-1">
+            Si se acordó aplazar los días de pago, selecciona la nueva fecha pactada.
+          </small>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: '<i class="fas fa-calendar-check mr-1"></i> Guardar Nueva Fecha',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#2C1810',
+      preConfirm: () => {
+        const fechaVal = (document.getElementById('swal-nueva-fecha') as HTMLInputElement)?.value;
+        if (!fechaVal) {
+          (Swal as any).showValidationMessage('Debe seleccionar una fecha');
+          return false;
+        }
+        return fechaVal;
+      }
+    }).then((result: any) => {
+      if (result.isConfirmed && result.value) {
+        (Swal as any).fire({
+          title: 'Actualizando fecha...',
+          allowOutsideClick: false,
+          didOpen: () => (Swal as any).showLoading()
+        });
+
+        this.creditoService.actualizarFechaVencimientoCuota(cuota.id, result.value).subscribe({
+          next: () => {
+            (Swal as any).fire('¡Fecha Actualizada!', 'Se ha modificado la fecha de vencimiento exitosamente', 'success').then(() => {
+              this.cargarDatos();
+            });
+          },
+          error: (err: any) => {
+            console.error('Error al actualizar fecha:', err);
+            (Swal as any).fire('Error', err?.error?.error || 'No se pudo actualizar la fecha', 'error');
+          }
+        });
+      }
+    });
   }
 }

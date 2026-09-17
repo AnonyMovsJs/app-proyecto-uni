@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { PagoService } from '../../../../shared/services/pago.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { CuotaService } from '../../../../shared/services/cuota.service';
 import { CreditoService } from '../../../../shared/services/credito.service';
 import { VentaService } from '../../../../shared/services/venta.service';
@@ -66,8 +66,17 @@ export class PagarCuotaComponent implements OnInit {
     private pagoService: PagoService,
     private cuotaService: CuotaService,
     private creditoService: CreditoService,
-    private ventaService: VentaService
+    private ventaService: VentaService,
+    private location: Location
   ) {}
+
+  volver(): void {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/cliente/dashboard']);
+    }
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -78,7 +87,6 @@ export class PagarCuotaComponent implements OnInit {
     this.pagoForm = this.fb.group({
       monto: ['', [Validators.required, Validators.min(0.01)]],
       metodoPago: ['yape', [Validators.required]],
-      aceptaTerminos: [false, [Validators.requiredTrue]],
     });
   }
 
@@ -93,7 +101,15 @@ export class PagarCuotaComponent implements OnInit {
         // Cargar la información relacionada
         this.cargarInfoRelacionada();
 
-        // Establecer valor del formulario
+        // Establecer valor del formulario y validadores con límite máximo
+        const maxPermitido = this.montoTotalCuota;
+        this.pagoForm.get('monto')?.setValidators([
+          Validators.required,
+          Validators.min(0.01),
+          Validators.max(maxPermitido)
+        ]);
+        this.pagoForm.get('monto')?.updateValueAndValidity();
+
         this.pagoForm.patchValue({
           monto: this.cuota.monto + this.montoMora,
         });
@@ -209,53 +225,47 @@ export class PagarCuotaComponent implements OnInit {
       return;
     }
 
-    const metodo = this.pagoForm.value.metodoPago;
+    const metodo = this.pagoForm.value.metodoPago || 'yape';
 
-    if (metodo === 'yape' && !this.archivoSeleccionado) {
+    if (!this.archivoSeleccionado) {
       Swal.fire({
         title: 'Comprobante requerido',
-        text: 'Por favor adjunta la captura de tu comprobante de Yape.',
+        text: 'Por favor adjunta la captura o foto del comprobante de tu pago.',
         icon: 'warning',
-        confirmButtonColor: '#9b59b6',
+        confirmButtonColor: '#C59B6D',
       });
       return;
     }
 
     this.submitting = true;
 
-    if (metodo === 'yape' && this.archivoSeleccionado) {
-      this.pagoService.registrarPagoYape(this.cuotaId, this.archivoSeleccionado).subscribe({
-        next: () => {
-          this.submitting = false;
-          Swal.fire({
-            title: '¡Comprobante Enviado!',
-            text: 'Tu comprobante de Yape fue recibido y está en revisión. Se te notificará una vez validado.',
-            icon: 'info',
-            confirmButtonColor: '#9b59b6',
-            confirmButtonText: 'Entendido',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              const targetVentaId = this.cuota.ventaId || (this.venta ? this.venta.id : null);
-              if (targetVentaId) {
-                this.router.navigate(['/cliente/detalle-compra', targetVentaId]);
-              } else {
-                this.router.navigate(['/cliente/mis-compras']);
-              }
-            }
-          });
-        },
-        error: (err: any) => {
-          this.submitting = false;
-          Swal.fire({
-            title: 'Error al enviar comprobante',
-            text: err.error?.error || 'No se pudo subir tu comprobante. Intenta nuevamente.',
-            icon: 'error',
-            confirmButtonColor: '#e74c3c',
-          });
-        }
-      });
-      return;
-    }
+    this.pagoService.registrarPagoYape(this.cuotaId, this.archivoSeleccionado, metodo).subscribe({
+      next: () => {
+        this.submitting = false;
+        const nombreMetodo = this.metodosPago.find(m => m.id === metodo)?.nombre || 'Pago';
+        Swal.fire({
+          title: '¡Comprobante Enviado!',
+          text: `Tu comprobante de ${nombreMetodo} fue recibido con éxito y está en revisión. El administrador lo validará a la brevedad.`,
+          icon: 'success',
+          confirmButtonColor: '#166534',
+          confirmButtonText: 'Entendido',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/user'], { queryParams: { tab: 'creditos' } });
+          }
+        });
+      },
+      error: (err: any) => {
+        this.submitting = false;
+        Swal.fire({
+          title: 'Error al enviar comprobante',
+          text: err.error?.error || err.error?.message || 'No se pudo subir tu comprobante. Intenta nuevamente.',
+          icon: 'error',
+          confirmButtonColor: '#991B1B',
+        });
+      }
+    });
+    return;
 
     // Flujo normal para otros métodos
     const pago = {

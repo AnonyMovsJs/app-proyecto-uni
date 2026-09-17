@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 
 import { UserService } from '../../../shared/services/user.service';
@@ -42,6 +42,7 @@ export class ControlCobranzasComponent implements OnInit {
 
   loading = true;
   error = '';
+  autoNotificarCliente: string | null = null;
 
   // KPIs
   totalCarteraVencida = 0;
@@ -61,10 +62,19 @@ export class ControlCobranzasComponent implements OnInit {
   constructor(
     private userService: UserService,
     private creditoService: CreditoService,
-    private notificacionService: NotificacionService
+    private notificacionService: NotificacionService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((queryParams) => {
+      if (queryParams['cliente']) {
+        this.searchTerm = queryParams['cliente'];
+      }
+      if (queryParams['notificar'] === 'true' && queryParams['cliente']) {
+        this.autoNotificarCliente = queryParams['cliente'];
+      }
+    });
     this.cargarDatosCobranzas();
   }
 
@@ -156,6 +166,22 @@ export class ControlCobranzasComponent implements OnInit {
       this.calcularResumen();
       this.aplicarFiltros();
       this.loading = false;
+
+      if (this.autoNotificarCliente) {
+        const term = this.autoNotificarCliente.toLowerCase();
+        const deudor = this.deudores.find(
+          (d) =>
+            d.cliente.name?.toLowerCase().includes(term) ||
+            d.cliente.lastname?.toLowerCase().includes(term) ||
+            d.cliente.dni?.includes(term)
+        );
+        if (deudor) {
+          setTimeout(() => {
+            this.enviarNotificacionCliente(deudor);
+          }, 400);
+        }
+        this.autoNotificarCliente = null;
+      }
     }
   }
 

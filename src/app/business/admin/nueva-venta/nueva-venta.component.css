@@ -1,0 +1,20 @@
+.client-option-item:hover {
+  background: #FAF4EB !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.custom-client-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-client-dropdown::-webkit-scrollbar-thumb {
+  background: #C59B6D;
+  border-radius: 4px;
+}
+
+.custom-client-dropdown::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
