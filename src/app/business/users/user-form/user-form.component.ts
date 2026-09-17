@@ -28,11 +28,10 @@ export class UserFormComponent implements OnInit {
   loading: boolean = false;
   isEditMode: boolean = false;
 
-  // Estado y variables para Modal de Consulta DNI (ApiPeru / RENIEC)
+  // Estado y variables para Modal de Consulta DNI (Backend BFF)
   modalConsultaVisible = false;
   dniBusqueda = '';
   consultandoApi = false;
-  apiToken = '6c1a1795c325da722c2a0d7a6416629dc887019875bbef31b678144208a0d244'; // Token configurado o personalizable
   infoSunat: any = null;
 
   // Estado para Evaluación de Riesgo y Límite con IA
@@ -84,7 +83,7 @@ export class UserFormComponent implements OnInit {
     this.consultandoApi = true;
     this.infoSunat = null;
 
-    this.userService.consultarDniApi(dni, this.apiToken).subscribe({
+    this.userService.consultarDniApi(dni).subscribe({
       next: (res) => {
         this.consultandoApi = false;
         if (res && res.success && res.data) {

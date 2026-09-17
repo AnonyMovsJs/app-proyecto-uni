@@ -38,9 +38,10 @@ export class UserService {
   }
 
   /**
-   * Consulta el DNI en ApiPeru.dev con validación previa de 8 dígitos y caché local para no quemar tokens.
+   * Consulta el DNI a través del Backend seguro de Spring Boot (BFF).
+   * El token y las credenciales quedan protegidos en el servidor.
    */
-  consultarDniApi(dni: string, token: string): Observable<any> {
+  consultarDniApi(dni: string): Observable<any> {
     const cached = localStorage.getItem(`dni_cache_${dni}`);
     if (cached) {
       try {
@@ -48,13 +49,7 @@ export class UserService {
       } catch (_) {}
     }
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
-    };
-
-    return this.http.post<any>('https://api.apiperu.dev/dni', { dni }, { headers }).pipe(
+    return this.http.get<any>(`${this.url}/consulta-dni/${dni}`).pipe(
       tap((res) => {
         if (res && res.success && res.data) {
           localStorage.setItem(`dni_cache_${dni}`, JSON.stringify(res));
@@ -64,9 +59,9 @@ export class UserService {
   }
 
   /**
-   * Consulta RUC en ApiPeru.dev para verificar condición tributaria y deudas
+   * Consulta RUC a través del Backend seguro de Spring Boot.
    */
-  consultarRucApi(ruc: string, token: string): Observable<any> {
+  consultarRucApi(ruc: string): Observable<any> {
     const cached = localStorage.getItem(`ruc_cache_${ruc}`);
     if (cached) {
       try {
@@ -74,13 +69,7 @@ export class UserService {
       } catch (_) {}
     }
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`
-    };
-
-    return this.http.post<any>('https://api.apiperu.dev/ruc', { ruc }, { headers }).pipe(
+    return this.http.get<any>(`${this.url}/consulta-ruc/${ruc}`).pipe(
       tap((res) => {
         if (res && res.success && res.data) {
           localStorage.setItem(`ruc_cache_${ruc}`, JSON.stringify(res));
